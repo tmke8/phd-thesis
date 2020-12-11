@@ -97,7 +97,7 @@ remains from older times in the code, many dirty workarounds here and
 there, and several other things I am absolutely not proud of (for
 example my unwise combination of \acsfont{KOMA} and
 \texttt{titlesec} etc.).
-\graffito{An outlook into the future of \texttt{classicthesis}.}
+% \graffito{An outlook into the future of \texttt{classicthesis}.}
 
 Currently, I am looking into how to completely re-design and
 re-implement \texttt{classicthesis} making it easier to maintain and
@@ -231,11 +231,12 @@ allow for a bit of freedom concerning the layout:
 
     \item Tweaking colors and fonts -- please use this with great care!:
         \begin{itemize}
-            \item\verb|\ct@altfont|: comfortable hook to alter the basic look and feel of everything that uses spaced caps or spaced small caps. For example, for \texttt{arsclassica} we used \\ \verb|\renewcommand*{\ct@altfont}{\sffamily}|. Coloring is also possible this way.
+            \item\verb|\ct@altfont|: comfortable hook to alter the basic look and feel of everything that uses spaced caps or spaced small caps.
+              % For example, for \texttt{arsclassica} we used \\ \verb|\renewcommand*{\ct@altfont}{\sffamily}|. Coloring is also possible this way.
 
             % \item\verb|\ct@caps|: spacedallcaps spacedlowsmallcaps
 
-            \item\texttt{CTsemi}: Change the semi gray color used, \eg, for the chapter number. Default is: \verb|\definecolor{CTsemi}{gray}{0.55}|
+            \item\texttt{CTsemi}: Change the semi gray color used, \eg, for the chapter number. %Default is: \verb|\definecolor{CTsemi}{gray}{0.55}|
 
             \item\texttt{CTtitle}: Change the red color used, \eg, for the title. Default is: \verb|\definecolor{CTtitle}{named}{Maroon}|
 

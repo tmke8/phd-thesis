@@ -1,32 +1,6 @@
 % **************************************************************************************************************
 % A Classic Thesis Style
 % An Homage to The Elements of Typographic Style
-%
-% Copyright (C) 2018 André Miede and Ivo Pletikosić
-%
-% If you like the style then I would appreciate a postcard. My address
-% can be found in the file ClassicThesis.pdf. A collection of the
-% postcards I received so far is available online at
-% http://postcards.miede.de
-%
-% License:
-% This program is free software; you can redistribute it and/or modify
-% it under the terms of the GNU General Public License as published by
-% the Free Software Foundation; either version 2 of the License, or
-% (at your option) any later version.
-%
-% This program is distributed in the hope that it will be useful,
-% but WITHOUT ANY WARRANTY; without even the implied warranty of
-% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-% GNU General Public License for more details.
-%
-% You should have received a copy of the GNU General Public License
-% along with this program; see the file COPYING.  If not, write to
-% the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
-% Boston, MA 02111-1307, USA.
-%
-% PLEASE SEE ALSO THE AUTHORS' NOTE REGARDING THIS LICENSE
-% IN THE DOCUMENTATION (ClassicThesis.pdf --> Chapter 1 / Chapter01.tex)
 % **************************************************************************************************************
 \RequirePackage{silence} % :-\
     \WarningFilter{scrreprt}{Usage of package `titlesec'}
@@ -38,13 +12,14 @@ titlepage,numbers=noenddot,%1headlines,
                 BCOR=5mm,paper=a4,fontsize=11pt
                 ]{scrreprt}
 
-% for compatibility with sussex requirements
-\usepackage[a4paper,top=2.5cm,bottom=2.5cm,left=4cm,right=2cm,headsep=10pt]{geometry}
+% for compatibility with Sussex requirements
+% \usepackage[a4paper,top=2.5cm,bottom=2.5cm,left=4cm,right=2cm,headsep=10pt]{geometry}
+% !!! for drafting, I'll use slightly incorrect margins, because it's annoying if the text isn't centered
+\usepackage[a4paper,top=2.5cm,bottom=2.5cm,left=3cm,right=3cm,headsep=10pt]{geometry}
 %********************************************************************
 % Note: Make all your adjustments in here
 %*******************************************************
 % ****************************************************************************************************
-
 
 % ****************************************************************************************************
 % 0. Set the encoding of your files. UTF-8 is the only sensible encoding nowadays. If you can't read
@@ -57,6 +32,8 @@ titlepage,numbers=noenddot,%1headlines,
 \PassOptionsToPackage{T1}{fontenc} % T2A for cyrillics
   \usepackage{fontenc}
 
+% this solves a warning about bullet points
+\usepackage{textcomp}
 
 % ****************************************************************************************************
 % 1. Configure classicthesis for your needs here, e.g., remove "drafting" below
@@ -112,17 +89,15 @@ titlepage,numbers=noenddot,%1headlines,
 % Packages with options that might require adjustments
 % ********************************************************************
 \PassOptionsToPackage{american}{babel} % change this to your language(s), main language last
-% Spanish languages need extra options in order to work with this template
-%\PassOptionsToPackage{spanish,es-lcroman}{babel}
     \usepackage{babel}
 
 \usepackage{csquotes}
 \PassOptionsToPackage{%
-  %backend=biber,bibencoding=utf8, %instead of bibtex
-  backend=bibtex8,bibencoding=ascii,%
+  backend=biber,bibencoding=utf8, %instead of bibtex
+  % backend=bibtex8,bibencoding=ascii,%
   language=auto,%
-  style=numeric-comp,%
-  %style=authoryear-comp, % Author 1999, 2010
+  %style=numeric-comp,%
+  style=authoryear-comp, % Author 1999, 2010
   %bibstyle=authoryear,dashed=false, % dashed: substitute rep. author with ---
   sorting=nyt, % name, year, title
   maxbibnames=10, % default: 3, et al.
@@ -134,9 +109,6 @@ titlepage,numbers=noenddot,%1headlines,
 \PassOptionsToPackage{fleqn}{amsmath}       % math environments and more by the AMS
   \usepackage{amsmath}
   
-% \usepackage{setspace}
-% \twospacing
-
 % ********************************************************************
 % General useful packages
 % ********************************************************************
@@ -323,6 +295,12 @@ titlepage,numbers=noenddot,%1headlines,
 %*******************************************************
 %\hyphenation{put special hyphenation here}
 
+% this line solves a warning
+\setlength{\headheight}{17pt}
+
+% math commands
+\input{math_commands.tex}
+
 % ********************************************************************
 % GO!GO!GO! MOVE IT!
 %*******************************************************
@@ -352,12 +330,20 @@ titlepage,numbers=noenddot,%1headlines,
 %*******************************************************
 \cleardoublepage
 \pagestyle{scrheadings}
+
+%%%% center the page numbers
+\clearscrheadfoot
+\ohead{\rightmark}
+\cfoot[\pagemark]{\pagemark}
+%%%%
+
 \pagenumbering{arabic}
 %\setcounter{page}{90}
 % use \cleardoublepage here to avoid problems with pdfbookmark
 \cleardoublepage
-\part{Some Kind of Manual}\label{pt:manual}
-\include{Chapters/Chapter01}
+\part{Introduction}\label{pt:intro}
+\include{ch/1-introduction}
+\include{ch/2-related-work}
 \cleardoublepage
 \ctparttext{You can put some informational part preamble text here.
 Illo principalmente su nos. Non message \emph{occidental} angloromanic
@@ -365,19 +351,24 @@ da. Debitas effortio simplificate sia se, auxiliar summarios da que,
 se avantiate publicationes via. Pan in terra summarios, capital
 interlingua se que. Al via multo esser specimen, campo responder que
 da. Le usate medical addresses pro, europa origine sanctificate nos se.}
-\part{The Showcase}\label{pt:showcase}
-\include{Chapters/Chapter02}
-%\addtocontents{toc}{\protect\clearpage} % <--- just debug stuff, ignore
-\include{Chapters/Chapter03}
-%\include{multiToC} % <--- just debug stuff, ignore for your documents
-% ********************************************************************
-% Backmatter
-%*******************************************************
-\appendix
-%\renewcommand{\thechapter}{\alph{chapter}}
+\part{Main work}\label{pt:main}
+\include{ch/3-target-labels}
+\include{ch/4-nifr}
+\include{ch/5-zsf}
+
 \cleardoublepage
-\part{Appendix}
-\include{Chapters/Chapter0A}
+\part{End}\label{pt:end}
+\include{ch/6-conclusion}
+
+% ********************************************************************
+% Appendix
+%*******************************************************
+%\appendix
+%%\renewcommand{\thechapter}{\alph{chapter}}
+%\cleardoublepage
+%\part{Appendix}
+%\include{Chapters/Chapter0A}
+
 %********************************************************************
 % Other Stuff in the Back
 %*******************************************************
