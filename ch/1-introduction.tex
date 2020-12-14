@@ -8,7 +8,60 @@ leading to situations where \ac{ANNs} do not do `what we meant', but just what t
 
 This problem becomes especially severe when the training data is biased in some way,
 which, by default, makes the \ac{ML} system copy the bias, or even exacerbate it.
+When applied in the deployment setting, the system will then not behave in the desired way.
 The topic of this thesis is how to deal with biased data;
 what types of bias exist and how to correct it if possible.
 
 \section{Motivation and aims}
+Many datasets with person-related features display biases when examined by common fairness criteria.
+This can range from relatively harmless biases,
+like men being, on average, older than women in the CelebA dataset \citep{liu2015faceattributes},
+to more serious ones,
+like black men being several times less likely to receive bail than white men in the COMPAS dataset \citep{angwin2016machine}.
+In the absence of truly `fair' datasets, our methods have to be able to deal with these biases.
+
+Now, one possible objection here is:
+if those datasets are so bad,
+then maybe we just should not train any \ac{ML} model on these and should not use them to make automated decisions.
+While this question is mostly beyond the scope of this document, let me offer some thoughts on this:
+It's true that even after the application of de-biasing techniques,
+the resulting models still should not be fully trusted,
+but they can still ease the burden of checking everything manually;
+similar to an email spam filter which is not perfect, but still very useful.
+One could imagine a hybrid approach where an automated system makes preliminary decisions,
+but random samples are reviewed by humans and decisions can always be challenged.
+Ideally, the model itself would tell us about decisions it is uncertain about.
+
+Moreover, two of the three methods presented in this thesis require access to (unlabeled) \emph{unbiased} data,
+which is used during the training process.
+So, the criticism that we are only learning from biased data does not apply here.
+This should allow us to be more confident in the predictions of those methods.
+
+Throughout this thesis, the aim is to learn a model from biased training data,
+which gives fair predictions on an unbiased training set.
+It is thus not enough to simply optimize the cross-entropy on the training set;
+we have to change the optimization target to achieve our stated goal.
+While it is possible to extend notions of fairness beyond classification tasks,
+the vast majority of work in this area concerns classification only and that will be the case here as well.
+
+\section{Claims and contributions}%
+\label{sec:claims-contributions}
+This thesis is based on 3 publications.
+\begin{enumerate}
+  \item x
+\end{enumerate}
+This thesis will discuss two kinds of dataset bias: \emph{label bias} and \emph{sampling bias}.
+
+In the setup for \emph{label bias},
+we consider a classification problem in which the class labels $y$ needs to be predicted from input features $\vx$.
+Additionally, there is a \emph{sensitive attribute} $s$ associated with each input.
+This sensitive attribute usually encodes membership in a demographic group, such as gender,
+but more generally is a feature that should not be used to make predictions for legal or ethical reasons.
+In our examples, $s$ and $y$ are binary variables, but this does not have to be the case.
+The label bias now manifests itself in a specific way:
+depending on $s$, labels are either flipped from $y=0$ to $y=1$ or vice versa,
+\ie, there is an error in the labels which is correlated with the sensitive attribute.
+
+---
+
+I'm not sure how to mention my papers here. First the papers and then the description?
