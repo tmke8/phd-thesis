@@ -98,10 +98,13 @@ titlepage,numbers=noenddot,%1headlines,
   % backend=bibtex8,bibencoding=ascii,%
   language=auto,%
   %style=numeric-comp,%
-  style=authoryear-comp, % Author 1999, 2010
   %bibstyle=authoryear,dashed=false, % dashed: substitute rep. author with ---
   sorting=nyt, % name, year, title
+  uniquelist=false,
   maxbibnames=10, % default: 3, et al.
+  maxcitenames=2,
+  mincitenames=1,
+  style=authoryear-comp, % Author 1999, 2010
   %backref=true,%
   natbib=true % natbib compatibility mode (\citep and \citet still work)
 }{biblatex}
@@ -124,6 +127,28 @@ titlepage,numbers=noenddot,%1headlines,
   %\def\bflabel#1{{#1\hfill}}
   \def\bflabel#1{{\acsfont{#1}\hfill}}
   \def\aclabelfont#1{\acsfont{#1}}
+% \usepackage{glossaries}
+% \input{glossary.tex}
+
+% ************** %
+%  Nomenclature  %
+% ************** %
+\newlength{\nomenlabelindent}
+\setlength{\nomenlabelindent}{2em}
+\newenvironment{nomenclature}{%
+\newcommand\entry[2]{%
+\hangindent\nomenlabelindent\noindent\makebox[\nomenlabelindent][l]{##1\quad}\ignorespaces##2\par\addvspace{9pt}}%
+   \chapter*{Nomenclature}}{\par\addvspace{12pt}}
+
+% ************** %
+%  Simple glossary  %
+% ************** %
+\newlength{\glossarylabelindent}
+\setlength{\glossarylabelindent}{10em}
+\newenvironment{glossaryenv}{%
+\newcommand\entry[2]{%
+\hangindent\glossarylabelindent\noindent\makebox[\glossarylabelindent][l]{##1\quad}\ignorespaces##2\par\addvspace{9pt}}%
+   \chapter*{Glossary}}{\par\addvspace{12pt}}
 % ****************************************************************************************************
 %\usepackage{pgfplots} % External TikZ/PGF support (thanks to Andreas Nautsch)
 %\usetikzlibrary{external}
@@ -306,7 +331,7 @@ titlepage,numbers=noenddot,%1headlines,
 % GO!GO!GO! MOVE IT!
 %*******************************************************
 \begin{document}
-\frenchspacing
+% \frenchspacing
 \raggedbottom
 \selectlanguage{american} % american ngerman
 %\renewcommand*{\bibname}{new name}
@@ -342,7 +367,7 @@ titlepage,numbers=noenddot,%1headlines,
 %\setcounter{page}{90}
 % use \cleardoublepage here to avoid problems with pdfbookmark
 \cleardoublepage
-\part{Introduction}\label{pt:intro}
+\part{Part I}\label{pt:intro}
 \include{ch/1-introduction}
 \include{ch/2-related-work}
 \cleardoublepage
@@ -352,13 +377,13 @@ da. Debitas effortio simplificate sia se, auxiliar summarios da que,
 se avantiate publicationes via. Pan in terra summarios, capital
 interlingua se que. Al via multo esser specimen, campo responder que
 da. Le usate medical addresses pro, europa origine sanctificate nos se.}
-\part{Main work}\label{pt:main}
+\part{Part II}\label{pt:main}
 \include{ch/3-target-labels}
 \include{ch/4-nifr}
 \include{ch/5-zsf}
 
 \cleardoublepage
-\part{End}\label{pt:end}
+\part{Part III}\label{pt:end}
 \include{ch/6-conclusion}
 
 % ********************************************************************

@@ -2,9 +2,9 @@
 \section{Problem statement}
 In order for \ac{ML} systems to be used more widely,
 they have to become more trustworthy.
-The susceptibility of \ac{ANNs} to adversarial attacks has been well documented, but there are other problems as well.
+The susceptibility of \acp{ANN} to adversarial attacks has been well documented, but there are other problems as well.
 This includes their opaqueness and their general tendency to take shortcuts;
-leading to situations where \ac{ANNs} do not do `what we meant', but just what they were explicitly told to do.
+leading to situations where \acp{ANN} do not do `what we meant', but just what they were explicitly told to do.
 
 This problem becomes especially severe when the training data is biased in some way,
 which, by default, makes the \ac{ML} system copy the bias, or even exacerbate it.
@@ -44,24 +44,69 @@ we have to change the optimization target to achieve our stated goal.
 While it is possible to extend notions of fairness beyond classification tasks,
 the vast majority of work in this area concerns classification only and that will be the case here as well.
 
-\section{Claims and contributions}%
-\label{sec:claims-contributions}
-This thesis is based on 3 publications.
-\begin{enumerate}
-  \item x
-\end{enumerate}
 This thesis will discuss two kinds of dataset bias: \emph{label bias} and \emph{sampling bias}.
+In both cases,
+we consider a classification problem in which the class labels $y$ needs to be predicted from input features $\vx$.
 
 In the setup for \emph{label bias},
-we consider a classification problem in which the class labels $y$ needs to be predicted from input features $\vx$.
-Additionally, there is a \emph{sensitive attribute} $s$ associated with each input.
+there is additionally a \emph{sensitive attribute} $s$ associated with each input.
 This sensitive attribute usually encodes membership in a demographic group, such as gender,
 but more generally is a feature that should not be used to make predictions for legal or ethical reasons.
+We will also refer to the set of all samples with a specific sensitive attribute as one \emph{demographic group}.
 In our examples, $s$ and $y$ are binary variables, but this does not have to be the case.
 The label bias now manifests itself in a specific way:
 depending on $s$, labels are either flipped from $y=0$ to $y=1$ or vice versa,
 \ie, there is an error in the labels which is correlated with the sensitive attribute.
 
----
+For \emph{sampling bias},
+there is also a special attribute $s$, but it does not necessarily have to denote a \emph{sensitive} attribute;
+it can more generally be a \emph{spurious} variable which is correlated with the class label $y$ in the training set,
+but is not truly predictive of $y$ in the general case.
+Sampling bias then means that the training set is not uniformly sampled from the underlying distribution,
+instead, sampling depends on $s$ and $y$;
+\eg, there might be almost no samples of $s=0$ and $y=1$ in the training set.
 
-I'm not sure how to mention my papers here. First the papers and then the description?
+\thomas{should there be something about fairness metrics here?}
+
+\thomas{Possible segway:}
+While we could determine how strongly a classifier has been affected by these biases
+by computing their accuracy on an unbiased test set,
+there are more
+
+\section{Claims and contributions}%
+\label{sec:claims-contributions}
+This thesis is based on 3 publications, corresponding to \rangechapref{ch:target-labels}{ch:zsf}.
+The first one is concerned with \emph{label bias} and the other two with \emph{sampling bias}.
+\begin{enumerate}
+  \item Thomas Kehrenberg, Zexun Chen, and Novi Quadrianto (2020). ``Tuning Fairness by Balancing Target Labels.''
+    In: \emph{Frontiers in Artificial Intelligence} 3, p.\ 33.
+    \citep{kehrenberg2020tuning}
+  \item Thomas Kehrenberg, Myles Bartlett, Oliver Thomas, and Novi Quadrianto (2020).
+    ``Null-sampling for Interpretable and Fair Representations.''
+    In: \emph{Computer Vision - ECCV 2020}. Glasgow, UK: Springer International Publishing.
+    \citep{kehrenberg2020nullsampling}
+  \item Thomas Kehrenberg, Viktoriia Sharmanska, Myles Bartlett, and Novi Quadrianto (2021).
+    ``Zero-shot Fairness with Invisible Demographics.''
+    Under review.
+    \citep{kehrenberg2020zeroshot}
+\end{enumerate}
+A shorter version of \citet{kehrenberg2020tuning} was published as a workshop paper:
+\begin{itemize}
+  \item Thomas Kehrenberg, Zexun Chen, and Novi Quadrianto (2018).
+    ``Interpretable Fairness via Target Labels in Gaussian Process Models.''
+    In: \emph{Workshop on Ethical, Social and Governance Issues in AI at NeurIPS}. Montreal, Canada.
+\end{itemize}
+
+The contributions of these publications are as follows.
+All presented approaches rely on some form of side information which helps us overcome the dataset bias.
+This side information is always significantly easier to obtain than unbiased training data.
+
+To tackle the problem of label bias, we introduce the concept of \emph{target labels} $\bar{y}$.
+These represent an uncertain estimate of the true labels.
+The side information needed here is true acceptance rate for each of the demographic groups: $P(\bar{y}=1|s=s')$
+(assuming a binary label $y$).
+Via the sum rule, it is then possible to express the likelihood in terms of these target labels,
+such that maximizing the likelihood corresponds to improving the prediction of the target labels
+instead of the given (biased) training labels.
+
+\thomas{to follow: summary of other papers}

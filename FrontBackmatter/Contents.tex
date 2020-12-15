@@ -49,6 +49,16 @@
   \pdfbookmark[1]{\lstlistlistingname}{lol}
   \lstlistoflistings
 
+  % \vspace{8ex}
+
+  %*******************************************************
+  % Glossary
+  %*******************************************************
+  % \pdfbookmark[1]{Glossary}{glossary}
+  % \markboth{\spacedlowsmallcaps{Glossary}}{\spacedlowsmallcaps{Glossary}}
+  % \chapter*{Glossary}
+  % \printglossaries
+
   \vspace{8ex}
 
   %*******************************************************
@@ -66,7 +76,36 @@
     \acro{EOpp}{Equality of Opportunity}
     \acro{EOdd}{Equalized Odds}
     \acro{ML}{machine learning}
-    \acro{ANNs}{artificial neural networks}
+    \acro{ANN}{artificial neural network}
   \end{acronym}
+
+  \vspace{8ex}
+
+  %*******************************************************
+  % Nomenclature
+  %*******************************************************
+  \pdfbookmark[1]{Nomenclature}{nomenclature}
+  \markboth{\spacedlowsmallcaps{Nomenclature}}{\spacedlowsmallcaps{Nomenclature}}
+  \begin{nomenclature}
+    \entry{$\vx$}{Input features (without sensitive attributes)}
+    \entry{$s$}{Sensitive attribute}
+    \entry{$y$}{Class label (groundtruth)}
+    \entry{$\hat{y}$}{Predicted label}
+    \entry{$\bar{y}$}{Fair target label}
+  \end{nomenclature}
+
+  \vspace{8ex}
+
+  %*******************************************************
+  % Nomenclature
+  %*******************************************************
+  \pdfbookmark[1]{Glossary}{nomenclature}
+  \markboth{\spacedlowsmallcaps{Glossary}}{\spacedlowsmallcaps{Glossary}}
+  \begin{glossaryenv}
+    \entry{sensitive attribute}{Input features (without sensitive attributes)}
+    \entry{demographic group}{Sensitive attribute}
+  \end{glossaryenv}
+
+
 
 \endgroup
