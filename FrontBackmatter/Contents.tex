@@ -69,14 +69,14 @@
   \markboth{\spacedlowsmallcaps{Acronyms}}{\spacedlowsmallcaps{Acronyms}}
   \chapter*{Acronyms}
   \begin{acronym}[UMLX]
-    \acro{DP}{Demographic Parity}
-    \acro{TPR}{True Positive Rate}
-    \acro{TNR}{True Negative Rate}
-    \acro{AR}{Acceptance Rate}
-    \acro{EOpp}{Equality of Opportunity}
-    \acro{EOdd}{Equalized Odds}
-    \acro{ML}{machine learning}
     \acro{ANN}{artificial neural network}
+    \acro{AR}{acceptance rate}
+    \acro{DP}{demographic parity}
+    \acro{EOdd}{equalized odds}
+    \acro{EOpp}{equality of opportunity}
+    \acro{ML}{machine learning}
+    \acro{TNR}{true negative rate}
+    \acro{TPR}{true positive rate}
   \end{acronym}
 
   \vspace{8ex}
@@ -97,13 +97,15 @@
   \vspace{8ex}
 
   %*******************************************************
-  % Nomenclature
+  % Glossary
   %*******************************************************
   \pdfbookmark[1]{Glossary}{nomenclature}
   \markboth{\spacedlowsmallcaps{Glossary}}{\spacedlowsmallcaps{Glossary}}
   \begin{glossaryenv}
     \entry{sensitive attribute}{Input features (without sensitive attributes)}
-    \entry{demographic group}{Sensitive attribute}
+    \entry{demographic group}{Set induced by the sensitive attribute}
+    \entry{fairness definition}{An aspirational specification of a fair classifier}
+    \entry{fairness metric}{A metric which quantifies how well a fairness definition is satisfied}
   \end{glossaryenv}
 
 

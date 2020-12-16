@@ -28,6 +28,8 @@ It's true that even after the application of de-biasing techniques,
 the resulting models still should not be fully trusted,
 but they can still ease the burden of checking everything manually;
 similar to an email spam filter which is not perfect, but still very useful.
+Or, put another way, it is always important to check what the realistic alternative is;
+we should not compare a model to a non-existing perfect ideal, but to the actual thing that would be used instead.
 One could imagine a hybrid approach where an automated system makes preliminary decisions,
 but random samples are reviewed by humans and decisions can always be challenged.
 Ideally, the model itself would tell us about decisions it is uncertain about.
@@ -65,13 +67,22 @@ but is not truly predictive of $y$ in the general case.
 Sampling bias then means that the training set is not uniformly sampled from the underlying distribution,
 instead, sampling depends on $s$ and $y$;
 \eg, there might be almost no samples of $s=0$ and $y=1$ in the training set.
+The effect is that \ac{ML} models are tempted to take shortcuts and use $s$ as a shorthand for $y$.
 
-\thomas{should there be something about fairness metrics here?}
+As the training set is biased in these settings,
+evaluation metrics like accuracy should be computed with respect to an \emph{unbiased} test set.
+However, such a set is often not available or has to be constructed, which leaves open the question how to construct it.
+Furthermore, the overall accuracy often does not capture all that we care about.
+For these and other reasons,
+it is usually necessary to go beyond metrics like accuracy, when evaluating models in these settings.
+Concretely, we use \emph{fairness metrics} which are based on certain definitions of fairness.
+These fairness metrics can be computed for predictions on a \emph{biased} test set
+and still give us an idea of the bias in the model.
+Even with an \emph{unbiased} test set, these metrics are useful,
+because they tell us in what specific way, if any, a model has failed to correct for the training set bias.
 
-\thomas{Possible segway:}
-While we could determine how strongly a classifier has been affected by these biases
-by computing their accuracy on an unbiased test set,
-there are more
+The simplest fairness definition is \ac{DP}, also called statistical parity or independence.
+
 
 \section{Claims and contributions}%
 \label{sec:claims-contributions}
