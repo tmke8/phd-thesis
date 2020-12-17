@@ -69,20 +69,64 @@ instead, sampling depends on $s$ and $y$;
 \eg, there might be almost no samples of $s=0$ and $y=1$ in the training set.
 The effect is that \ac{ML} models are tempted to take shortcuts and use $s$ as a shorthand for $y$.
 
-As the training set is biased in these settings,
-evaluation metrics like accuracy should be computed with respect to an \emph{unbiased} test set.
-However, such a set is often not available or has to be constructed, which leaves open the question how to construct it.
-Furthermore, the overall accuracy often does not capture all that we care about.
-For these and other reasons,
-it is usually necessary to go beyond metrics like accuracy, when evaluating models in these settings.
-Concretely, we use \emph{fairness metrics} which are based on certain definitions of fairness.
-These fairness metrics can be computed for predictions on a \emph{biased} test set
-and still give us an idea of the bias in the model.
-Even with an \emph{unbiased} test set, these metrics are useful,
-because they tell us in what specific way, if any, a model has failed to correct for the training set bias.
+When evaluating models in these setup,
+the problem is often that we do not have access to the underlying true unbiased dataset.
+In this case, we cannot just rely on metrics like accuracy to inform us how well the model is doing:
+the model is not being evaluated on the right dataset, so accuracy is not that informative.
+For these cases where we don't have access to a truly unbiased test set,
+we use \emph{fairness metrics}, which do not rely on access to an unbiased set.
+These fairness metrics, which are based on different fairness definitions,
+are then used alongside metrics like accuracy to evaluate how well a model has corrected for the training set bias.
+Note however, that evaluation on a truly unbiased dataset is still preferred:
+fairness metrics can make assumptions about what is ideal that might not fit the actual use case.
 
-The simplest fairness definition is \ac{DP}, also called statistical parity or independence.
+While fairness metrics are primarily useful when no truly unbiased test sets are provided,
+even when they are provided,
+these metrics can be useful in identifying where models retained some of the bias from the training set.
 
+The fairness definition that most fits the described setup of label bias and sampling bias is \ac{DP},
+also called statistical parity or independence.
+It demands that the predictions $\hat{y}$ be independent of the sensitive attribute.
+So, for binary $s$ and $y$:
+\begin{align}
+  P(\hat{y}=1|s=0) &= P(\hat{y}=1|s=1)~.
+  \label{eq:dp-def}
+\end{align}
+There are multiple \ac{DP} \emph{metrics} which track how close the predictions are to satisfying the equality,
+among them the difference and the ratio of the terms on the two sides of the equation.
+
+When we previously talked about unbiased datasets,
+we did not specify exactly what this meant,
+and that is because this can differ from task to task,
+but one way to define it is as a \emph{balanced dataset} where all combinations of $s$ and $y$ occur at the same rate:
+\begin{align}
+  \label{eq:balanced-dataset}
+  P(y=0,s=0)=P(y=0,s=1)=P(y=1,s=0)=\dots
+\end{align}
+In such a dataset, we have $y \perp s$, and thus,
+perfect predictions ($\hat{y}=y$) on this dataset will satisfy $\hat{y} \perp s$ and hence \ac{DP}.
+We can conclude that perfect accuracy on a balanced test set implies \acl{DP} (the opposite does not hold).
+However, if a model satisfies \ac{DP} on a \emph{biased} dataset,
+then it necessarily cannot be perfectly accurate with respect to that dataset anymore,
+which makes sense because the goal is to be accurate to the \emph{unbiased} dataset.
+This leads to a fairness-accuracy trade-off on biased test sets.
+
+The other two fairness definitions which are commonly used are \ac{EOpp} and \ac{EOdds}.
+These do not require the prediction $\hat{y}$ to be independent of $s$,
+but they do require that the model makes equally high-quality predictions for all values of $s$.
+In particular, for \ac{EOpp}, the \acp{TPR} need to be the same for all demographic groups
+(again for binary $s$ and $y$):
+\begin{align}
+  \label{eq:eopp-def}
+  P(\hat{y}=1|y=1,s=0) = P(\hat{y}=1|y=1,s=1)~.
+\end{align}
+\ac{EOdds} has the same requirement, but also extends it to the \acp{TNR}:
+\begin{align}
+  P(\hat{y}=y'|y=y',s=0) = P(\hat{y}=y'|y=y',s=1)\quad\forall y'~.
+  \label{eq:eodds-def}
+\end{align}
+Just like \ac{DP},
+\ac{EOpp} and \ac{EOdds} can help us evaluate how much a classifier is affected by the bias in the training set.
 
 \section{Claims and contributions}%
 \label{sec:claims-contributions}
@@ -120,4 +164,15 @@ Via the sum rule, it is then possible to express the likelihood in terms of thes
 such that maximizing the likelihood corresponds to improving the prediction of the target labels
 instead of the given (biased) training labels.
 
-\thomas{to follow: summary of other papers}
+The next approach is concerned with sampling bias.
+We consider a very extreme sampling bias from which it is not possible to recover without additional information.
+Concretely, there is a one-to-one mapping between the class label $y$ and a spurious attribute $s$ in the training set,
+such that the model learns the (easier-to-predict) $s$ instead of $y$.
+In order to nudge the model towards learning the right target,
+we make use of a \emph{context set} which is approximately balanced ($y\perp s$),
+but where we only have access to the $s$ labels and \emph{not} the $y$ labels.
+Thus, the context set cannot be used directly for training, but it can be used to learn an \emph{invariant representation}.
+Such a representation captures all information in $\vx$ that is relevant to the task of predicting $y$,
+but is invariant to the spurious attribute.
+I present a particularly suitable method for this based on Invertible Neural Networks,
+which ensures that no information is lost that is unrelated to $s$.
