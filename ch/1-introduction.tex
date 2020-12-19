@@ -176,3 +176,12 @@ Such a representation captures all information in $\vx$ that is relevant to the 
 but is invariant to the spurious attribute.
 I present a particularly suitable method for this based on Invertible Neural Networks,
 which ensures that no information is lost that is unrelated to $s$.
+
+The final approach is in the setting of sampling bias as well,
+but compared to the previous method, we relax some assumptions and get other trade-offs.
+The main motivation is to not require access to $s$ labels in the context set,
+such that in the setting, we have a completely unlabeled context set
+and a training set which is missing certain combinations of $s$ and $y$.
+In this setting, it is possible to learn an invariant representation
+by enforcing the representation for the training set to be indistinguishable from the representation on the context set,
+when conditioning on $y$.
