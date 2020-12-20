@@ -178,10 +178,25 @@ I present a particularly suitable method for this based on Invertible Neural Net
 which ensures that no information is lost that is unrelated to $s$.
 
 The final approach is in the setting of sampling bias as well,
-but compared to the previous method, we relax some assumptions and get other trade-offs.
-The main motivation is to not require access to $s$ labels in the context set,
-such that in the setting, we have a completely unlabeled context set
+but compared to the previous method, some assumptions are relaxed and different trade-offs exist.
+One perhaps strong assumption in the previous method was
+that the context set needs to include labels for $s$.
+Conversely, in this new setting, we have a completely unlabeled context set
 and a training set which is missing certain combinations of $s$ and $y$.
 In this setting, it is possible to learn an invariant representation
 by enforcing the representation for the training set to be indistinguishable from the representation on the context set,
 when conditioning on $y$.
+This enforcement is realized with adversarial networks which compare batches of samples
+in order to compare data drawn from the training set and the context set.
+This process requires balanced batches which is achieved via clustering.
+The end result is an invariant representation which allows training a classifier
+that learns the correct relationship between $x$ and $y$.
+
+\section{Thesis structure}%
+\label{sec:thesis-structure}
+In \chapref{ch:related-work}, I present related work,
+concentrated on the area of algorithmic fairness and dataset bias.
+\Rangechapref{ch:target-labels}{ch:zsf} comprise the main contribution of this thesis.
+Each of these chapters starts with a brief section which positions the chapter in the context of the this document.
+This is followed by the contents of publications.
+In the final chapter, \chapref{ch:conclusion}, I present conclusions from the main work and directions for future work.
