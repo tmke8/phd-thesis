@@ -1,42 +1,86 @@
 \chapter{Related work}\label{ch:related-work}
-\section{Introduction}\label{introduction}
-Fairness in Machine Learning is a topic that has recently received increasing attention.
-Machine Learning has become very widespread in our society
-which brings some dangers with it.
-Decisions such as credit eligibility and hiring are increasingly done automatically.
-However, the algorithms that are used in these decisions can have strong biases
-that stem from the training data.
-Often, the algorithms are even more biased than the training data.
-\citet{kamishima2011fairness} give a great illustration for this
-(adapted from \citet{calders2010three}).
-The illustration is based on the Adult/Census Income dataset \citep{kohavi1996scaling}
-which contains records of individuals with thirteen attributes, among them age and gender.
-The task is to predict whether or not the individual earns more than \$50K per year.
-In the dataset, 32\% of the men have a positive label (\ie, they earn more than \$50K),
-but of the women only 11\% have a positive label.
-With this ratio of about 3:1, the dataset is already skewed.
-However, when training a \href{https://en.wikipedia.org/wiki/Naive_Bayes_classifier}{Naive Bayes classifier} on the data,
-the ratio in the predictions is even more unfair:
-the amount of women who get a positive prediction is even lower than 11\%.
-If the Naive Bayes classifier does not get access to the gender information,
-the predictions will be a bit fairer,
-but they are still more unfair than the original dataset labels.
+%
+% =========================
+%      old introduction
+% =========================
+% \section{Introduction}\label{introduction}
+% Fairness in Machine Learning is a topic that has recently received increasing attention.
+% Machine Learning has become very widespread in our society
+% which brings some dangers with it.
+% Decisions such as credit eligibility and hiring are increasingly done automatically.
+% However, the algorithms that are used in these decisions can have strong biases
+% that stem from the training data.
+% Often, the algorithms are even more biased than the training data.
+% \citet{kamishima2011fairness} give a great illustration for this
+% (adapted from \citet{calders2010three}).
+% The illustration is based on the Adult/Census Income dataset \citep{kohavi1996scaling}
+% which contains records of individuals with thirteen attributes, among them age and gender.
+% The task is to predict whether or not the individual earns more than \$50K per year.
+% In the dataset, 32\% of the men have a positive label (\ie, they earn more than \$50K),
+% but of the women only 11\% have a positive label.
+% With this ratio of about 3:1, the dataset is already skewed.
+% However, when training a \href{https://en.wikipedia.org/wiki/Naive_Bayes_classifier}{Na\"ive Bayes classifier} on the data,
+% the ratio in the predictions is even more unfair:
+% the amount of women who get a positive prediction is even lower than 11\%.
+% If the Na\"ive Bayes classifier does not get access to the gender information,
+% the predictions will be a bit fairer,
+% but they are still more unfair than the original dataset labels.
+%
+% This phenomenon of predictions being more unfair than an already skewed dataset
+% is due to the generalization that classifiers have to make.
+% It is easier to classify all but the most outstanding women as low income
+% than to learn a complicated decision boundary.
+% Furthermore, removing the gender information does not solve the problem
+% because the gender can be inferred from other data.
+%
+% The following is a review of the literature on Fairness in Machine Learning.
+% Several different approaches to and definition of Fairness are presented.
+% The focus is on identifying the major trends in the field from the beginning.
+\subsection{Two views of the dataset bias problem}\label{two-views-of-the-dataset-bias-problem}
+As hinted to in the introduction, there is a divide in the related literature in how the problem is defined.
+On the one hand, there is the ``groundtruth-centric'' view -- expressed through most of the introduction --
+that the training set is biased but the deployment setting is not.
+By \emph{deployment setting} I am here referring to the real distribution
+that will be encountered by the machine learning system once it is used.
 
-This phenomenon of predictions being more unfair than an already skewed dataset
-is due to the generalization that classifiers have to make.
-It is easier to classify all but the most outstanding women as low income
-than to learn a complicated decision boundary.
-Furthermore, removing the gender information does not solve the problem
-because the gender can be inferred from other data.
+This can be seen as a form of transfer learning and notably does not exhibit a fairness-accuracy trade-off.
 
-The following is a review of the literature on Fairness in Machine Learning.
-Several different approaches to and definition of Fairness are presented.
-The focus is on identifying the major trends in the field from the beginning.
+An instance of this setting has been formalized in \citet{blum2020recovering}.
+In their formalization, the training set starts out unbiased,
+but then, for samples with \(s=0\), class labels \(y\) are flipped from 1 to 0 with probability \(\nu\).
+In addition, samples with \(s=0\) and \(y=0\) are dropped with probability \(1-\beta_\mathit{NEG}\)
+and those with \(s=0\) and \(y=1\) are dropped with probability \(1-\beta_\mathit{POS}\).
+
+On the other hand, there is the ``definition-centric'' view that given some training data,
+and not necessarily knowing anything about the deployment setting,
+we define fairness criteria which a fair classifier should satisfy.
+Here, the goal is not necessarily to correct for a bias in the training data,
+but simply to ensure that the classifier is fair in some specific sense.
+By default, a classifier would \emph{not} be fair in that specific way.
+It is left open whether this unfairness originates in the training data or in the algorithm itself.
+
+This setting has a fairness-accuracy trade-off.
+
+The definition-centric view was the one used by the first works in the field.
+The first fairness definition was Demographic Parity. \textbf{citation}
+
+The difference between these views is not completely clear-cut.
+Consider the case where a biased training set is available,
+and an unbiased test set is assumed to exist, but we do not have access to it.
+Then we might at least know that the unbiased test set satisfies demographic parity.
+In this case, testing the classifier for demographic parity is an indication
+for how it would fare on the unbiased test set (which satisfies DP).
+
+Furthermore, there is significant overlap in the solutions employed for the two views:
+a method developed for one of them can often be used for the other as well.
+
+The works discussed in the beginning of this chapter are mostly taking the definition-centric view.
+Towards the end, I discuss more works with the other viewpoint.
 
 \subsection{Precursor}\label{precursor}
 The first published work to address the problem of biases in machine learning
-was arguably the 2008 paper by \citet{pedreshi2008discrimination}
-with the main focus being Data Mining.
+was arguably the work by \citet{pedreshi2008discrimination}
+with the main focus being data mining.
 The first fundamental conclusion of the authors
 is that it is not enough to take out the discriminatory features
 (referred to as \emph{sensitive attributes} in other works) from the data.
@@ -45,24 +89,22 @@ is removed from the data,
 there is usually enough background information to reconstruct that attribute.
 The experiments were done on the ``German credit dataset''
 where the task is to classify people as a good or a bad credit risk.
-As their focus is Data Mining,
-the authors' goal is to identify discriminatory rules.
-They distinguish between direct and indirect discrimination.
-According to their definition, direct discrimination explicitly uses
-discriminatory features in the premise of the rule, while indirect discrimination uses
-features that are closely associated with discriminatory features. The latter case can be
-detected by checking the other rules in the dataset.
+In their context of data mining,
+they distinguish between direct and indirect discrimination:
+the former explicitly uses discriminatory features in the premise of the rule,
+while the latter uses features that are closely associated with discriminatory features.
+% The latter case can be
+% detected by checking the other rules in the dataset.
 
 \section{Modification of labels for Fairness enforcement}\label{modification-of-labels-for-fairness-enforcement}
 Independently of \citet{pedreshi2008discrimination}, but with a similar intention,
 \citet{kamiran2009classifying} considered discrimination in classification.
 As opposed to \citet{pedreshi2008discrimination}, their goal was not to identify discriminatory rules in the dataset,
-but to modify the dataset so that any classifier trained on it does not become biased.
+but to modify the dataset so that any classifier trained on it will be fair.
 The same dataset (German credit dataset) is used in both papers.
 
-First, Kamiran and Calders present the problem formulation
-that was later used in other works on Fairness as well:
-there is a set of attributes, a binary class label
+The authors formulate the problem as it was later done in other works on fairness as well:
+there is a set of features, a binary class label
 and a special \emph{sensitive attribute} which determines the demographic group.
 The sensitive attribute \(s\) is assumed to be binary in the derivation,
 but does not have to be.
@@ -79,11 +121,11 @@ After the general setup, the authors define a concrete measure of discrimination
 (The paper uses a different notation.
 The notation here reflects the notation in later papers.)
 
-This measure of fairness is today called \emph{Demographic Parity}.
+This fairness metric corresponds to what is commonly referred to as \emph{demographic parity}.
 It is zero when the individuals in both groups have the same chance to get a positive prediction.
 
 Their algorithm for de-biasing the dataset works as follows:
-first, a well-calibrated classifier (Naive Bayes in the paper) is trained on the data
+first, a well-calibrated classifier (Na\"ive Bayes in the paper) is trained on the data
 \emph{without} the sensitive attribute.
 This classifier gives a ranking for how likely a positive label is for a given individual.
 The highest ranked individuals that have label \(y=0\)
@@ -96,10 +138,10 @@ the main goal being a prevention of a big drop in accuracy of the final classifi
 with respect to the original dataset.
 
 The paper concludes with results on the German credit data,
-using Naive Bayes for ranking and also for the final classifier.
+using Na\"ive Bayes for ranking and also for the final classifier.
 Using \emph{Age} as the sensitive attribute,
 the dataset itself shows a \(Disc\) of about 15\% (depending on the train-test split).
-As a baseline, a Naive Bayes classifier was trained with the sensitive attribute
+As a baseline, a Na\"ive Bayes classifier was trained with the sensitive attribute
 resulting in \(Disc = 25\%\).
 Without the sensitive attribute it leads to \(Disc = 10\%\).
 The scheme that the authors propose reaches \(Disc = 5\%\).
@@ -107,9 +149,9 @@ The exact numbers depend on the split and the choice of sensitive attribute.
 Generally, higher discrimination in the dataset itself
 leads to bigger differences in discrimination between the fair classifier and the baseline.
 
-This work was extended by \citet{calders2009building}.
-They use the same discrimination criterion as before,
-but call it \emph{dependency} between \(s\) and \(y\).
+This work was extended in \citet{calders2009building},
+where the same discrimination criterion is used as before,
+but called \emph{dependency} between \(s\) and \(y\).
 They again present the same dataset changing technique
 and a different technique based on giving training examples different weights
 instead of re-labeling them.
@@ -120,7 +162,7 @@ those with higher weight are used more often.
 The two approaches are compared on the Adult/Census Income dataset \citep{kohavi1996scaling}
 where the task is to estimate if someone earns more than \$50K per year.
 The sensitive attribute is \emph{sex}.
-In addition to Naive Bayes,
+In addition to Na\"ive Bayes,
 two classifiers based on nearest neighbors and a decision tree classifier are used.
 The comparison shows that changing the labels leads to lower dependency (discrimination)
 than reweighting the examples.
@@ -128,21 +170,20 @@ However, reweighting the examples leads to lower dependency than the baseline.
 The difference in accuracy is minor.
 
 \section{Fair classifiers}\label{fair-classifiers}
-While the two previous papers were based on manipulating the dataset,
-Calders and Verwer proposed three completely different approaches
-to make classifiers fair in 2010 \citep{calders2010three}.
-They all center around putting \emph{constraints} on the classifier make fair predictions.
-This potentially gives more control over the prediction bias than manipulating datasets.
-All three approaches are based on Naive Bayes
-and again aim to enforce Demographic Parity as defined before.
+Another common approach is to put fairness \emph{constraints} on the classifier
+instead of manipulating the dataset.
+\citet{calders2010three} proposes three such approaches,
+which potentially give more control over the prediction bias than changing the datasets.
+All three approaches are based on Na\"ive Bayes
+and again aim to enforce Demographic Parity in the predictions as defined before.
 The first approach shifts the predicted probabilities in a post-processing step
 after training the classifier normally.
 To this end, the sensitive attribute is treated differently
-than the other features in the Naive Bayes model.
+than the other features in the Na\"ive Bayes model.
 Instead of the class being the cause of the sensitive attribute,
 the sensitive attribute is regarded as one cause for the class.
 This is a significant change in perspective that enables a better intuition about the problem.
-In this modified Naive Bayes,
+In this modified Na\"ive Bayes,
 the conditional probability \(P(y|s)\) is then modified in the already trained model
 until the discrimination score is below a given threshold.
 Care is taken to not distort the predicted distribution too much with respect to the unfair model.
@@ -152,7 +193,7 @@ This is unworkable if the sensitive attributes are not always available when mak
 Nevertheless, the algorithm can be considered an improvement over manipulating the dataset,
 as the resulting bias can be controlled to a much finer degree.
 
-The second method that Calders and Verwer present in their 2010 paper
+The second method in \citet{calders2010three}
 is based on training two separate models for each sensitive attributes.
 That is, the dataset is split in two
 where one half contains all examples with \(s=0\), we call this dataset \(D_0\),
@@ -164,8 +205,8 @@ like the previous method.
 The two models are separately tweaked to produce overall fair results.
 In order to minimize the effect on the accuracy, the models are tweaked the same amount each,
 but in opposite directions.
-Conceptually, having two different Naive Bayes model depending on the sensitive attribute
-is equivalent to using one Naive Bayes model
+Conceptually, having two different Na\"ive Bayes model depending on the (binary) sensitive attribute
+is equivalent to using one Na\"ive Bayes model
 in which the sensitive attribute is connected to all other features.
 This means that the bias is in all of the features and not just in the class label.
 The latter was the assumption of the previously discussed model.
@@ -247,11 +288,10 @@ This strategy leaves most of the work to the optimization that would need to be 
 A factor in front of the regularization term determines how much to value fairness over accuracy.
 
 In a comparison between \citet{kamishima2011fairness}'s algorithm
-and the Naive Bayes method with two different models for the sensitive attributes
-from \citet{calders2010three},
-the Calders algorithm performed better on the Adult/Census Income dataset
+and the Na\"ive Bayes method with two different models for the sensitive attributes from \citet{calders2010three},
+the latter performed better on the Adult/Census Income dataset
 (higher accuracy and lower discrimination score).
-However, the Kamishima algorithm has the advantage
+However, the former has the advantage
 that the sensitive attribute does not necessarily have to be known for making predictions
 and the trade-off between accuracy and fairness can be easily controlled
 with the factor for the regularization term.
@@ -317,8 +357,8 @@ The authors propose two practical similarity measures for distributions
 that are well-known in the respective literature.
 In order to train a fair classifier,
 the Lipschitz condition is then used as a constraint for the optimization.
-This is similar to how Kamishima et al.~used the fairness criterion as a regularizer.
-However, Dwork et al.~intend to realize it as a strict constraint.
+This is similar to how \citet{kamishima2011fairness} used the fairness criterion as a regularizer.
+However, \citet{dwork2012fairness} intend to realize it as a strict constraint.
 Furthermore, they show that their criterion is compatible with Demographic Parity
 but does not guarantee it in general.
 When the two demographic groups are similar according to the individual similarity measure,
@@ -327,8 +367,7 @@ If the demographic groups are very different,
 then the Lipschitz criterion is essentially incompatible with Demographic Parity.
 
 As an alternative framework,
-the authors also discuss a relaxation of the Lipschitz condition
-with an added constraint for Demographic Parity.
+the authors also discuss a relaxation of the Lipschitz condition with an added constraint for Demographic Parity.
 This is intended for cases in which the groups are very different
 but we nevertheless want to enforce Demographic Parity, i.e.~affirmative action.
 In this case, the (relaxed) Lipschitz condition ensures
@@ -336,7 +375,7 @@ that there is still some individual fairness despite the affirmative action.
 However, the paper does not provide an implementation or experiments for the idea,
 so it is difficult to know if the Lipschitz condition is practical.
 
-Finally, Dwork et al.~discuss the problem of removing sensitive information
+Finally, \citet{dwork2012fairness} discuss the problem of removing sensitive information
 from data that someone wants to sell.
 The hope would be that the sold data has no information in it
 that would allow a malicious actor to discriminate.
@@ -346,24 +385,24 @@ They speculate that the Lipschitz condition would work better,
 but ultimately do not provide a real solution to the problem.
 
 \section{Fair representation}\label{fair-representation}
-\citet{zemel2013learning} pick up on this idea of creating a \emph{fair representation}.
-That is, the features of the data points are transformed such that they contain no bias anymore,
+\citet{zemel2013learning} expand on the idea of creating a \emph{fair representation}.
+That is, the features of the data points are transformed such that all bias is removed
 but still carry the information necessary for predicting the class label.
-This is different from \citet{kamiran2009classifying} who also manipulated the dataset,
-but only changed the \emph{labels}.
+This is different from \citet{kamiran2009classifying} where the dataset was manipulated as well,
+but the change was restricted to the \emph{labels}.
 In this work, the \emph{inputs} are transformed.
-This is the first of many papers with such a goal.
+This is the first of many works with such a goal.
 More specifically, the stated goal of \citet{zemel2013learning} is
 to achieve both \emph{group fairness} (in the sense of Demographic Parity)
 and \emph{individual fairness} (in the sense of treating similar people similarly),
-as Dwork et al.~did before.
+as \citet{dwork2012fairness} did before.
 The learned fair representation is denoted by \(z\).
 The condition for fairness is then
 \begin{align}
   \label{eq:fair-representation}
   P(s=0|z=z') = P(s=1|z=z') ~.
 \end{align}
-Zemel et al.~propose to map the biased inputs \(x\) to \emph{prototypes} in the same space as \(x\).
+\citet{zemel2013learning} propose to map the biased inputs \(x\) to \emph{prototypes} in the same space as \(x\).
 The probability for being assigned to a particular prototype
 must be the same for inputs with \(s=0\) and for \(s=1\).
 Based on a given distance function (or similarity measure),
@@ -382,12 +421,12 @@ The experiments are done on the German credit dataset, the Adult / Census Income
 and a dataset based on the Heritage Health Prize milestone 1 challenge
 where the goal is to predict how many days a given person will spend in the hospital in a year.
 The proposed methods performs better in these experiments
-than the methods from Kamiran and Calders (2009) and the method from Kamishima.
-However, they do not compare against Calders and Verwer (2010),
+than the methods from \citet{kamiran2009classifying} and the method from \citet{kamishima2011fairness}.
+However, they do not compare against \citet{calders2010three},
 presumably because those methods rely on the sensitive attribute for making predictions,
 which can be considered an unfair advantage.
 
-A major flaw in Zemel et al.'s fair representation learning is
+A major flaw in \citet{zemel2013learning}'s fair representation learning is
 that the representation only enforces fairness
 with respect to the one classifier that it was trained with.
 This is shown in the paper when they try to predict \(s\) from \(z\) with a newly trained classifier
@@ -423,7 +462,7 @@ For measuring the fairness of the (non-sensitive) input features
 The features \(x\) are \(\varepsilon\)-fair,
 if any predictor that tries to predict \(s\) from \(x\) can only achieve a balanced error rate
 that is higher than \(\varepsilon\).
-Feldman et al.~prove that that \(\varepsilon\)-fairness with a suitable \(\varepsilon\)
+\citet{feldman2015certifying} prove that that \(\varepsilon\)-fairness with a suitable \(\varepsilon\)
 is incompatible with violating the 80\% rule.
 That is, if the sensitive attribute cannot be predicted from the features,
 then a classifier trained on that data will automatically be fair (to a certain degree).
@@ -432,7 +471,7 @@ the required \(\varepsilon\) approaches 1/2
 which corresponds to absolutely no information in \(x\) about \(s\).
 Note that the definitions require that the performance of the best possible classifiers is known,
 which is rarely the case.
-In the paper, an SVM classifier is used to measure the \(\varepsilon\) for \(\varepsilon\)-fairness.
+In the paper, an \ac{SVM} classifier is used to measure the \(\varepsilon\) for \(\varepsilon\)-fairness.
 
 In order to create a fair dataset,
 the authors present an algorithm that considers every feature individually
@@ -461,15 +500,15 @@ The sensitive attribute is \emph{race}.
 The experimental results support the theoretical predictions to a reasonable extent.
 To compare the method with previous work,
 several classifiers are trained on the fair representation:
-logistic regression, SVM and Naive Bayes.
-Of these, the Naive Bayes classifier seems to outperform the algorithms from previous works
+logistic regression, SVM and Na\"ive Bayes.
+Of these, the Na\"ive Bayes classifier seems to outperform the algorithms from previous works
 \citep{kamiran2009classifying,kamishima2011fairness,zemel2013learning}
 in both achieved fairness and accuracy.
 
 This work by \citet{feldman2015certifying} is a major improvement over the work by \citet{zemel2013learning}
 because the representation (ideally) is fair with regards to any machine learning algorithm, not just one particular.
 Furthermore, theoretical bounds were proved for the expected bias of a classifier.
-However, Feldman et al.~do not take into account individual fairness in any way.
+However, the work does not take into account individual fairness in any way.
 
 While the algorithms by \citet{feldman2015certifying} are manually constructed and explicit,
 \citet{louizos2015variational} use an approach
@@ -483,7 +522,7 @@ By choosing a factorized prior \(P(s)P(z)\), a separation between \(s\) and \(z\
 
 This method can be improved further by taking into account the labels
 when constructing the fair representation.
-If this is not done, \(z\) loses the ranking information from \(x\) (see Feldman et al.~above).
+If this is not done, \(z\) loses the ranking information from \(x\) (see \citet{feldman2015certifying} above).
 To this end, a second latent variable is introduced, \(\tilde{z}\),
 which encodes the variation in \(z\) that is not explained by the class labels \(y\).
 \(z\) is then determined by \(y\) and \(\tilde{z}\),
@@ -501,19 +540,19 @@ The experiments were done on the Adult/Census Income dataset,
 the German Credit dataset and the Heritage Health dataset.
 To test whether \(s\) can be recovered from \(z\),
 a Random Forest model and a Logistic Regression model were trained to predict \(s\) from \(z\).
-This is compared to Zemel et al. (2013).
-The proposed model can outperform Zemel et al.~on some tasks, but many results seem inconclusive.
+This is compared to \citet{zemel2013learning}.
+The proposed model can outperform \citet{zemel2013learning} on some tasks, but many results seem inconclusive.
 Using MMD for an additional unfairness penalty, seems to improve fairness.
 When training a classifier on \(z\) to predict \(y\), there is a small drop in accuracy.
 In general, it is not clear whether this method gives better performance than Feldman et
 al.~However, the algorithm by Louizos seems more general and more widely applicable
 as it simply re-uses a widely used technique, variational autoencoders.
 
-\section{Improved definitions of Fairness}%
+\section{Other fairness criteria}%
 \label{improved-definitions-of-fairness}
-The early literature on Fairness in Machine Learning used only Demographic Parity
-and similarity-based fairness as fairness definitions.
-\citet{kleinberg2016inherent} on the other hand, formalized three fairness conditions.
+The early literature on fairness in machine learning used only \ac{DP}
+and similarity-based fairness to judge the fairness of a classifier.
+\citet{kleinberg2016inherent} formalized three different fairness conditions.
 The authors consider a scenario where the data points \(x\) are sorted into bins \(b\)
 and each bin is associated with a prediction score \(f = P(\hat{y}=1|b)\)
 where \(\hat{y}\) is the predicted class label and \(x\) the (non-sensitive) features.
@@ -543,88 +582,254 @@ In other words, members of the different groups have the same chance
 to get a correct classification if they should receive a negative classification.
 The same holds for criterion 3 and positive classifications (\(y=1\)).
 
-The next question is whether we can achieve all of these criteria simultaneously. The
-authors show that a perfect predictor, that gives a score of \(P(\hat{y}=1|x) = 1\) to data
-points with \(y=1\) and \(P(\hat{y}=0|x) = 1\) to those with \(y=0\), automatically fulfills all
-three criteria. As we saw before, this is not true of Demographic Parity. Furthermore, the
-authors show that if the dataset is fair in the sense that it satisfies \(P(y=1|s=0) = 
-P(y=1|s=1)\), \ie, the base acceptance rate is the same for both classes, then a ``random''
-classifier which assigns that base rate as the prediction score to all data points
-indiscriminately also fulfills all three criteria. For this case, even Demographic Parity
-is fulfilled. The paper contains a proof that those two cases are the only ones that
-achieve the three presented guarantees simultaneously. Demographic Parity can only be
-achieved simultaneously with these in the second scenario. The general case sits between
-those extremes: the predictor is not perfect and the dataset is not fair, and therefore,
-these definitions of fairness are not compatible. Note, however, that criterion 2 and 3
-\emph{are} compatible with one another.
+The next question is whether we can achieve all of these criteria simultaneously.
+The authors show that a perfect predictor,
+which gives a score of \(P(\hat{y}=1|x) = 1\) to data points with \(y=1\)
+and \(P(\hat{y}=0|x) = 1\) to those with \(y=0\),
+automatically fulfills all three criteria.
+As we saw before, this is not true of Demographic Parity.
+Furthermore, the authors show that if the dataset is fair in the sense that it satisfies \(P(y=1|s=0) = P(y=1|s=1)\),
+\ie, the base acceptance rate is the same for both classes,
+then a ``random'' classifier which assigns that base rate as the prediction score to all data points indiscriminately
+also fulfills all three criteria.
+For this case, even Demographic Parity is fulfilled.
+The paper provides a proof
+that those two cases are the only ones that achieve the three presented guarantees simultaneously.
+Demographic Parity can only be achieved simultaneously with these in the second scenario.
+The general case sits between those extremes:
+the predictor is not perfect and the dataset is not fair,
+and therefore, these definitions of fairness are not compatible.
+Note, however, that criterion 2 and 3 \emph{are} compatible with one another.
 
-The paper's main contribution is a theorem showing that the three criteria are in general
-incompatible even if we only consider approximations of them. The conclusion to draw is
-that it is remains a difficult choice to choose the appropriate definition of fairness.
+The paper's main contribution is a theorem showing that the three criteria are in general incompatible,
+even if we only consider approximations of them.
+The conclusion to draw is
+that it is remains difficult to choose the appropriate definition of fairness to judge a classifier.
 
-\citet{hardt2016equality} expand on criterion 3 by Kleinberg et al.~and develop a
-method to enforce it via post-processing. Furthermore, an alternative criterion is
-introduced that is the combination of criterion 2 and 3. This is also the work that gave
-criterion 3 the name \emph{Equality of Opportunity} and that popularized the name \emph{Demographic
-Parity}. The treatment of fairness by the authors is explicitly ``oblivious'', which here
-means that only the general statistics are known about the features \(x\), the sensitive
-attributes and the class labels \(y\). In particular, there is not enough information
-available to develop a similarity measure which could be used to target \emph{individual
-fairness}.
+\citet{hardt2016equality} expand on criterion 3 in \citet{kleinberg2016inherent}
+and develop a method to enforce it via post-processing.
+Furthermore, an alternative criterion is introduced that is the combination of criterion 2 and 3.
+This is also the work that gave criterion 3 the name \emph{Equality of Opportunity}
+and that popularized the name \emph{Demographic Parity}.
+The treatment of fairness by the authors is explicitly ``oblivious'',
+which here means that only the general statistics are known
+about the features \(x\), the sensitive attributes and the class labels \(y\).
+In particular, there is not enough information available to develop a similarity measure
+which could be used to target \emph{individual fairness}.
 
-\citet{hardt2016equality} define the criteria via statistical independence: \emph{Equalized Odds} refers to
-the case where \(\hat{y}\) and \(s\) are independent conditional on \(y\). This is equivalent to
-the true positive rate and the false positive rate being the same for all groups.
-\emph{Equality of Opportunity} is, as mentioned above, the case where just the true positive
-rate is the same for all groups. This means that \(\hat{y}\) and \(s\) are independent
-conditional on \(y=1\). One main advantage that these definitions have over Demographic
-Parity is that a perfect predictor fulfills them. Demographic Parity is at odds with
-achieving perfect accuracy. Furthermore, for Demographic Parity a classifier might be
-forced to give a positive prediction to a lot of individuals where it is really not
-appropriate.
+\citet{hardt2016equality} define the criteria via statistical independence:
+\emph{Equalized Odds} refers to the case where \(\hat{y}\) and \(s\) are independent conditional on \(y\).
+This is equivalent to the true positive rate and the false positive rate being the same for all groups.
+\emph{Equality of Opportunity} is, as mentioned above,
+the case where just the true positive rate is the same for all groups.
+This means that \(\hat{y}\) and \(s\) are independent conditional on \(y=1\).
+One main advantage that these definitions have over Demographic Parity is that a perfect predictor fulfills them.
+Demographic Parity is at odds with achieving perfect accuracy.
+Furthermore, for Demographic Parity a classifier might be forced to give a positive prediction to a lot of individuals
+where it is really not appropriate.
 
-In order to construct a fair classifier out of a \emph{binary predictor} (giving only binary
-predictions) via post-processing, the output is randomized in such a way as to remove the
-bias. If the overall probability for a positive predictions of the unfair classifier is
-given by \(P(\hat{y}=1|s)\), then the randomized probability for the fair positive
-predictions \(\tilde{y} = 1\) is given by:
+In order to construct a fair classifier out of a \emph{binary predictor}
+(giving only binary predictions) via post-processing,
+the output is randomized in such a way as to remove the bias.
+If the overall probability for a positive predictions of the unfair classifier is given by \(P(\hat{y}=1|s)\),
+then the randomized probability for the fair positive predictions \(\tilde{y} = 1\) is given by:
 \begin{align}
   \label{eq:hardt}
   P(\tilde{y}=1| x, s) = \sum\limits_{y' \in \{0, 1\}} P(\tilde{y} = 1| \hat{y}=y', s) 
   P(\hat{y}=y'| x, s)
 \end{align}
-There are 4 free parameters \(P(\tilde{y} = 1| \hat{y}=y', s=s')\) with \(y' \in \{0, 1\}\)
-and \(s' \in \{0, 1\}\). As an example, if the unfair predictor predicts \(\hat{y} =0\) for an
-input with \(s=0\), then the fair predictor predicts \(\tilde{y} =1\) with probability
-\(P(\tilde{y} = 1| \hat{y}=0, s=0)\) which might be non-zero. In addition to the fairness
-condition, we also want to enforce accuracy. To that end, we introduce a loss function
-\(\ell (\tilde{y}, y)\) that quantifies the cost of predicting the wrong class label. The
-final optimization problem for the 4 free parameters is then to minimize \(\ell\) under the
-constraint of Equality of Opportunity or Equalized Odds and the constraint that the
-parameters must be valid probabilities.
+There are 4 free parameters \(P(\tilde{y} = 1| \hat{y}=y', s=s')\) with \(y' \in \{0, 1\}\) and \(s' \in \{0, 1\}\).
+As an example, if the unfair predictor predicts \(\hat{y} =0\) for an input with \(s=0\),
+then the fair predictor predicts \(\tilde{y} =1\) with probability \(P(\tilde{y} = 1| \hat{y}=0, s=0)\)
+which might be non-zero.
+In addition to the fairness condition, we also want to enforce accuracy.
+To that end, we introduce a loss function \(\ell (\tilde{y}, y)\)
+that quantifies the cost of predicting the wrong class label.
+The final optimization problem for the 4 free parameters is then to minimize \(\ell\)
+under the constraint of Equality of Opportunity or Equalized Odds
+and the constraint that the parameters must be valid probabilities.
 
-For a predictor that outputs a \emph{score function}, the post-processing step consists of
-choosing differing thresholds for \(s=0\) and \(s=1\), such that the predictions become fair.
+For a predictor that outputs a \emph{score function},
+the post-processing step consists of choosing differing thresholds for \(s=0\) and \(s=1\),
+such that the predictions become fair.
 If \(f\) is the score, then for a given threshold \(t\) we predict \(\hat{y} = 1\) if \(f > t\).
-The two thresholds (one for each group) are found by minimizing \(\ell\) with the fairness
-constraints, as before. To satisfy the constraint, it might be necessary to randomize the
-result. This is done by using two constraints per group: if \(f\) is above both, the result
-is \(\hat{y} = 1\), if it is below both, \(\hat{y} =0\) and if \(f\) is between the thresholds,
-then the result is chosen at random. This method -- as well as the one before -- requires
-the sensitive attribute for all predictions as it has to choose the right threshold.
+The two thresholds (one for each group) are found by minimizing \(\ell\) with the fairness constraints, as before.
+To satisfy the constraint, it might be necessary to randomize the result.
+This is done by using two constraints per group:
+if \(f\) is above both, the result is \(\hat{y} = 1\), if it is below both, \(\hat{y} =0\)
+and if \(f\) is between the thresholds, then the result is chosen at random.
+This method -- as well as the one before --
+requires the sensitive attribute for all predictions as it has to choose the right threshold.
 
-The authors prove that with this post-processing, the Bayes optimal (but unfair)
-classifier becomes the Bayes optimal fair classifier. Additionally, they investigate the
-limitations of the ``oblivious'' approach where the only available information about the
-data is the joint distribution over \((y, s, \hat{y})\). With just this information, it is
-impossible to uncover the underlying dependency structure that produced the bias. The
-authors present two very different scenarios that are indistinguishable with just the
-joint distribution. Demographic Parity is also affected by this as it only uses the
-information from the distribution over \((s, \hat{y})\). Another shortcoming of Equality of
-Opportunity and Equalized Odds is that they carry the assumption that the labels are
-correct. Demographic Parity does not rely on this assumption so much. All-in-all, the
-fairness definition still has to be chosen by the user based on the situation and the
-goals.
+The authors prove that with this post-processing,
+the Bayes optimal (but unfair) classifier becomes the Bayes optimal fair classifier.
+Additionally, they investigate the limitations of the ``oblivious'' approach
+where the only available information about the data is the joint distribution over \((y, s, \hat{y})\).
+With just this information, it is impossible to uncover the underlying dependency structure that produced the bias.
+The authors present two very different scenarios that are indistinguishable with just the joint distribution.
+Demographic Parity is also affected by this as it only uses the information from the distribution over \((s, \hat{y})\).
+Another shortcoming of Equality of Opportunity and Equalized Odds is
+that they carry the assumption that the labels are correct.
+Demographic Parity does not rely on this assumption so much.
+All-in-all, the fairness definition still has to be chosen by the user based on the situation and the goals.
+
+\section{Refinement of previous ideas}%
+\label{sec:refinement-on-previous-ideas-for-fair-classification-and-fair-representations}
+Following the initial publications,
+several works refined the ideas that had been presented there.
+In a very influential work by \citet{zafar2017fairnessconstraints}
+present a more efficient way to train a fair classifier.
+At the beginning, the authors explicitly discuss the tension
+between the two goals of making fair predictions and not making use of the sensitive attributes.
+Using sensitive attributes to make predictions
+is referred to as \emph{Disparate Treatment} by the authors.
+Algorithms like the one by \citet{calders2009building} use the sensitive
+attribute during prediction to achieve a very high degree of fairness, but this can have a
+lot of problems from a legal perspective and can also easily go wrong.
+Thus, \citet{zafar2017fairnessconstraints} set themselves the goal of achieving fairness while making use of the sensitive attributes
+as little as possible, i.e.~avoiding Disparate Treatment.
+
+In order to train a fair classifier, \citet{zafar2017fairnessconstraints} use a proxy of the definition of
+Demographic Parity that is easier to optimize during training, namely the covariance
+between the sensitive attribute and the predicted score \(f\):
+\begin{align}
+  \label{eq:zafar-constraint}
+  Cov(s, f) = \mathbb{E}[(s - \bar{s})f] - \mathbb{E}[(s - \bar{s})]\bar{f} \approx 
+  \frac{1}{N} \sum\limits_{i=1}^{N} (s_i - \bar{s}) \cdot f_i
+\end{align}
+We will call this the covariance criterion.
+The classifier can then be trained in two ways.
+The first way is to minimize the loss that enforces accuracy
+with the constraint that the covariance criterion is below a certain threshold.
+The other way is to minimize the covariance criterion
+with the constraint that the accuracy is above a certain threshold.
+The paper includes experiments with these techniques with SVM and Logistic Regression classifiers
+on the Adult/Census Income dataset and the Bank marketing dataset.
+In the Bank marketing dataset, the task is to predict whether a client will respond to marketing for a term deposit,
+based on 20 attributes of the person.
+The sensitive attribute is \emph{age}.
+The proposed algorithm performs similarly to the best previous algorithms (similar in fairness and accuracy),
+notably without making use of the sensitive attribute for predictions.
+% This is an impressive achievement.
+
+In a follow up work, \citet{zafar2017fairnesstreatment} adapt their work to enforce Equalized Odds,
+as defined in \citet{hardt2016equality}.
+(However, it is here referred to as ``Disparate Mistreatment'' instead of Equalized Odds.)
+As in the previous work, they define a tractable proxy for this measure.
+To this end, they first define a function \(g\) that measures
+how well the class label \(y \in \{0, 1\}\) and the predicted score for a data point \(0 \leq f(x) \leq 1\) agree:
+\begin{align}
+  \label{eq:zafar-constraint-2}
+  g(y, x) = \min \left(0, \left(y - \tfrac{1}{2}\right) \cdot \left(f(x) - \tfrac{1}{2}\right)\right)
+\end{align}
+Subtracting \(\tfrac{1}{2}\) is necessary to center the values around \(0\).
+The proxy for Equalized Odds is then the covariance between the sensitive attribute and \(g\).
+\(g\) can also be modified to only take into account cases with \(y=1\) which corresponds to Equality of Opportunity.
+The paper contains experiments on the ProPublica/COMPAS dataset.
+The task for this dataset is to predict
+whether a criminal offender committed another misconduct or felony within two years,
+based on personal information that includes age, gender, race and past criminal history.
+The authors compare the proposed method to an implementation of the algorithm from \citet{hardt2016equality}.
+In the Equality of Opportunity task, the approach by \citet{hardt2016equality} performs better
+(lower discrimination, similar accuracy).
+The better performance is likely at least partially explained
+by \citet{hardt2016equality} using the sensitive attribute for predictions.
+% The evaluation metric is
+% the difference in FPR (false positive rate) and the difference in FNR (false negative rate) between the two groups.
+% Hardt et al.~achieve an FPR difference of 0.02 at 66\% accuracy while Zafar et al.~achieve an FPR difference of
+% 0.06 at the same 66\% accuracy.
+For Equalized Odds,
+the proposed approach achieves higher accuracy but also higher discrimination than in \citet{hardt2016equality}.
+One limiting factor that the authors identify is the size of the dataset:
+the degree of discrimination cannot be accurately estimated by the algorithm if the dataset is small.
+
+\citet{woodworth2017learning} also consider Equalized Odds as a fairness
+definition but give strong criticism of the post-processing approach of Hardt et al.~They
+present examples where finding the optimal (but discriminatory) predictor in a particular
+hypothesis class and then correcting it post hoc performs poorly. The proofs are based on
+the PAC learning framework. Certain training distributions allow the training of good fair
+classifiers from scratch but when doing post-processing on a Bayes-optimal predictor for
+this distribution, the result can be a very bad predictor that gives essentially random
+predictions. The authors explicitly construct one such distribution: it corresponds to the
+case where the sensitive attribute \(s\) is more predictive of the class label \(y\) than the
+features \(x\). This is arguably an unusual case.
+
+The proposed method is then as follows. First, a classifier is trained that minimizes a
+loss function with Equalized Odds as a constraint. The constraint specifies that the
+absolute differences in true positive rate and false positive rate between the two groups
+are below a certain threshold \(\alpha\). In a second step, post-processing similar to Hardt
+et al.~is performed with a holdout training set. This ensures that the predictor does not
+have the same weaknesses as the proposal by Hardt et al.~in the given example situations.
+However, this more thorough approach is computationally unfeasible.
+For a feasible approximation,
+\citet{woodworth2017learning} refer to the idea by \citet{zafar2017fairnesstreatment}
+of using the covariance as a proxy for statistical
+dependency. They refer to this criterion as \emph{Equalized Correlations}. Based on this, they
+investigate linear predictors and find that for these, post-processing can achieve
+Equalized Correlations as well as training a fair predictor from scratch. Therefore, their
+criticism is only valid for non-linear predictors or linear predictors that try to enforce
+the actual Equalized Odds. There are no experiments in the paper.
+
+Another approach that aims to define a better proxy for the fairness criteria is \citet{quadrianto2017recycling}.
+In that paper, \emph{distribution matching} is used to evaluate fairness.
+More specifically, like \citet{louizos2015variational}, Maximum Mean Discrepancy (MMD) is used to check if the
+distributions \(P(\hat{y}|s=0)\) and \(P(\hat{y}|s=1)\) are close, to ensure Demographic
+Parity. This can also be done for Equality of Opportunity and Equalized Odds with the
+appropriate distributions.
+\citet{quadrianto2017recycling} show that the approach by \citet{zafar2017fairnessconstraints} is a special case of this.
+Furthermore, in contrast to Zafar et al.'s approach the
+sensitive attribute is explicitly made available to the classifier during training, but
+not during decision time (after training is finished). This is done via \emph{privileged
+learning}. Privileged learning is a variant of SVMs where certain features are only
+available during training but not during decision time. This is usually used in the
+context where some features are costly or impractical to gather. An example is using (only
+during training) thermal images in addition to normal images for face recognition. The
+additional information is intended to enable the classifier to learn the desired task
+quicker or better.
+
+Combining privileged learning and the MMD fairness criterion, the task becomes a
+multi-objective optimization for an SVM. The MMD criterion is generally non-convex but
+there are several ways to deal with this. Quadrianto and Sharmanska find the best
+algorithm (low discrimination, high accuracy) with an evolutionary multi-objective
+optimization. The evolutionary algorithm produces a number of variants of the classifier
+with different trade-offs between classification error and discrimination. As Zafar et al.
+before, the Adult/Census Income dataset is used to test Demographic Parity and the
+ProPublica/COMPAS dataset is used for Equality of Opportunity and Equalized Odds. Zafar et
+al.'s work was used as a baseline but the implementation failed on the Adult/Census Income
+dataset. On the ProPublica/COMPAS dataset, the proposed algorithm performed within error
+just as well as Zafar et al.'s algorithm.
+
+With the recent emergence of adversarial neural networks, interest was renewed in creating
+fair representations. \citet{madras2018learning} present one such recent
+approach.
+Madras et al.  convert the statistical criteria Demographic Parity, Equality of Opportunity and Equalized
+Odds to adversarial objective functions. The general idea is that the ``adversary'' tries
+to gain discriminatory information from the fair representation. More specifically, there
+are 4 neural networks: the encoder \(f(x, s)\) that encodes the unfair representation \(x\)
+into a fair representation \(z\), the classifier \(g(z)\) that tries to predict \(y\) from \(z\),
+the decoder \(k(z, s)\) that tries to decode \(z\) back into \(x\) while knowing about the
+sensitive attribute \(s\) and finally the adversary \(h(z)\) that tries to predict \(s\) from
+\(z\). The classifier ensures that \(z\) contains enough information to predict \(y\). The
+decoder ensures that the fair representation contains enough information from \(x\) and can
+be used by other classifiers as well.
+
+The key contribution by Madras et al.~is the objective functions for the adversary. In the
+case of Demographic Parity, we take -- for each sensitive group separately -- the average
+absolute difference between what the adversary predicted \(h(z)\) and the true sensitive
+attribute \(s\). After computing these two separate averages, the averages are added and get
+a negative sign to form the objective function. For Equalized Odds, the average absolute
+difference is calculated on each sensitive group-label combination \((s, y)\) for \(s \in \{0, 1\}\) and \(y \in \{0, 1\}\) separately. Computing these separate averages is referred
+to as \emph{group normalizing} in the paper. The authors present a proof for some upper bounds
+on unfairness by the optimal adversary when these objective functions are used. An
+alternative objective function could be based on cross-entropy, but Madras et al.~dismiss
+this on the grounds that there are situations in which it leads to wrong results. However,
+in the experiments they show that the proposed objective and one objective based on
+cross-entropy lead to very similar results.
+
+Based on the weights of the different parts of the loss function (adversarial loss,
+classification loss, decoder loss, etc.), different trade-offs can be achieved. There are
+experiments on the Adult/Census Income dataset and the Heritage Health dataset, but they
+are not compared to other works.
 
 \section{Recent developments in Fairness}\label{recent-developments-in-fairness}
 At this point, fairness in machine learning has come a long way.
@@ -648,7 +853,7 @@ Finally, \citet{everitt2017reinforcement} investigate
 a problem in reinforcement learning that is similar to bias in classification.
 In the previously discussed papers,
 the bias originates from the training inputs or the training labels.
-In the work by Everitt et al.,
+In the work by \citet{everitt2017reinforcement},
 they consider the case of reinforcement learning (RL) with a corrupt reward signal.
 In this case, the RL algorithm might know that the reward is not correct,
 but does not know in what specific way it is not correct.
