@@ -36,7 +36,7 @@
 % The following is a review of the literature on Fairness in Machine Learning.
 % Several different approaches to and definition of Fairness are presented.
 % The focus is on identifying the major trends in the field from the beginning.
-\subsection{Two views of the dataset bias problem}\label{two-views-of-the-dataset-bias-problem}
+\section{Two views of the dataset bias problem}\label{two-views-of-the-dataset-bias-problem}
 As hinted to in the introduction, there is a divide in the related literature in how the problem is defined.
 On the one hand, there is the ``groundtruth-centric'' view -- expressed through most of the introduction --
 that the training set is biased but the deployment setting is not.
@@ -839,9 +839,9 @@ The goal is not to learn a fair representation, but a fair classifier.
 \citet{madras2018learning} is another, similar approach.
 One difference to \citet{edwards2016censoring} is that several fairness criteria are considered:
 Demographic Parity, Equality of Opportunity and Equalized Odds are all converted to adversarial objective functions.
-Another difference is that the decoder \(k\) has access to \(s\) for the decoding: \(k: (Z, S)\to X\).
-This ensures that there is no tension between reconstructing \(x\) and removing \(s\) from \(z\).
-However, the key contribution is the objective functions for the adversary.
+Another difference is that the decoder \(k\) has access to \(s\) for the decoding: \(k: (Z, S)\to X\);
+this ensures that there is no tension between reconstructing \(x\) and removing \(s\) from \(z\).
+However, the key contribution of the paper is the objective functions for the adversary.
 In the case of Demographic Parity, we take -- for each sensitive group separately --
 the average absolute difference between what the adversary predicted \(h(z)\) and the true sensitive attribute \(s\).
 After computing these two separate averages,
@@ -884,29 +884,22 @@ physical fitness could be a discriminatory or a non-discriminatory feature.
 %          copied in - start
 % =====================================
 
-In this spirit, \citet{kilbertus2017avoiding} use causal graphs to develop new fairness criteria.
+\citet{kilbertus2017avoiding} is one of the first to use causal graphs to define fair decisions.
 In their work, the prediction output \(\hat{y}\) is a part of the causal graph that models the data.
-\citet{hardt2016equality} had already defined
-Demographic Parity and Equalized Odds (with Equality of Opportunity as a special case)
-as statistical independencies;
-Demographic Parity: \(s \bot \hat{y}\), Equalized Odds: \(s \bot \hat{y} | y\).
-In causal graphs, the first is equivalent to no existing path between \(s\) and \(\hat{y}\),
-and the second independence allows paths to exist between \(s\) and \(\hat{y}\)
-as long as all paths are all blocked by \(y\).
-Instead of considering paths that start from \(s\) directly,
+A simple causal fairness definition would be to disallow any causal paths between \(s\) and \(\hat{y}\).
+However, instead of considering paths that start from \(s\) directly,
 the authors argue that the observed proxies for \(s\) are more important.
 A proxy for \(s\) is a clearly defined observable quantity
 that is significantly correlated with \(s\).
 According to the authors,
 the sensitive attribute in its pure conceptual form may influence the prediction directly,
 but any observable proxy of it may not.
-The reason for this seems to be that if all influence of \(s\) on \(\hat{y}\) was removed,
+The given reason is that if all influence of \(s\) on \(\hat{y}\) was removed,
 only very few features would remain to make a decision
-because usually nearly all features are influenced by \(s\) somehow.
+because usually nearly all features are influenced by \(s\) in some way.
 
 The concept of removing causal influence
-can be efficiently expressed with \emph{interventions} on the causal graph
-(level 2 according to Pearl).
+can be efficiently expressed with \emph{interventions} on the causal graph.
 An intervention on a variable \(v\) cuts off all parents of \(v\)
 and sets \(v\) to a specific value, say \(v'\).
 This is written as \(do(v=v')\).
@@ -921,43 +914,9 @@ There might still be direct influence of \(s\) on \(\hat{y}\).
 The fact that \(do\)-interventions are used in the definition means
 that a causal model is required to evaluate this criterion; observational data does not suffice.
 
-The causal model that is used in the paper is a structural equation model.
-Each edge in the graphical model corresponds to an equation.
-There is a node for each input feature, each sensitive attribute (usually only one),
-each proxy and the output of the classifier.
-Additionally, there is an unobserved error variable for each input feature (and each proxy).
-The equation that defines the classification result in terms of the inputs is parameterized.
-This equation represents the classifier \(\hat{y} = g_{\theta}(x,p,s)\).
-In the paper, only linear functions are used in this equation;
-meaning that the classifier is linear.
-
-The following is then the procedure to construct a fair classifier:
-
-\begin{enumerate}
-  \item
-    Do an intervention with \(do(p=p')\). Change the structural equations accordingly.
-  \item
-    Construct one big equation for the classifier output \(g_{\theta}(x,p',s) = ...\)
-    by substituting all variables according to the graph up to the root nodes,
-    taking into account the \(do\)-intervention.
-  \item
-    Find the set of values of \(\theta\) that fulfills the fairness criterion:
-    \(g_{\theta}(x,p'=0,s) = g_{\theta}(x,p'=1,s)\).
-    If there is no such value for \(\theta\), the procedure does not work.
-  \item
-    Within the allowed range of values for \(\theta\),
-    find the one that minimizes the classification loss.
-\end{enumerate}
-
-The simplest way to achieve step 3 is usually to choose a \(\theta\)
-which makes all contributions from descendants of \(p\) vanish,
-but the procedure also allows for more sophisticated ways to remove the influence of \(p\).
-(Descendants of \(p\) are all variables that can be reached from \(p\) via directed paths.)
-
-% \includegraphics{\{\{ site.url \}\}/blog/assets/fairness-literature/all-connected.svg}
-% \includegraphics{\{\{ site.url \}\}/blog/assets/fairness-literature/p-separated.svg}
-
-The resulting classifier is fair by construction.
+The paper provides an algorithm that constructs a fair classifier (for the provided fairness definition)
+given a structural equation model (a form of causal model).
+The resulting classifier is fair \emph{by construction}.
 However, note that this procedure does not lead to true individual fairness,
 because the influence of \(p\) is only removed at the population level
 (except in the case where all descendants of \(p\) are completely removed).
@@ -966,21 +925,21 @@ Individual decisions can still be unfair as long as it balances out overall.
 The authors provide a number of properties of their method with corresponding proofs.
 For example, if the influence of \(p\) on \(x\) is additive and linear,
 any predictor of the form \[g(x - \mathbb{E}[x|do(p=p')])\] has no proxy discrimination.
-There are no experiments presented in the paper.
+Though no experiments are included in the paper.
 
-The main weakness of the presented approach are
-the need for a causal model that can not be inferred from just the training data
-and the difficulty of finding a permissible range of values for \(\theta\).
-If the simple way is taken for choosing the range (removing all descendants of \(p\)),
-then there might not be enough input features left for learning.
-Another weakness is that no true individual fairness is achieved.
+% The main weakness of the presented approach are
+% the need for a causal model that can not be inferred from just the training data
+% and the difficulty of finding a permissible range of values for \(\theta\).
+% If the simple way is taken for choosing the range (removing all descendants of \(p\)),
+% then there might not be enough input features left for learning.
+% Another weakness is that no true individual fairness is achieved.
 
-True individual causal fairness is, however, the goal of \citet{kusner2017counterfactual}.
-In their paper, a new fairness criterion which they call ``counterfactual fairness''
+A contemporary paper by \citet{kusner2017counterfactual} approaches the problem differently.
+In this paper, a new fairness criterion which they call ``counterfactual fairness''
 is defined making use of causal reasoning.
-For the definition, they assume that we have a causal model
-that can be used to compute counterfactuals (corresponding to level 3 in Pearl's hierarchy).
-This is in contrast to \citet{kilbertus2017avoiding} who relied on interventions (level 2).
+For the definition, they assume access to a causal model
+that can be used to compute \emph{counterfactuals} (for example a structural equation model).
+This is in contrast to \citet{kilbertus2017avoiding} who relied on just \emph{interventions}.
 The causal model depends on unobserved background variables \(U\),
 non-sensitive features \(x\) and a sensitive attribute \(s\).
 A predictor \(\hat{y}\) is then \emph{counterfactually fair}
@@ -1001,11 +960,11 @@ the prediction would have been the same in the counterfactual world
 where sensitive attribute is \(j\) instead of \(i\).
 In the counterfactual world, everything that is not causally dependent on \(s\) is held constant.
 
-The difficult problem that Pearl solved with his theory of counterfactuals
-is how to define the counterfactual world where the value of \(s\) is \(j\) instead of \(i\).
-One approach that philosophers took in trying to define it
-is looking for the ``closest world'' to ours where \(s=j\), according to some measure of distance.
-Pearl's counterfactuals do not work this way, but it is a useful intuition.
+% The difficult problem that Pearl solved with his theory of counterfactuals
+% is how to define the counterfactual world where the value of \(s\) is \(j\) instead of \(i\).
+% One approach that philosophers took in trying to define it
+% is looking for the ``closest world'' to ours where \(s=j\), according to some measure of distance.
+% Pearl's counterfactuals do not work this way, but it is a useful intuition.
 Making sure predictions are the same, for the closest world with \(s=j\),
 is arguably what \citet{dwork2012fairness} (see above) did
 with their idea of treating similar people similarly (regardless of \(s\)).
@@ -1017,59 +976,94 @@ The two criteria share some strengths and weaknesses.
 A strength is that they are both fair on the individual level,
 which is not the case for Demographic Parity and Equality of Opportunity.
 In Demographic Parity and Equality of Opportunity,
-we can achieve fairness by doing ``negative'' discrimination on some individuals
+we can achieve fairness by doing ``nege'' discrimination on some individuals
 and ``positive'' discrimination on others, as long as those two effects cancel out.
-This is because those criteria are statistical criteria.
+This is because those criteria are defined on \emph{groups} and not individuals.
 However, in turn this implies that individual fairness and counterfactual fairness
 could not be used to implement affirmative action (``positive'' discrimination for a group)
 and they rely on the features \(x\) being correct.
 
-The authors prove that \(\hat{y}\) is counterfactually fair
-if it does not causally depend (as defined by the causal model) on \(s\) or any descendants of \(s\).
-This motivates the following algorithm to train a fair predictor.
-We assume that we have the causal model and the prior over the background variables \(U\).
-We train an classifier \(g_{\theta}(U, x_{\not\succ s})\) that is parameterized by \(\theta\).
-\(x_{\not\succ s}\) refers to all features \(x\) that are \emph{not} descendants of \(s\).
-Furthermore, we have a loss function that measures how well the class labels \(y\) are predicted.
-For training, we optimize the expected loss over \(P(U|x_i, s_i)\)
-which is the distribution over the background variables, as defined by the causal model,
-given training instances \(x_i\) and \(s_i\).
-Note that the number of features that are non-descendants of \(s\) might be very small or even zero.
-However, this is not a problem as the classifier \(g_{\theta}(U, x_{\not\succ s})\)
-can get the necessary information from \(U\).
-The variables in \(U\) are, by definition, non-descendants of \(s\).
-Predictions are made via \[\hat{y} = \mathbb{E} [g_{\theta}(U^*, x_{\not\succ s}^*)|x^*, s^*]\].
-
-Constructing the causal model remains the major weakness of this approach.
-The authors point to existing literature on the topic and give some additional vague guidelines.
-In the experiment section, the algorithm is applied to the Law School Success dataset.
+The authors provide an algorithm to construct a classifier that satisfies counterfactual fairness.
+However, constructing the causal model remains the major weakness of this approach,
+and is currently only really feasible for tabular data.
+% The authors point to existing literature on the topic and give some additional vague guidelines.
+As experiments, the algorithm is applied to the Law School Success dataset.
 The task is to predict the first year average grade (FYA) in law school
 given the GPA before law school and the score on the entrance exam (LSAT).
 Also known are race and sex, which are not supposed to be used to make predictions.
-Logistic regression is used for the classifier.
+% Logistic regression is used for the classifier.
 
-The authors construct two causal models.
-In both models, race and sex influence all three test scores GPA, LSAT and FYA.
-In the first model, there is only one background variable that the authors call \emph{knowledge}.
-This variable influences the three test scores but does not influence the race or sex.
-The second model is a fully deterministic model
-where we have three background variables which play the role of additive error terms.
-The three error terms may be correlated.
+% The authors construct two causal models.
+% In both models, race and sex influence all three test scores GPA, LSAT and FYA.
+% In the first model, there is only one background variable that the authors call \emph{knowledge}.
+% This variable influences the three test scores but does not influence the race or sex.
+% The second model is a fully deterministic model
+% where we have three background variables which play the role of additive error terms.
+% The three error terms may be correlated.
 If the underlying causal model is taken as true,
 the trained fair classifiers are automatically completely counterfactually fair.
-The second model achieves a slightly lower prediction error than the first model
-(RMSE of 0.918 vs 0.929).
+% The second model achieves a slightly lower prediction error than the first model
+% (RMSE of 0.918 vs 0.929).
 Additionally, two (unfair) baseline models were trained:
-one trained on only \(x\) and the other trained on \(x\) and \(s\).
-Those baseline models indeed turn out to be not counterfactually fair.
+one trained on only \(x\) and the other trained on \(x\) and \(s\);
+those baseline models indeed turn out to be not counterfactually fair.
 
-The major advantages of the approach are:
-It enforces true individual fairness and it leaves open the choice of classifier.
-This alone makes it one of the best approaches to date.
+The work by \citet{chiappa2019path} can be seen as a refinement of \citet{kilbertus2017avoiding}.
+Instead of disallowing influence of \emph{nodes}, this works disallows certain \emph{paths} to influence the outcome.
+The path pointing directly from the sensitive attribute to the outcome is not allowed,
+but paths via certain variables are allowed.
+An example for such a permissible variable comes from the Berkeley admissions dataset:
+overall, the data shows that women were admitted at lower rates,
+but this turned out to be mediated by department choice.
+Women were applying to more competitive departments and thus had lower acceptance rates.
+The choice of department \(C\) is here an admissible variable:
+the outcome \(Y\) may depend on it.
+So, a path from \(S\) (gender) to \(Y\) via \(C\) is permissible, and our fairness definition should reflect this.
+Counterfactual fairness \citep{kusner2017counterfactual} would in this case arguably give the wrong answer.
+In certain simple cases, path-specific fairness is equivalent to the criterion from \citet{kilbertus2017avoiding}.
+The problem remains that the causal model needs to be constructed
+and permissible variables need to be identified manually.
+
+Many more works have been published in this area \citep[\eg,][]{wu2019pc,kilbertus2020sensitivity,creager2020causal},
+and it remains an active topic.
+% The major advantages of the approach are:
+% It enforces true individual fairness and it leaves open the choice of classifier.
+% This alone makes it one of the best approaches to date.
+%
+% The weakness of all causality-based methods is that they require causal models
+% which cannot be learned from observational data alone.
 
 % =====================================
 %          copied in - end
 % =====================================
+
+\section{Groundtruth-centric view of bias}%
+\label{sec:groundtruth-centric-view-of-bias}
+The fairness-accuracy trade-off which results from fairness constraints like \ac{DP} and \ac{EOpp}
+has often been seen as a thorny issue.
+\citet{wick2019unlocking} were one of the first to argue for a change of perspective to solve this.
+For example, the labels of the ProPublica/COMPAS dataset had been treated as unbiased ground truth in previous work,
+which the authors call into question.
+The simple change they do is evaluating fairness-enforcing models on actual \emph{unbiased} test data.
+In practice, they simulate datasets such that unbiased labels can be used for evaluation,
+which is necessary because they do not have access to (unobserved) ground truth labels.
+The paper considers label bias and ``selection bias''
+(``selecting a subsample of the data in such a way that happens to introduce unexpected correlations,
+say, between a protected attribute and the target label''),
+which we previously referred to as sample bias.
+In their experiments they find,
+that enforcing fairness can in some situations improve the accuracy on the (unbiased) test set.
+
+\citet{kim2019learning} also consider the problem of learning from biased data (and evaluating on unbiased data).
+While they do not formulate the problem as a fairness problem,
+it is equivalent to enforcing fairness in the presence of severe sampling bias.
+Their main motivating example is the Colored MNIST dataset:
+in this dataset, digits are randomly colored in the test set,
+but in the training set there is a one-to-one correspondence between digit class and color.
+A na\"ive classifier will learn to predict color instead of digit class.
+
+Similarly to \citet{wick2019unlocking},
+\citet{blum2020recovering} consider label bias and sampling bias with evaluation on an unbiased ground truth test set.
 
 % \section{Recent developments in Fairness}\label{recent-developments-in-fairness}
 % At this point, fairness in machine learning has come a long way.
