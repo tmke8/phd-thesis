@@ -1061,6 +1061,19 @@ Their main motivating example is the Colored MNIST dataset:
 in this dataset, digits are randomly colored in the test set,
 but in the training set there is a one-to-one correspondence between digit class and color.
 A na\"ive classifier will learn to predict color instead of digit class.
+The proposed method is very similar to \citet{ganin2016domain} and \citet{edwards2016censoring},
+if we think of the colors as forming different domains
+(\ie, the \emph{red} domain contains all red digits, etc).
+The goal is then to learn a domain-independent representation.
+The main difference to previous work is an additional entropy loss term in the adversarial loss.
+
+\citet{arjovsky2019invariant} tackle a similar problem, but take a very different approach,
+which they term ``Invariant Risk Minimization'', in contrast to the default method Empirical Risk Minimization.
+They formalize the problem as one of different environments $e\in E$.
+
+\citet{creager2020environment} compares itself directly to \citet{arjovsky2019invariant}.
+
+--- --- --- --- --- ---
 
 Similarly to \citet{wick2019unlocking},
 \citet{blum2020recovering} consider label bias and sampling bias with evaluation on an unbiased ground truth test set.
