@@ -1069,16 +1069,31 @@ The main difference to previous work is an additional entropy loss term in the a
 
 \citet{arjovsky2019invariant} tackle a similar problem, but take a very different approach,
 which they term ``Invariant Risk Minimization'', in contrast to the default method Empirical Risk Minimization.
-Just like \citet{kim2019learning}'s approach,
+Just like the approach by \citet{kim2019learning}, 
+As with \citet{kim2019learning},
+the goal is to ignore spurious correlations that only appear in the very imperfect training set,
+but not in the test set;
+and they also perform experiments on Colored MNIST (see above).
 They formalize the problem as one of different environments $e\in E$,
-where the goal is to learn a classifier
+where each environment is a different, biased view of the same underlying data distribution.
+The idea is to train a predictor that is simultaneously optimal for all the environments,
+with the expectation that this generalizes to the test set.
+This idea is formulated as a (untractable) bi-level, constrained optimization problem,
+which they approximate with a tractable regularized optimization.
 
-\citet{creager2020environment} compares itself directly to \citet{arjovsky2019invariant}.
+\citet{creager2020environment} build directly on \citet{arjovsky2019invariant}.
+They aim to address the limitation that the environments -- that one wants to be invariant to -- have to be pre-defined.
+Their contribution is to infer these environments instead,
+based on identifying which environment splits would most negatively affect an ERM classifier.
+Their experiments show that this can even approve upon hand-crafted environments;
+experiments are performed on a synthetic dataset and Colored MNIST.
+In contrast to \citet{kim2019learning} and \citet{arjovsky2019invariant},
+the authors explicitly point out the connection to traditional fairness methods.
 
---- --- --- --- --- ---
-
-Similarly to \citet{wick2019unlocking},
-\citet{blum2020recovering} consider label bias and sampling bias with evaluation on an unbiased ground truth test set.
+Finally, as mentioned in the beginning,
+\citet{blum2020recovering} provide a formalization of a setting with label bias and sampling bias
+and an unbiased ground truth test set.
+This is similar to \citet{wick2019unlocking}.
 
 % \section{Recent developments in Fairness}\label{recent-developments-in-fairness}
 % At this point, fairness in machine learning has come a long way.
