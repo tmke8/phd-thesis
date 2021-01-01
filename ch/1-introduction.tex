@@ -71,22 +71,22 @@ The effect is that \ac{ML} models are tempted to take shortcuts and use $s$ as a
 
 When evaluating models in these setup,
 the problem is often that we do not have access to the underlying true unbiased dataset.
-In this case, we cannot just rely on metrics like accuracy to inform us how well the model is doing:
+In this case, we cannot just rely on metrics like accuracy to compare models:
 the model is not being evaluated on the right dataset, so accuracy is not that informative.
-For these cases where we don't have access to a truly unbiased test set,
+For these cases, where we do not have access to a truly unbiased test set,
 we use \emph{fairness metrics}, which do not rely on access to an unbiased set.
 These fairness metrics, which are based on different fairness definitions,
 are then used alongside metrics like accuracy to evaluate how well a model has corrected for the training set bias.
 Note however, that evaluation on a truly unbiased dataset is still preferred:
-fairness metrics can make assumptions about what is ideal that might not fit the actual use case.
+fairness metrics make assumptions about what it means to be unbiased that might not fit the actual use case.
 
 While fairness metrics are primarily useful when no truly unbiased test sets are provided,
 even when they are provided,
 these metrics can be useful in identifying where models retained some of the bias from the training set.
 
-The fairness definition that most fits the described setup of label bias and sampling bias is \ac{DP},
+The fairness definition that most fits the described setup of label bias and sampling bias is \acf{DP},
 also called statistical parity or independence.
-It demands that the predictions $\hat{y}$ be independent of the sensitive attribute.
+It demands that the predictions $\hat{y}$ be independent of the sensitive attribute \(s\).
 So, for binary $s$ and $y$:
 \begin{align}
   P(\hat{y}=1|s=0) &= P(\hat{y}=1|s=1)~.
@@ -98,7 +98,7 @@ among them the difference and the ratio of the terms on the two sides of the equ
 When we previously talked about unbiased datasets,
 we did not specify exactly what this meant,
 and that is because this can differ from task to task,
-but one way to define it is as a \emph{balanced dataset} where all combinations of $s$ and $y$ occur at the same rate:
+but one way to define it is as a \emph{balanced} dataset where all combinations of $s$ and $y$ occur at the same rate:
 \begin{align}
   \label{eq:balanced-dataset}
   P(y=0,s=0)=P(y=0,s=1)=P(y=1,s=0)=\dots
@@ -106,8 +106,8 @@ but one way to define it is as a \emph{balanced dataset} where all combinations 
 In such a dataset, we have $y \perp s$, and thus,
 perfect predictions ($\hat{y}=y$) on this dataset will satisfy $\hat{y} \perp s$ and hence \ac{DP}.
 We can conclude that perfect accuracy on a balanced test set implies \acl{DP} (the opposite does not hold).
-However, if a model satisfies \ac{DP} on a \emph{biased} dataset,
-then it necessarily cannot be perfectly accurate with respect to that dataset anymore,
+However, if a model's predictions satisfy \ac{DP} on a \emph{biased} dataset,
+then they cannot be perfectly accurate with respect to that dataset's biased labels anymore,
 which makes sense because the goal is to be accurate to the \emph{unbiased} dataset.
 This leads to a fairness-accuracy trade-off on biased test sets.
 

@@ -37,47 +37,49 @@
 % Several different approaches to and definition of Fairness are presented.
 % The focus is on identifying the major trends in the field from the beginning.
 \section{Two views of the dataset bias problem}\label{two-views-of-the-dataset-bias-problem}
-As hinted to in the introduction, there is a divide in the related literature in how the problem is defined.
+As hinted to in the introduction,
+there is a divide in the relevant literature in how the problem of dataset bias is approached.
 On the one hand, there is the ``groundtruth-centric'' view -- expressed through most of the introduction --
 that the training set is biased but the deployment setting is not.
 By \emph{deployment setting} I am here referring to the real distribution
-that will be encountered by the machine learning system once it is used.
+that will be encountered by the machine learning system once it is in use.
 
 % This can be seen as a form of transfer learning and notably does not exhibit a fairness-accuracy trade-off.
 
-An instance of this setting has been formalized in \citet{blum2020recovering}.
+An instance of this setting has been formalized by \citet{blum2020recovering}.
 In their formalization, the training set starts out unbiased,
 but then, for samples with \(s=0\), class labels \(y\) are flipped from 1 to 0 with probability \(\nu\).
 In addition, samples with \(s=0\) and \(y=0\) are dropped with probability \(1-\beta_\mathit{NEG}\)
 and those with \(s=0\) and \(y=1\) are dropped with probability \(1-\beta_\mathit{POS}\).
+Meanwhile, the test remains unbiased and is the basis for evaluating our models.
 
-On the other hand, there is the ``definition-centric'' view that given some training data,
-and not necessarily knowing anything about the deployment setting,
-we define fairness criteria which a fair classifier should satisfy.
-Here, the goal is not necessarily to correct for a bias in the training data,
+On the other hand, there is the ``definition-centric'' view that,
+given some training data and not necessarily knowing anything about the deployment setting,
+we define \emph{fairness criteria} which a fair classifier should satisfy.
+Here, the goal is not primarily to correct for the deviation of the training data from the true distribution,
 but simply to ensure that the classifier is fair in some specific sense.
 By default, a classifier would \emph{not} be fair in that specific way.
 It is left open whether this unfairness originates in the training data or in the algorithm itself.
+Evaluation is typically performed on test set that has all the same biases as the training set,
+and thus a fairness-accuracy trade-off arises.
 
-This setting has a fairness-accuracy trade-off.
-
-The definition-centric view was the one used by the first works in the field.
-The first fairness definition was Demographic Parity. \textbf{citation}
+The first works in the field are almost exclusively took the definition-centric view,
+most of them using \acf{DP} \citep{dwork2012fairness} as the fairness criterion.
 
 The difference between these views is not completely clear-cut.
 Consider the case where a biased training set is available,
-and an unbiased test set is assumed to exist, but we do not have access to it.
+and an unbiased test set is assumed to exist, but we do not have access to it \citep{jiang2020identifying}.
 Then we might at least know that the unbiased test set satisfies demographic parity.
 In this case, testing the classifier for demographic parity is an indication
-for how it would fare on the unbiased test set (which satisfies DP).
+for how it would fare on the unbiased test set.
 
 Furthermore, there is significant overlap in the solutions employed for the two views:
-a method developed for one of them can often be used for the other as well.
+a method developed for one of them can often be adapted to the other as well.
 
 The works discussed in the beginning of this chapter are mostly taking the definition-centric view.
 Towards the end, I discuss more works with the other viewpoint.
 
-\subsection{Precursor}\label{precursor}
+\section{Precursors}\label{precursor}
 The first published work to address the problem of biases in machine learning
 was arguably the work by \citet{pedreshi2008discrimination}
 with the main focus being data mining.
@@ -1090,10 +1092,41 @@ experiments are performed on a synthetic dataset and Colored MNIST.
 In contrast to \citet{kim2019learning} and \citet{arjovsky2019invariant},
 the authors explicitly point out the connection to traditional fairness methods.
 
+A conceptually very influential work was \citet{friedler2016possibility}.
+While this work does not explicitly present a groundtruth-centric approach to bias,
+their concepts of the construct space and the observed space are close
+to the idea of the (biased) training distribution and the true underlying distribution.
+
+\citet{jiang2020identifying} also formulate their problem this way:
+in their setting, the underlying unbiased labels become corrupted by a biased labeler,
+which results in a biased training set.
+Their goal is to train a classifier that makes correct predictions consistent with the true labels.
+However, they treat the true labels as completely unknown
+and evaluate their models w.r.t.\ the common fairness definitions on a test set
+that is just as biased as the training set.
+
 Finally, as mentioned in the beginning,
 \citet{blum2020recovering} provide a formalization of a setting with label bias and sampling bias
 and an unbiased ground truth test set.
-This is similar to \citet{wick2019unlocking}.
+They explicitly state not being affected by a fairness-accuracy trade-off,
+because the true distribution in the considered problem satisfies \acf{DP}.
+Their formalized dataset generation process has multiple steps:
+First, a small amount of random noise is applied to the (true) labels;
+this models general inaccuracies in the labeling process and does not introduce bias yet.
+Second, sampling bias is added, by dropping samples based on what the sample's \(s\) and \(y\) values are.
+Concretely, only samples with \(s=0\) are dropped.
+Finally, labeling bias is added, by flipping labels for one of the demographic groups (\eg, \(s=0\)),
+in one specific direction (from \(y=1\) to \(y=0\)).
+The authors show that in this specific situation,
+an unbiased classifier (as determined by evaluation on the unbiased test set) can be recovered
+by enforcing its predictions to be compatible with \acf{EOpp} on the training set.
+Notably, the fairness constraint enforced during training (\ac{EOpp})
+is not the fairness constraint satisfied by the predictions on the unbiased test set (\ac{DP}).
+One reason, why enforcing \ac{EOpp} works so well here is
+that the label bias only affects the \emph{underrepresented} demographic group,
+and that the label bias is is the direction (\(y=1\) to \(y=0\)) that \ac{EOpp} is most sensitive to.
+Thus, even in the groundtruth-centric view of bias,
+fairness constraints can be very useful.
 
 % \section{Recent developments in Fairness}\label{recent-developments-in-fairness}
 % At this point, fairness in machine learning has come a long way.
