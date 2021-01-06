@@ -45,7 +45,7 @@ titlepage,numbers=noenddot,%1headlines,
   tocaligned=false, % the left column of the toc will be aligned (no indentation)
   dottedtoc=true,  % page numbers in ToC flushed right
   eulerchapternumbers=true, % use AMS Euler for chapter font (otherwise Palatino)
-  linedheaders=false,       % chaper headers will have line above and beneath
+  linedheaders=false,       % chapter headers will have line above and beneath
   floatperchapter=true,     % numbering per chapter for all floats (i.e., Figure 1.1)
   eulermath=false,  % use awesome Euler fonts for mathematical formulae (only with pdfLaTeX)
   beramono=true,    % toggle a nice monospaced font (w/ bold)
@@ -206,6 +206,9 @@ titlepage,numbers=noenddot,%1headlines,
 % \setstretch{1.4}
 \onehalfspacing
 
+% don't make section titles all lower case
+\newcommand{\spacedsmallcaps}[1]{\spacedlowsmallcaps{\NoCaseChange{#1}}}
+\titleformat{\section}{\relax}{\thesection}{1em}{\spacedsmallcaps}
 
 % ********************************************************************
 % Fine-tune hyperreferences (hyperref should be called last)
@@ -376,6 +379,7 @@ titlepage,numbers=noenddot,%1headlines,
   They are presented here with short explanations for the context.
 }
 \part{Main}\label{pt:main}
+\include{ch/3-0-common-notation}
 \include{ch/3-target-labels}
 \include{ch/4-nifr}
 \include{ch/5-zsf}

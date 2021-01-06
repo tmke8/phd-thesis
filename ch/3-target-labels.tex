@@ -1,1 +1,31 @@
 \chapter{Tuning Fairness by Balancing Target Labels}\label{ch:target-labels}
+This chapter is predominantly concerned with label bias.
+The main idea is that we make use of pseudo labels to implicitly learn from a \emph{balanced} dataset,
+in which \(y\perp s\) holds, and which thus satisfies \acf{DP}.
+This falls under the area of \emph{fair classifiers} discussed in \secref{fair-classifiers}
+
+We can interpret the contributions of this chapter in two ways.
+The first corresponds to the definition-centric view of dataset bias,
+and the second to the groundtruth-centric view.
+\begin{enumerate}
+  \item
+    We can say that the classifier should satisfy demographic parity in its predictions,
+    and learning from a balanced training set is just one particular way to achieve this.
+    In this view, the pseudo labels have no deeper meaning and are just a computational trick.
+  \item
+    We can see the training set as a corrupted version of a true dataset, which is balanced (\(y\perp s\)),
+    and so, by learning from these pseudo labels, we are simply approximating the true dataset.
+    However, we do not actually have access to the true dataset; we only know that it is balanced.
+    In order to evaluate the trained model, we compute fairness metrics with respect to \ac{DP}.
+\end{enumerate}
+Within the chapter, we sometimes jump between these two views.
+
+While the main focus is on label bias,
+the experiments are performed on real-world fairness datasets,
+which also display a significant amount of sample bias (disadvantaged groups are underrepresented).
+Furthermore, in addition to the result for \ac{DP}, we also show that the proposed scheme improves \acf{EOpp}.
+
+In order to construct the pseudo labels,
+we use side information about summary statistics for an unbalanced training set.
+This allows us to target a specific balanced set, instead of just any balanced set.
+In other words, rather than just enforcing \ac{DP}, the method gives control over the target rates \(P(\hat{y}=1|s)\).
