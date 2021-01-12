@@ -1,1 +1,46 @@
 \chapter{Null-sampling for Interpretable and Fair Representations}\label{ch:nifr}
+In the setting from the previous chapter,
+labels were untrustworthy because they had been flipped;
+a phenomenon we referred to as \emph{label bias}.
+However, flipped labels is not the only way that labels can become untrustworthy.
+Another way is \emph{sampling bias}, which is the subject of this and the next chapter.
+
+As an example, consider a dataset where the task is to distinguish smiling from non-smiling faces.
+Say, we initially have a very diverse and balanced training set,
+but then, from the set of smiling faces, we remove nearly all samples where the person does not have red hair,
+and from the set of non-smiling faces, we remove nearly all samples with non-black hair.
+The result is that even though the labels are still correct, they do not point reliably to the right target anymore.
+As hair color is easier to recognize with a \ac{CNN}, the labels have effectively been turned into hair color labels.
+In other words, hair color has become a \emph{spurious attribute}.
+In the following, we denote the spurious attribute with \(s\),
+as it takes a role that is very similar to that of the sensitive attribute that was also denoted by \(s\).
+
+The method, proposed in the previous chapter,
+is not able to deal with such a dataset bias as we can easily see:
+Say, \emph{smiling} corresponds to \(y=1\) and \emph{not smiling} to \(y=0\);
+furthermore, let red hair correspond to \(s=1\), black hair to \(s=0\), and all other hair colors to \(s=2\).
+Then, the problem with the described dataset is, that it mostly consists of samples with \(y=0\wedge s=0\)
+and those with \(y=1\wedge s=1\).
+If we call \(P(y=1|s=s')\) the acceptance rate,
+then the problem can be described as one of very different acceptance rates in the hair color groups given by \(s\).
+This is the problem tackled in the previous chapter,
+and yet, if we were to equalize the acceptance rates with the method there,
+the result would be very incorrect.
+The issue is that we would treat the labels as incorrect, when in truth, they are correct.
+
+To deal with sampling bias, a different approach is needed.
+Indeed, the problem, as posed, is not solvable in the general case.
+To make headway with this problem, we introduce the concept of a \emph{context set} (or \emph{pre-training set}).
+This set is not subject to the sampling bias,
+but is unlabeled (with respect to $y$) and so does not by itself suffice for training.
+However, this set does have labels for the spurious attribute \(s\).
+This allows us to learn an \emph{invariant representation},
+\ie, a representation of the input features \(x\) which is invariant to the spurious attribute.
+This kind of representation is equivalent to a fair representation -- as described in \chapref{ch:related-work} --
+which is invariant to a sensitive attribute.
+With the invariant representation of the training set,
+a classifier can then be trained to accurately predict the class label \(y\).
+
+A parallel to the previous chapter is that the method makes use of side information
+(in this case the pre-training/context set)
+in order to overcome the bias in the training set.

@@ -44,7 +44,7 @@ titlepage,numbers=noenddot,%1headlines,
   drafting=true,    % print version information on the bottom of the pages
   tocaligned=false, % the left column of the toc will be aligned (no indentation)
   dottedtoc=true,  % page numbers in ToC flushed right
-  eulerchapternumbers=false, % use AMS Euler for chapter font (otherwise Palatino)
+  eulerchapternumbers=true, % use AMS Euler for chapter font (otherwise Palatino)
   linedheaders=false,       % chapter headers will have line above and beneath
   floatperchapter=true,     % numbering per chapter for all floats (i.e., Figure 1.1)
   eulermath=false,  % use awesome Euler fonts for mathematical formulae (only with pdfLaTeX)
@@ -212,17 +212,20 @@ titlepage,numbers=noenddot,%1headlines,
 % \makeatother
 
 % put the chapter number on the left right next to the chapter name
+\definecolor{CTsemi}{gray}{0.4}
+% \newcommand\formatchapter[1]{%
+%   \vbox to \ht\strutbox{%
+%   \setbox0=\hbox{\chapterNumber\thechapter\hspace{10pt}\vline\ }%
+%   \advance\hsize-\wd0 \advance\hsize-10pt\raggedright%
+%   \spacedallcaps{#1}\vss}}
 \newcommand\formatchapter[1]{%
-  \vbox to \ht\strutbox{%
-  \setbox0=\hbox{\chapterNumber\thechapter\hspace{10pt}\vline\ }%
-  \advance\hsize-\wd0 \advance\hsize-10pt\raggedright%
-  \spacedallcaps{#1}\vss}}
+  \parbox[b]{9cm}{\raggedright
+  \spacedallcaps{#1}}}
 \titleformat{\chapter}[block]%
    {\spacedsmallcaps}%
    {\textcolor{CTsemi}{\chapterNumber\thechapter}%
    \ \,\hspace{10pt}\vline\ }{10pt}%
    {\formatchapter}
-\definecolor{CTsemi}{gray}{0.4}
 
 % don't make section titles all lower case
 \newcommand{\spacedsmallcaps}[1]{\spacedlowsmallcaps{\NoCaseChange{#1}}}
