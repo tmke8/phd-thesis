@@ -51,7 +51,7 @@ titlepage,numbers=noenddot,%1headlines,
   floatperchapter=true,     % numbering per chapter for all floats (i.e., Figure 1.1)
   eulermath=true,  % use awesome Euler fonts for mathematical formulae (only with pdfLaTeX)
   beramono=true,    % toggle a nice monospaced font (w/ bold)
-  palatino=true,    % deactivate standard font for loading another one, see the last section at the end of this file for suggestions
+  palatino=false,    % deactivate standard font for loading another one, see the last section at the end of this file for suggestions
   parts=true,
   style=classicthesis % classicthesis, arsclassica
   % style=arsclassica % classicthesis, arsclassica
@@ -100,7 +100,7 @@ titlepage,numbers=noenddot,%1headlines,
 \PassOptionsToPackage{%
   backend=biber,bibencoding=utf8, %instead of bibtex
   % backend=bibtex8,bibencoding=ascii,%
-  language=auto,%
+  language=american,%
   %style=numeric-comp,%
   %bibstyle=authoryear,dashed=false, % dashed: substitute rep. author with ---
   sorting=nyt, % name, year, title
@@ -205,6 +205,15 @@ titlepage,numbers=noenddot,%1headlines,
 % Her Majesty herself
 % ********************************************************************
 \usepackage{classicthesis}
+% \setmainfont[Ligatures=TeX,Numbers=OldStyle]{TeX Gyre Pagella} % Palatino clone
+% \linespread{1.05} % a bit more for Palatino
+% \setmainfont[Ligatures=TeX,Numbers=OldStyle]{Linux Libertine O}
+\setmainfont[Ligatures=TeX,Numbers=OldStyle]{Libertinus Serif} % fork of Linux Libertine O
+\usepackage{unicode-math}
+\setmathfont{Libertinus Math}
+% \setmathfont{XITS Math}
+% \setmathfont{TeX Gyre Pagella Math} % this font seems quite incomplete
+
 \usepackage{setspace}
 % \setstretch{1.4}
 \onehalfspacing
