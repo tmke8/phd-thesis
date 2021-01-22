@@ -58,9 +58,8 @@ Detailed information regarding model architectures can be found in Appendix~\ref
 %   \centering
 %   \caption{Performance of our methods (cVAE and cFlow) on the tabular UCI Adult Dataset. This is a common benchmark in fair machine learning literature. Each model depicts the result of a ownstream classifier trained on the embeddings produced by one of the models. (Left) Accuracy of a downstream classifier. (Middle) Demographic Parity of a downstream classifier. (Right) Equality of Opportunity of a downstream classifier.}\label{fig:adult_results}
 % \end{figure*}
-% \subsubsection{Synthesising Dataset Bias}
-\textbf{Synthesising Dataset Bias.}
-\noindent For our experiments, we require a training set that exhibits a strong spurious correlation, together with a test set that does not.
+\subsubsection{Synthesising Dataset Bias}
+For our experiments, we require a training set that exhibits a strong spurious correlation, together with a test set that does not.
 For cMNIST, this is easily satisfied as we have complete control over the data generation process.
 For CelebA and  UCI Adult, on the other hand,
 we have to generate the split from the existing data.
@@ -78,7 +77,7 @@ Thus, for $\eta=0$, the biased dataset is just $\mathcal{D}_{eq}$,
 for $\eta=1$ it is just $\mathcal{D}_{opp}$
 and for $\eta=\tfrac{1}{2}$ the biased dataset is an ordinary subset of the whole data. The test set is simply the data remaining from the initial split.
 
-\textbf{Evaluation protocol.}
+\subsubsection{Evaluation protocol}
 We evaluate our results in terms of accuracy and fairness.
 A model that perfectly decouples its predictions from $s$ will achieve near-uniform accuracy across all biasing-levels.
 For binary $s$/$y$ we quantify the fairness of a classifier's predictions using \emph{demographic parity} (DP): the  absolute difference in the probability  of a positive prediction for each sensitive group.
@@ -107,8 +106,7 @@ CelebA, on the other hand, is a more practical and challenging example.
 We also test our method on a tabular dataset, the Adult dataset.
 %For full details regarding the architectures of our models and their optimisation, see the Appendix.
 
-% \subsubsection{cMNIST.}
-\textbf{cMNIST.}\label{ssec:cmnist}
+\subsubsection{cMNIST}\label{ssec:cmnist}
 The coloured MNIST (cMNIST) dataset is a variant of the MNIST dataset in which the digits are coloured.
 In the training set, the colours have a one-to-one correspondence with the digit class.
 In the test set (and the representative set), colours are assigned randomly.
@@ -141,8 +139,7 @@ For higher $\sigma$ values, the sampled colours can deviate far from the mean an
 cFlow, on the other hand, is consistent across $\sigma$ values.
 
 
-% \subsubsection{CelebA.}
-\textbf{CelebA.}
+\subsubsection{CelebA}
 To evaluate the effectiveness of our framework on real-world image data we use the CelebA dataset~\cite{liu2015faceattributes}, consisting of 202,599 celebrity images.
 These images are annotated with various binary physical  attributes, including ``gender'', ``hair color'', ``young'', etc, from which we  select our sensitive and target attributes.
 The images are centre cropped and resized to $64\times64$, as is standard practice.
@@ -165,7 +162,7 @@ For these experiments, the model is trained once on the representative set and i
 The results show that for the intermediate values of $\eta$, our model incurs a small penalty in terms of accuracy,
 but at the same time makes the results \emph{fairer} (corresponding to an accuracy-fairness trade-off). Qualitative results can be found in Fig.~\ref{fig:celeba_cflow} (images from cVAE can be found in Appendix~\ref{sec:qual-results-celeba}).
 
-To show that our method can handle multinomial, as well as binary, sensitive attributes, we also conduct experiments with $s=\textrm{hair color}$ as a ternary attribute (``Blonde'' ``Black'', ``Brown''), excluding ``Red'' because of the paucity of samples and the noisiness of their labels. The results for these experiments can be found in Appendix~\ref{ssec:multi-s}.
+To show that our method can handle multinomial, as well as binary, sensitive attributes, we also conduct experiments with $s=\textrm{hair color}$ as a ternary attribute (``Blonde'', ``Black'', ``Brown''), excluding ``Red'' because of the paucity of samples and the noisiness of their labels. The results for these experiments can be found in Appendix~\ref{ssec:multi-s}.
 % Looking at the produced invariant representations,
 % The failure of the cVAE to model complex interactions between $x_u$ and $s$ is brought to bear here.
 % Due to the balancing between the adversarial and reconstruction losses,
@@ -180,19 +177,19 @@ To show that our method can handle multinomial, as well as binary, sensitive att
 % the DP is zero due to all predictions being negative.
 
 % \begin{wrapfigure}{l}{0.6\linewidth}
-\begin{figure}[t]
+\begin{figure}[tb]
   \centering
-  \includegraphics[width=\linewidth]{./Figures/nosinn_adult_multiplot_mini_diff.pdf}
+  \includegraphics[width=0.6\textwidth]{./Figures/nosinn_adult_multiplot_mini_diff.pdf}
   \caption{
-      Results for the \textbf{Adult} dataset.
+      Results for the \textsc{Adult} dataset.
       The $x$-axis corresponds to the difference in positive rates.
-      An ideal result would occupy the \textbf{top-left}.
+      An ideal result would occupy the \textsc{top-left}.
   }%
   \label{fig:adult-chart}
 \end{figure}
 % \end{wrapfigure}
-%
-\noindent\textbf{Results for the UCI Adult dataset.}
+
+\subsubsection{Results for the UCI Adult dataset}
 The UCI Adult dataset consists of census data and is commonly used to evaluate models focused on algorithmic fairness.
 Following convention, we designate ``gender'' as the sensitive attribute $s$ and whether an individual's salary is \$50,000 or greater as $y$.
 We show the performance of our approach in comparison to baseline approaches in Fig. \ref{fig:adult-chart}.

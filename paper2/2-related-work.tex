@@ -33,8 +33,7 @@
 % \noindent We frame our approach in the context of relevant literature on the interrelated problems of fair representation learning and learning representations free of spurious correlations.
 % The background is far too long - we also need to touch on the interpretability literature
 
-% \subsubsection{Learning fair representations.}
-\textbf{Learning fair representations.}
+\subsubsection{Learning fair representations.}
 %As we have alluded to, the goal of producing invariant representations is similar to that of producing \emph{fair} representations.
 % In fairness problems, there is usually a \emph{sensitive attribute}, $s$ (for example, gender or race),
 % that should not be used to make decisions.
@@ -69,9 +68,7 @@ but then there is no guarantee that information about $y$ is preserved \cite{Lou
 % However, it is not without its drawbacks as, in removing $s$, there is no guarantee that information about $y$ is preserved \cite{LouSweLi15}. 
 % For this reason, $y$ is typically supplied during training and the representation encouraged to be predictive of it.
 
-%\subsection{Learning Fair and Transferable Representations}
-% \subsubsection{Learning fair representations that are transferable and in the data domain.}
-\textbf{Learning fair, transferrable representations.}
+\subsubsection{Learning fair, transferrable representations}
 % Outside of computer vision, \cite{madras2018learning} have also worked on removing a problematic spurious correlation.
 In addition to producing fair representations, \cite{madras2018learning} want to ensure the representations are transferrable.
 Here, an adversary is used to remove sensitive information from a representation $z$.
@@ -101,8 +98,7 @@ This allows us to examine representations in a human-interpretable space and con
 Though a first step in this direction, we believe such a linear decomposition is not sufficiently expressive to fully capture the relationship between the sensitive and non-sensitive attributes.
 Our approach allows for the modelling of more complex relationships.
 
-% \subsubsection{Learning in the presence of spurious correlations.}
-\textbf{Learning in the presence of spurious correlations.}
+\subsubsection{Learning in the presence of spurious correlations}
 % As  previously  discussed,  the  goal  of  producing  fair representations is similar to the goal of producing representations invariant to spurious correlations found in the training data.
 Strong spurious correlations make the task of learning a robust classifier challenging: the classifier may learn to exploit correlations unrelated to the true causal relationship between the features and label, and thereby fail to generalise to novel settings.
 This problem was recently tackled by \cite{ln2l} who apply a penalty based on the mutual information between the feature embedding and the spurious variable. 

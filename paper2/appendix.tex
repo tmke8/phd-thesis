@@ -81,12 +81,12 @@
 
 \subsection{Model Architectures}%
 \label{sec:architectures}
-\noindent For both cMNIST and CelebA we parameterise the coupling layers with the same convolutional architecture as in \cite{KinDha18}, consisting of $3$ convolutional layers each with $512$ filters of, in order, sizes $3\times3$, $1\times1$, and $3\times3$.
-Following \cite{ardizzone2019guided}, we Xavier initialise all but the last convolutional layer of the $s$ and $t$ sub-networks which itself is zero-initialised so that the coupling layers begin by performing an identity transform. We used a Glow-like architecture \cite{KinDha18} (affine coupling layers together with checkerboard reshaping and invertible $1\times1$ convolutions) for the convolutional INNs. Table \ref{tab:inn_architectures} summarises the INN architectures used for each dataset.
+\noindent For both cMNIST and CelebA we parameterise the coupling layers with the same convolutional architecture as in \citet{KinDha18}, consisting of $3$ convolutional layers each with $512$ filters of, in order, sizes $3\times3$, $1\times1$, and $3\times3$.
+Following \citet{ardizzone2019guided}, we Xavier initialise all but the last convolutional layer of the $s$ and $t$ sub-networks which itself is zero-initialised so that the coupling layers begin by performing an identity transform. We used a Glow-like architecture \citep{KinDha18} (affine coupling layers together with checkerboard reshaping and invertible $1\times1$ convolutions) for the convolutional INNs. Table \ref{tab:inn_architectures} summarises the INN architectures used for each dataset.
 
-For the image datasets each level of the cVAE encoder consists of two gated convolutional layers \cite{van2016conditional} with ReLU activation. 
+For the image datasets each level of the cVAE encoder consists of two gated convolutional layers \citep{van2016conditional} with ReLU activation. 
 At each subsequent level, the number of filters is doubled, starting with an initial value 32 and 64 in the case of CelebA and cMNIST respectively. 
-In the case of the Adult dataset, we use an encoder with one fully-connected hidden layer of width $35$, followed by SeLU activation \cite{klambauer2017self}. 
+In the case of the Adult dataset, we use an encoder with one fully-connected hidden layer of width $35$, followed by SeLU activation \citep{klambauer2017self}. 
 For both cMNIST and CelebA, we downsample to a feature map with spatial dimensions $8\times8$, but with $3$ and $16$ channels respectively. 
 For the Adult dataset, the encoding is a vector of size $35$. 
 The output layer specifies both the parameters (mean and variance) of the representation's distribution. 
@@ -133,9 +133,9 @@ Results shown in Fig.~\ref{fig:big-adult-chart} show that whilst our model fails
   \centering
   \includegraphics[width=0.85\textwidth]{./Figures/nosinn_adult_multiplot_all_landscape_diff.pdf}
   \caption{
-      Results for the \textbf{Adult} dataset.
+      Results for the \textsc{Adult} dataset.
       The $x$-axis corresponds to the difference in positive rates.
-      An ideal result would occupy the \textbf{top-left}.
+      An ideal result would occupy the \textsc{top-left}.
   }%
   \label{fig:big-adult-chart}
 \end{figure}
@@ -157,7 +157,7 @@ blond hair, brown hair and black hair.
 The other experiment is with a combination of age and gender,
 where $s$ has four possible values, each of which is a combination of a gender and an age:
 Young/Female, Young/Male, Old/Female and Old/Male.
-To evaluate the fairness for multinomial $s$, we use the Hirschfeld-Gebelein-R\'enyi Maximum Correlation Coefficient (HGR) \cite{mary2019fairness} that is defined on the domain $[0, 1]$ and gives $\text{HGR}(Y,S)=0$ iff $Y \perp S$
+To evaluate the fairness for multinomial $s$, we use the Hirschfeld-Gebelein-R\'enyi Maximum Correlation Coefficient (HGR) \citep{mary2019fairness} that is defined on the domain $[0, 1]$ and gives $\text{HGR}(Y,S)=0$ iff $Y \perp S$
 and 1 if there is a deterministic function to map between them.
 Results can be found in Figure~\ref{fig:multi-s}.
 
@@ -192,7 +192,7 @@ both sizes 5 and 10 achieve nearly identical results.
         Additional fairness metrics for the experiments on the CelebA dataset (Fig. 5 from the main text).
         \emph{TPR diff.} refers to the difference in true positive rate.
         \emph{TNR diff.} refers to the difference in true negative rate.
-        \textbf{Left:} $\eta = 0$. \textbf{Right:} $\eta=1$.
+        \textsc{Left:} $\eta = 0$. \textsc{Right:} $\eta=1$.
     }
     \label{tab:my_label}
     \resizebox{.49\textwidth}{!}{
@@ -203,7 +203,7 @@ both sizes 5 and 10 achieve nearly identical results.
       cFlow &      0.83 &     0.10 &      0.15 &      0.25 \\
        cVAE &      0.82 &     0.05 &      0.09 &      0.18 \\
         CNN &      0.61 &     0.63 &      0.70 &      0.64 \\
- Ln2L\cite{ln2l} &      0.52 &     0.00 &      0.00 &      0.00 \\
+ Ln2L\citep{ln2l} &      0.52 &     0.00 &      0.00 &      0.00 \\
 \bottomrule
 \end{tabular}}
 \hfill
@@ -215,7 +215,7 @@ both sizes 5 and 10 achieve nearly identical results.
       cFlow &      0.82 &     0.33 &      0.28 &      0.21 \\
        cVAE &      0.81 &     0.16 &      0.10 &      0.05 \\
         CNN &      0.67 &     0.75 &      0.66 &      0.76 \\
-Ln2L\cite{ln2l} &      0.51 &     0.08 &      0.06 &      0.09 \\
+Ln2L\citep{ln2l} &      0.51 &     0.08 &      0.06 &      0.09 \\
 \bottomrule
 \end{tabular}}
 \end{table}
@@ -225,39 +225,39 @@ We report the difference in true positive rates (TPR) between the two groups (ma
 and the difference in true negative rates (TNR) between the two groups.
 
 \subsection{Optimisation Details}\label{sec:optimisation-details}
-\noindent All our models were trained using the RAdam optimiser \cite{liu2019variance} with learning rates $3\times10^{-4}$ and $1\times10^{-3}$ for the encoder/discriminator pair and classifier respectively. A batch size of 128 was used for all experiments.
+\noindent All our models were trained using the RAdam optimiser \citep{liu2019variance} with learning rates $3\times10^{-4}$ and $1\times10^{-3}$ for the encoder/discriminator pair and classifier respectively. A batch size of 128 was used for all experiments.
 
 We now detail the optimisation settings, including the choice of adversary, specific to each dataset. Details of the cVAE and cFlow architectures can be found in Table \ref{tab:vae_architectures} and Table \ref{tab:inn_architectures}, respectively.
 
 \subsubsection{UCI Adult} 
-For this dataset our experiment benefited from using null-samples as inputs to the adversary of the cFlow model. Unlike for the image datasets, we found a single adversary to be sufficient. This was realised as a multi-layer perceptron (MLP) with one hidden layer, 256 units wide. The INN performs a bijection of the form $f: \mathbb{R}^n \rightarrow \mathbb{R}^n$. However, the adult dataset is composed of mostly discrete (binary/categorical) features. To achieve good performance, we found it necessary to first pre-process the inputs with a pretrained autoencoder, using its encodings as the input to the cFlow model, as well as to the adversary. The learned representations were evaluated with a logistic regression model from scikit-learn \cite{scikit-learn}, using the standard settings. All baseline models were trained for 200 epochs.
-The Ln2L \cite{ln2l} and MLP baselines share the architecture of the cVAE's encoder, only with a classification layer affixed.
+For this dataset our experiment benefited from using null-samples as inputs to the adversary of the cFlow model. Unlike for the image datasets, we found a single adversary to be sufficient. This was realised as a multi-layer perceptron (MLP) with one hidden layer, 256 units wide. The INN performs a bijection of the form $f: \mathbb{R}^n \rightarrow \mathbb{R}^n$. However, the adult dataset is composed of mostly discrete (binary/categorical) features. To achieve good performance, we found it necessary to first pre-process the inputs with a pretrained autoencoder, using its encodings as the input to the cFlow model, as well as to the adversary. The learned representations were evaluated with a logistic regression model from scikit-learn \citep{scikit-learn}, using the standard settings. All baseline models were trained for 200 epochs.
+The Ln2L \citep{ln2l} and MLP baselines share the architecture of the cVAE's encoder, only with a classification layer affixed.
 
 \subsubsection{Coloured MNIST}
-Each level of the architecture used for the downstream classifier and na\"ive baseline alike consists of two convolutional layers, each with kernel size 3 and followed by Batch Norm \cite{ioffe2015batch} and ReLU activation. For the Ln2L baseline, we use an a setup identical to that described in \cite{ln2l}. Each level has twice the number of filters in its convolutional layer and half the spatial input dimensions as the last. The original input is downsampled to the point of the output being reduced to a vector, to which a fully-connected classification layer is applied.
+Each level of the architecture used for the downstream classifier and na\"ive baseline alike consists of two convolutional layers, each with kernel size 3 and followed by Batch Norm \citep{ioffe2015batch} and ReLU activation. For the Ln2L baseline, we use an a setup identical to that described in \citep{ln2l}. Each level has twice the number of filters in its convolutional layer and half the spatial input dimensions as the last. The original input is downsampled to the point of the output being reduced to a vector, to which a fully-connected classification layer is applied.
 
-To allow for an additional level in the INN (the downsampling operations requiring the number of spatial dimensions to be even), the data was zero-padded to a size of $32\times32$. The cVAE and cFlow models were trained for 50 and 200 epochs respectively, using $\ell_2$ reconstruction loss for the former. The downstream classifier and all baselines were trained for 40 epochs. For both of our models, an ensemble of 5 adversaries was applied to the encodings, with each member taking the form of a fully-connected ResNet, 2 blocks in depth, with SeLU activation \cite{klambauer2017self}. The adversaries were reinitialised independently with probability $0.2$ at the end of each epoch. While the adversaries could equally well take  null-samples as input, as done for the Adult dataset, doing so requires the performing of both forward and inverse passes each iteration, which, for the convolutional INNs of the depths we require for the image datasets, introduces a large computational overhead, while also showing to be the less stable of the two approaches in our preliminary experiments.
+To allow for an additional level in the INN (the downsampling operations requiring the number of spatial dimensions to be even), the data was zero-padded to a size of $32\times32$. The cVAE and cFlow models were trained for 50 and 200 epochs respectively, using $\ell_2$ reconstruction loss for the former. The downstream classifier and all baselines were trained for 40 epochs. For both of our models, an ensemble of 5 adversaries was applied to the encodings, with each member taking the form of a fully-connected ResNet, 2 blocks in depth, with SeLU activation \citep{klambauer2017self}. The adversaries were reinitialised independently with probability $0.2$ at the end of each epoch. While the adversaries could equally well take  null-samples as input, as done for the Adult dataset, doing so requires the performing of both forward and inverse passes each iteration, which, for the convolutional INNs of the depths we require for the image datasets, introduces a large computational overhead, while also showing to be the less stable of the two approaches in our preliminary experiments.
 
 \subsubsection{CelebA} 
 The downstream classifier and na\"ive baseline take the same form as described above for cMNIST, but with an additional level with 32 filters in each of its convolutions at the top of the network. For this dataset we adapt the Ln2L model by simply considering it as an augmentation the na\"ive baseline's objective function, with the entropy loss applied to the output of the final convolutional layer. These models were again trained for 40 epochs, which we found to be sufficient for convergence for the tasks in question. The cVAE and cFlow models were respectively trained for 100 epochs and 30 epochs, using $\ell_1$ reconstruction loss for the former. Compared with cMNIST, the size of the adversarial ensemble was increased to 10, the reinitialisation probability to 0.33, but no changes were made to the architectures of its members.
 
 \subsubsection{The Pitfalls of Adversarial Training}\label{ssec:pitfalls}
-Adversarial learning has become one of the go-to methods for enforcing invariance in fair representation learning \cite{ganin2016domain} with MMD \cite{LouSweLi15} and HSIC \cite{QuaShaTho19}, being popular non-parametric alternatives.
-\cite{ganin2016domain} proposed adversarial learning for domain adaptation problems, with \cite{edwardsstorkey} soon after making this and learning a representation promoting demographic parity.
+Adversarial learning has become one of the go-to methods for enforcing invariance in fair representation learning \citep{ganin2016domain} with MMD \citep{LouSweLi15} and HSIC \citep{QuaShaTho19}, being popular non-parametric alternatives.
+\citet{ganin2016domain} proposed adversarial learning for domain adaptation problems, with \citet{edwardsstorkey} soon after making this and learning a representation promoting demographic parity.
 The adversarial approach carries the benefits of being both efficient and scalable to multi-class categorical variables, which many sensitive attributes are in practice, whereas the non-parametric methods only permit pair-wise comparison.
 
-However, when realised as a neural network, the adversary is both sensitive to the values of the inputs as well as their ordering (though exchangeable architectures, such as \cite{zaheer2017deep} do exist, but which sacrifice expressiveness).
+However, when realised as a neural network, the adversary is both sensitive to the values of the inputs as well as their ordering (though exchangeable architectures, such as \citet{zaheer2017deep} do exist, but which sacrifice expressiveness).
 Thus, it can happen that the representation learner optimises for the surrogate objective of eluding the adversary rather than the real objective of expelling $s$-related information.
 Moreover, the non-stationarity of the dynamics can lead to cyclic-equilibria, irrespective of the capacity of the adversary.
 
-When working with a partitioned latent space, this behaviour can be averted by instead encouraging $z_b$ to be predictive of $s$, acting as a kind of information ``sink``, as in \cite{JacSmeOya18}.
+When working with a partitioned latent space, this behaviour can be averted by instead encouraging $z_b$ to be predictive of $s$, acting as a kind of information ``sink``, as in \citet{JacSmeOya18}.
 However, this does not have the guarantee of making $z_u$ invariant to $s$ - there are often many indicators for $s$, not all of which are needed to predict the label perfectly.
-Training the network to convergence before taking each gradient step with the representation learner is one way one to attempt to tame the unstable minimax dynamics \cite{feng2019learning}.
+Training the network to convergence before taking each gradient step with the representation learner is one way one to attempt to tame the unstable minimax dynamics \citet{feng2019learning}.
 However, this does not prevent the emergence of the aforementioned cyclicity.
 
-We try to mitigate the aforementioned degeneracies by maintaining a diverse set of adversaries, as has shown to be effective for GAN training \cite{durugkar2016generative}, and by decorrelating the individual trajectories by intermittently re-initialising them with some small probability following each iteration.
+We try to mitigate the aforementioned degeneracies by maintaining a diverse set of adversaries, as has shown to be effective for GAN training \citep{durugkar2016generative}, and by decorrelating the individual trajectories by intermittently re-initialising them with some small probability following each iteration.
 
-\subsubsection{Tuning the Partition Sizes.}\label{ssec:partition-size-matters}
+\subsubsection{Tuning the Partition Sizes}\label{ssec:partition-size-matters}
 There are several ways of ensuring that $z_b$ is of sufficient size to capture all $s$ dependencies, while at time is minimised such as that information unrelated to $s$ is maximally preserved. We adopt the straightforward search strategy of, starting from some initial guess, calibrating the value according to accuracy attained by a classifier trained to predict $s$ from $z_b$ on a held-out subset of the representative set, which is measured whenever the adversarial loss plateaus. If the accuracy is above chance level then that suggests the size of the $z_b$ partition, $|z_b|$, needs to be increased to accommodate more information about $s$. If the accuracy is found to be at chance level then are two possibilities: 1) $|z_b|$ is already optimal; 2) $|z_b|$ is large enough that it fully contains both information $s$ as well as that of a portion of $y$. If the former is true, then perturbations around the current value allow us to confirm this; if the latter is true then decreasing the value was indeed the correct decision.
 
 \subsection{Synthesising Coloured MNIST}\label{sec:color-details}
@@ -265,9 +265,10 @@ There are several ways of ensuring that $z_b$ is of sufficient size to capture a
 
 \subsection{Stabilising the Coupling layers}\label{sec:those-darn-coupling-layers}
 \noindent Heuristically, we found that  applying an additional nonlinear function to the scale coefficient of the form
-$$
-s = \sigma (f(u)) + 0.5
-$$
+\begin{align}
+  s = \sigma (f(u)) + 0.5
+  \label{eq:heuristic-1}
+\end{align}
 greatly improved the stability of the affine coupling layers. Here, $\sigma$ is the logistic function, which we shift to be centred on 1 so that zero-initialising $f$ results in the coupling layers initially performing an identity-mapping.
 
 \begin{table}[ht]
@@ -365,7 +366,7 @@ This works as long as only the information about $s$ ends up in the $z_b$ partit
 If $s$ takes a form similar to that which we pre-trained on, and can thus be correctly partitioned in the latent space, by complement we have the information about $\neg s$ stored in the $z_u$ partition, without presupposing similarity to the $\neg s$ observed during pre-training.
 
 \paragraph{Transferring from mixed-NIST to MNIST.}
-We test our hypothesis by comparing the performance of the cFlow and cVAE models pre-trained on a mixture of datasets belonging to the NIST family, colourised in the same way as cMNIST, while the downstream train and test sets remain the same as in the original cMNIST experiments. Specifically, we create this representative set by sampling 24,000 images (to match the cardinality of the original representative set) from EMNIST (letters only)~\cite{cohen2017emnist}, Fashion\-MNIST~\cite{xiao2017fashion} and KMNIST~\cite{clanuwat2018deep}, in equal proportion. We use the same architectures for the cVAE and cFlow models as we did in the non-transfer learning setting. In terms of hyperparameters, the only change made was to the KL-divergence's pre-factor, finding it necessary to increase it to $1$ to guarantee stability.
+We test our hypothesis by comparing the performance of the cFlow and cVAE models pre-trained on a mixture of datasets belonging to the NIST family, colourised in the same way as cMNIST, while the downstream train and test sets remain the same as in the original cMNIST experiments. Specifically, we create this representative set by sampling 24,000 images (to match the cardinality of the original representative set) from EMNIST (letters only)~\citep{cohen2017emnist}, Fashion\-MNIST~\citep{xiao2017fashion} and KMNIST~\citep{clanuwat2018deep}, in equal proportion. We use the same architectures for the cVAE and cFlow models as we did in the non-transfer learning setting. In terms of hyperparameters, the only change made was to the KL-divergence's pre-factor, finding it necessary to increase it to $1$ to guarantee stability.
 
 The results for the range of $\sigma$ values are shown in Fig.~\ref{fig:cmnist-transfer}. Unsurprisingly, the performance of both models suffers when the representative and test sets do not completely correspond. However, the cFlow model consistently outperforms the cVAE model, with the gap increasing as the bias decreases.
 Although some colour information is retained in the cFlow null-samples, symptomatic of an imperfect transfer, semantic information is almost entirely retained as well.

@@ -664,7 +664,7 @@ We need just need to modify the likelihood to take into account the target label
 
 \subsection{Data}
 We run experiments on two real-world datasets.
-The first dataset is the \textbf{Adult Income} dataset~\citep{Dua:2017}.
+The first dataset is the \textsc{Adult Income} dataset~\citep{Dua:2017}.
 It contains 33,561 data points with census information from US citizens.
 The labels indicate whether the individual earns more ($y=1$) or less ($y=0$) than \$50,000 per year.
 We use the dataset with either \emph{race} or \emph{gender} as the sensitive attribute.
@@ -673,7 +673,7 @@ the categorical features are then one-hot encoded.
 For the experiments, we removed 2,399 instances with missing data
 and used only the training data, which we split randomly for each trial run.
 %
-The second dataset is the \textbf{ProPublica recidivism} dataset.
+The second dataset is the \textsc{ProPublica recidivism} dataset.
 It contains data from 6,167 individuals that were arrested.
 The data was collected when investigating the COMPAS risk assessment tool~\citep{angwin2016machine}.
 The task is to predict whether the person was rearrested within two years
@@ -707,7 +707,7 @@ Consequently, for evaluating equality of opportunity we perform no balancing of 
   Accuracy and fairness (with respect to \emph{demographic parity}) for various methods
   on the balanced test set of the Adult dataset.
   Fairness is defined as $\textit{PR}_{s=0}/\textit{PR}_{s=1}$ (a completely fair model would achieve a value of 1.0).
-  Left: using \textbf{race} as the sensitive attribute. Right: using \textbf{gender} as the sensitive attribute.
+  Left: using \textsc{race} as the sensitive attribute. Right: using \textsc{gender} as the sensitive attribute.
   The mean and std of $10$ repeated experiments.
 }%
 \label{tab:dempar}%\scalebox{0.99}{%
@@ -797,7 +797,6 @@ and removing disparate mistreatment by constraining the false negative rate (\em
 Every method is evaluated over 10 repeats that each have different splits of the training and test set.
 
 \subsection{Results for Demographic Parity on Adult dataset}\label{sssec:demparresults}
-% \noindent\textbf{Results for Demographic Parity on Adult dataset.}
 \begin{figure}[t]
   \begin{center}
     \centerline{\includegraphics[width=0.98\columnwidth]{./figures/adult_tar_choice.eps}}
@@ -888,7 +887,6 @@ when the target rate is close to the average of the positive rates in the datase
 % More details are given in the Appendix (Table~\ref{tab:adult-parity} and Table~\ref{tab:adult-tar}).
 
 \subsection{Results for Equality of Opportunity on ProPublica dataset.}\label{sssec:eqoppresults}
-% \noindent\textbf{Results for Equality of Opportunity on ProPublica dataset.}
 %
 For equality of opportunity,
 we again follow \citet{zafar2017fairnesstreatment} and evaluate the algorithm on the ProPublica dataset.
@@ -904,7 +902,7 @@ A perfectly fair algorithm would achieve $1.0$ on the measure.
 %   \includegraphics[width=0.45\textwidth]{propublica-recidivism_race_opp_box.eps}
 %   \includegraphics[width=0.45\textwidth]{propublica-recidivism_sex_opp_box.eps}
   \caption{Accuracy and fairness (with respect to \emph{equality of opportunity}) for various methods on ProPublica dataset.
-    \textbf{(a)}: using race as the sensitive attribute; \textbf{(b)}: using gender.
+    (a): using race as the sensitive attribute; (b): using gender.
     A completely fair model would achieve a value of 1.0 in the x-axis.
     %The best value for the TPR ratio is $1.0$.
     See Fig.~\ref{fig:propublica_opp_scatter_tpr}(a) and (b) on how these choices of PR setting translate to
@@ -1216,7 +1214,7 @@ into one of two sets: $\mathcal{C}^0$ and $\mathcal{C}^1$,
 such that $\mathcal{C}^0\cup\mathcal{C}^1 = \mathcal{D}$ and $\mathcal{C}^0\cap\mathcal{C}^1 = \emptyset$.
 
 We refer to the set $\mathcal{A} = (\mathcal{C}^0\cap\mathcal{Y}^0) \cup (\mathcal{C}^1\cap\mathcal{Y}^1)$
-as the set of correct (or \textbf{a}ccurate) predictions.
+as the set of correct (or \emph{a}ccurate) predictions.
 The \emph{accuracy} is given by $\mathit{acc} = N^{-1}\cdot\left|\mathcal{A}\right|$.
 From the definition it is clear that $0\leq\mathit{acc} \leq 1$.
 

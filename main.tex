@@ -206,28 +206,31 @@ titlepage,numbers=noenddot,%1headlines,
 % ********************************************************************
 \usepackage{classicthesis}
 % \setmainfont[Ligatures=TeX,Numbers=OldStyle]{TeX Gyre Pagella} % Palatino clone
-% \linespread{1.05} % a bit more for Palatino
+\linespread{1.05} % a bit more for Palatino
 % \setmainfont[Ligatures=TeX,Numbers=OldStyle]{Linux Libertine O}
-\setmainfont[Ligatures=TeX,Numbers=OldStyle]{Libertinus Serif} % fork of Linux Libertine O
+\setmainfont[Ligatures=TeX]{Libertinus Serif} % fork of Linux Libertine O
 \usepackage{unicode-math}
 \setmathfont{Libertinus Math}
 % \setmathfont{XITS Math}
 % \setmathfont{TeX Gyre Pagella Math} % this font seems quite incomplete
 
+\newfontfamily{\noligatures}[Ligatures={NoRare, NoCommon}]{Linux Libertine O}
+% Letters={UppercaseSmallCaps,SmallCaps},
+% LetterSpace=80,WordSpace=3]
+
 \usepackage{setspace}
 % \setstretch{1.4}
 \onehalfspacing
 
-% \makeatletter
-% \renewcommand*{\ct@altfont}{}
-% \makeatother
+\makeatletter
+\renewcommand*{\ct@altfont}{\noligatures}
+\makeatother
 
 \usepackage{fontspec}
 
 % \newfontface\chapterNumber[Scale=7,Color=000000]{TeX Gyre Pagella Bold}
 \newfontface\chapterNumbers{Linux Libertine O}[Scale=6,Color=303030]
 % \DeclareFixedFont{\chapterNumber}{U}{eur}{b}{n}{50}
-
 
 % large number to the right
 
@@ -402,9 +405,9 @@ titlepage,numbers=noenddot,%1headlines,
 % GO!GO!GO! MOVE IT!
 %*******************************************************
 \begin{document}
-% \frenchspacing
+\frenchspacing
 \raggedbottom
-\selectlanguage{american} % american ngerman
+% \selectlanguage{american} % american ngerman
 %\renewcommand*{\bibname}{new name}
 %\setbibpreamble{}
 \pagenumbering{roman}
@@ -459,7 +462,7 @@ titlepage,numbers=noenddot,%1headlines,
 
 \cleardoublepage
 \part{Conclusion}\label{pt:end}
-\include{ch/6-conclusion}
+\include{ch/6-discussion}
 
 % ********************************************************************
 % Appendix

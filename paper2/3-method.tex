@@ -149,8 +149,7 @@ off-loading information to the decoder by conditioning is no longer possible. As
 The obvious solution to this is to allow the encoder to store information about $s$ in a partition of the latent space as in  \cite{creager2019flexibly}.  However, we question whether an autoencoder is the best choice for this setup, with the view that an invertible model is the better tool for the task. Using an invertible model has several guarantees, namely complete information-preservation and freedom from a reconstruction loss, the importance of which we elaborate on below.
 
 \subsection{Conditional Flow}\label{cflow}
-% \subsubsection{Invertible Neural Networks.}
-\textbf{Invertible Neural Networks.}
+\subsubsection{Invertible Neural Networks}
 Invertible neural networks are a class of neural network architecture characterised by a bijective mapping between their inputs and output \cite{Dinh2014}. The transformations are designed such that their inverses and Jacobians are efficiently computable.
 These flow-based models permit \emph{exact} likelihood estimation \cite{normflows2015} through the warping of a base density with a series of invertible transformations and computing the resulting, highly multi-modal, but still normalised, density, using the change of variable theorem:
 % Flow-GAN \cite{grover2018flowgan} combines the \emph{exact} log-likelihood estimation of the invertible network with the adversarial training of a GAN.
@@ -177,8 +176,7 @@ i.e.\ maximising the probability the network assigns to samples in the training 
 
 % \textbf{Spatial downsampling.} To downsample the spatial dimensions and promote mixing between the variables, \cite{Dinh2014} first mask the input with a checkerboard pattern before reshaping (transforming a $c \times h\times w$ tensor into a $4c \times \frac{1}{2} h\times \frac{1}{2}w$). Each "level" of the network is demarcated by a downsampling operation.
 
-% \subsubsection{The Benefits of Bijectivity.}
-\textbf{The Benefits of Bijectivity.}
+\subsubsection{The Benefits of Bijectivity}
 Using an invertible network to generate our encoding, $\bm{z}_u$, carries a number of advantages over other approaches.
 Ordinarily, the main benefit of flow-based models is that they permit exact density estimation. 
 However, since we are not interested in sampling from the model's distribution, in our case the likelihood term serves as a regulariser, as it does for  \cite{JacSmeOya18}. 
@@ -210,9 +208,9 @@ Appendix~\ref{ssec:size-of-zb} explores the effects of the size further.
 % Eq~\eqref{eq:zreconstruct} defines how to obtain $\bm{x}$.
 % In order to generate the pre-image of $\bm{z}_u$, we perform null-sampling with respect to $\bm{z}_b$ by zeroing-out its elements -- i.e. setting them to the mean of the prior density imposed on $\bm{z}$, $\mathcal{N}(z;0, I)$ -- by the operation, $\bm{x}_{u} = f^{-1}([\bm{z}_{u}, \stackrel{\rightarrow}{0}])$.
 
-% \textbf{Tuning the Partition Sizes.}
+% \subsubsection{Tuning the Partition Sizes}
 
-% \subsubsection{The Pitfalls of Adversarial Training.}
+% \subsubsection{The Pitfalls of Adversarial Training}
 
 % \textbf{Preprocessing}.
 % Heuristically, we found that preprocessing the data with an autoencoder stabilises and accelerates training of the cFlow model. The autoencoder was pretrained on the pretraining set solely to minimise reconstruction loss and its weights frozen at the time of the INN's training. While this means the INN is not truly lossless with respect to the uncompressed data, its bijectivity is leveraged to ensure semantically-relevant information is not discarded during the pre-training phase, which is still applicable since the autoencoder is not trained jointly with the INN to maximise the adversarial loss. Since the autoencoder is optimised for compression, information about both the spurious and non-spurious attributes is captured impartially in its encoding.
