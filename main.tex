@@ -5,7 +5,7 @@
 \RequirePackage{silence} % :-\
     \WarningFilter{scrreprt}{Usage of package `titlesec'}
     %\WarningFilter{scrreprt}{Activating an ugly workaround}
-    \WarningFilter{titlesec}{Non standard sectioning command detected}
+    \WarningFilter{titlesec}{Non standard sectioning command}
 \documentclass[ %twoside,openright,
 titlepage,numbers=noenddot,%1headlines,
                 headinclude,footinclude,cleardoublepage=empty,abstract=on,
@@ -214,7 +214,8 @@ titlepage,numbers=noenddot,%1headlines,
 % \setmathfont{XITS Math}
 % \setmathfont{TeX Gyre Pagella Math} % this font seems quite incomplete
 
-\newfontfamily{\noligatures}[Ligatures={NoRare, NoCommon}]{Linux Libertine O}
+\newfontfamily{\noligatures}[Kerning=Off, Contextuals={NoAlternate}, Ligatures={NoCommon}]{Libertinus Serif}
+% \newfontfamily{\noligatures}[Ligatures={NoRequired, NoCommon, NoContextual}]{TeX Gyre Pagella}
 % Letters={UppercaseSmallCaps,SmallCaps},
 % LetterSpace=80,WordSpace=3]
 
@@ -432,7 +433,7 @@ titlepage,numbers=noenddot,%1headlines,
 \pagestyle{scrheadings}
 
 %%%% center the page numbers
-\clearscrheadfoot
+\clearpairofpagestyles
 \ohead{\rightmark}
 \cfoot[\pagemark]{\pagemark}
 %%%%
