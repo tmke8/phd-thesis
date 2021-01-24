@@ -1,22 +1,41 @@
 \chapter{Discussion and future work}\label{ch:conclusion}
-In this thesis, I have presented three approaches to deal with dataset bias.
+In this thesis, I have presented three approaches for dealing with dataset bias.
 The first one deals with a form of label bias and the other two with forms of sampling bias.
-However, this by no means covers \emph{all} possible biases,
-but it contributes to a growing literature that tries to tackle this problem.
+While this by no means covers \emph{all} possible biases,
+it contributes to a growing literature that tries to tackle this problem.
 One could ask if there is one method that is able to cover all possible dataset biases,
 but I think there is a strong argument to be made that no general method can exist,
 because it is, \eg, not possible to describe in general what is spurious information and what is relevant information.
+Nevertheless, finding methods that are more generally applicable is a worthy goal.
+
+Furthermore, as it currently stands,
+the \ac{ML} practitioner has to know the bias in the data very well in order to choose a method to correct it.
+It would be desirable to have a simple algorithm for deciding which method to use.
 
 Thus, correcting dataset bias remains a challenging topic
 and one that is relevant to today's machine learning applications.
 Any cutting-edge \ac{ML} system will have to deal with imperfect data,
 especially if the collected data is human-related.
-The results of these data imperfections are certainly highly undesirable:
-you do not want your photo tagging service to only work for a certain kind of person;
-you do not want your speech recognition system to only work for a certain kind of dialect.
+The possible effects of these data imperfections are certainly highly undesirable:
+a photo tagging service might only work for a certain kind of person;
+a speech recognition system might only work for a certain kind of dialect.
 If, in these situations, enough representative (but unlabeled) data is available,
 then the methods presented here can be used to try and correct the problem.
 
-
-
-Nevertheless, the methods presented here \emph{are} relevant to real-world problems.
+One area of machine learning that has recently seen increased interest is unsupervised learning.
+The latter two chapters also make use of it to some degree.
+The exciting promise of unsupervised learning in general is
+that labor-intensive labeling is not needed and so vast amounts of existing, unlabeled data can be put to good use.
+One could ask the question whether bias-correcting methods are still needed, with access to so much data.
+It could be that, while the data is certainly not perfect,
+there is so much of it that the biased parts ``cancel each other out''.
+However, recent investigations of the GPT models do not seem to bear this out.
+One reason for this might be the way these models are trained at the moment:
+they maximize the probability assigned to the next token.
+Thus, such a model has to account for the wide array of human opinions and assign a non-zero probability to all of them.
+So, when asked to summarize a text, GPT does not give the \emph{best} summary;
+it will give a summary that an average person might have written.
+However, with the help of a very high quality labeled dataset (that was expensive to create),
+GPT could be finetuned to actually produce very good summaries.
+I suspect this pattern of learning the basics in an unsupervised fashion
+and then finetuning with high-quality labels will continue in the future.
