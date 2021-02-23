@@ -43,6 +43,15 @@
 % \email{\{t.kehrenberg,m.bartlett,ot44,n.quadrianto\}@sussex.ac.uk}}
 % \maketitle
 
+\chapter{Paper 2: Null-sampling for Interpretable and Fair Representations}
+\textsc{Authors}:\\
+Thomas Kehrenberg$^1$, Myles Bartlett$^1$, Oliver Thomas$^1$, and Novi Quadrianto$^1$ \\
+\textsc{Affiliations}:\\
+$^1$ Predictive Analytics Lab (PAL), University of Sussex, Brighton, UK\\
+\textsc{Conference}:\;\;\textit{European Conference on Computer Vision} (ECCV), 2020 \\
+% \textsc{DOI}:\;\;10.3389/frai.2020.00033
+\textsc{Note}:\;\;The appendix has been included as section~\ref{sec:nifr-appendix}.
+
 % 70-150 words
 \section{Abstract}
 \noindent
@@ -51,13 +60,12 @@
 % Instead of basing their output on those features which are semantically meaningful, the output can be based on these unintended relationships.
 % This is undesirable for many reasons, among them limited generalisation and uncontrolled bias.
 We propose to learn invariant representations, in the data domain, to achieve interpretability in algorithmic fairness. 
-Invariance implies a selectivity for high level, relevant correlations w.r.t. class label annotations, and a robustness to irrelevant correlations with protected characteristics such as race or gender. 
+Invariance implies a selectivity for high level, relevant correlations w.r.t.\ class label annotations, and a robustness to irrelevant correlations with protected characteristics such as race or gender. 
 We introduce a non-trivial setup in which the training set exhibits a strong bias such that class label annotations are irrelevant and spurious correlations cannot be distinguished.
 To address this problem, we introduce an adversarially trained model with a \emph{null-sampling} procedure to produce invariant representations in the data domain.
 To enable disentanglement, a partially-labelled \emph{representative} set is used.
 By placing the representations into the data domain, the changes made by the model are easily examinable by human auditors.
 We show the effectiveness of our method on both image and tabular datasets: Coloured MNIST, the CelebA and the Adult dataset.%
-\footnote{The code can be found at \url{https://github.com/predictive-analytics-lab/nifr}.}
 % At the same time, it is important the people be able to trust the outputs of machine learning systems 
 % To address this problem, we propose dividing training into a straightforward and general two-step procedure.
 % In this framework, the model is first trained to produce invariant representations from an unlabelled pre-training set, in which there exists minimal spurious correlations.

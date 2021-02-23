@@ -5,14 +5,15 @@
 while still allowing a classifier to predict $y$ from them.
 We run our cVAE and cFlow models on the coloured MNIST (cMNIST) and CelebA dataset,
 which we artificially bias, first describing the sampling procedure we follow to do so for non-synthetic datasets.
-As baselines we have the model of~\cite{ln2l} (Ln2L) and the same CNN used to evaluate the cFlow and cVAE models
+As baselines we have the model of~\citet{kim2019learning} (Ln2L) and the same CNN used to evaluate the cFlow and cVAE models
 but with the unmodified images as input (CNN).
-For the cFlow model we adopt a Glow-like architecture~\cite{KinDha18},
-while both subnetworks of the cVAE model comprise gated convolutions~\cite{van2016conditional}, where the encoding size is $256$.
+For the cFlow model we adopt a Glow-like architecture~\citep{KinDha18},
+while both subnetworks of the cVAE model comprise gated convolutions~\citep{van2016conditional}, where the encoding size is $256$.
 For cMNIST, we construct the Ln2L baseline according to its original description, for CelebA,
 we treat it as an augmentation of the baseline CNN's objective function.
 %More
-Detailed information regarding model architectures can be found in Appendix~\ref{sec:architectures} and~\ref{sec:optimisation-details}.
+Detailed information regarding model architectures can be found in Appendix~\ref{sec:architectures} and~\ref{sec:optimisation-details}.%
+\footnote{The code can be found at \url{https://github.com/predictive-analytics-lab/nifr}.}
 % \begin{figure*}[!htb]
 %   \centering
 %   %
@@ -58,7 +59,7 @@ Detailed information regarding model architectures can be found in Appendix~\ref
 %   \centering
 %   \caption{Performance of our methods (cVAE and cFlow) on the tabular UCI Adult Dataset. This is a common benchmark in fair machine learning literature. Each model depicts the result of a ownstream classifier trained on the embeddings produced by one of the models. (Left) Accuracy of a downstream classifier. (Middle) Demographic Parity of a downstream classifier. (Right) Equality of Opportunity of a downstream classifier.}\label{fig:adult_results}
 % \end{figure*}
-\subsubsection{Synthesising Dataset Bias}
+\subsection{Synthesising Dataset Bias}
 For our experiments, we require a training set that exhibits a strong spurious correlation, together with a test set that does not.
 For cMNIST, this is easily satisfied as we have complete control over the data generation process.
 For CelebA and  UCI Adult, on the other hand,
@@ -77,7 +78,7 @@ Thus, for $\eta=0$, the biased dataset is just $\mathcal{D}_{eq}$,
 for $\eta=1$ it is just $\mathcal{D}_{opp}$
 and for $\eta=\tfrac{1}{2}$ the biased dataset is an ordinary subset of the whole data. The test set is simply the data remaining from the initial split.
 
-\subsubsection{Evaluation protocol}
+\subsection{Evaluation protocol}
 We evaluate our results in terms of accuracy and fairness.
 A model that perfectly decouples its predictions from $s$ will achieve near-uniform accuracy across all biasing-levels.
 For binary $s$/$y$ we quantify the fairness of a classifier's predictions using \emph{demographic parity} (DP): the  absolute difference in the probability  of a positive prediction for each sensitive group.
@@ -111,7 +112,7 @@ The coloured MNIST (cMNIST) dataset is a variant of the MNIST dataset in which t
 In the training set, the colours have a one-to-one correspondence with the digit class.
 In the test set (and the representative set), colours are assigned randomly.
 The colours are drawn from Gaussians with 10 different means.
-We follow the colourisation procedure outlined by~\cite{ln2l}, with the mean colour values selected so as to be maximally dispersed.
+We follow the colourisation procedure outlined by~\citet{kim2019learning}, with the mean colour values selected so as to be maximally dispersed.
 The full list of such values can be found in Appendix~\ref{sec:color-details}.
 We produce multiple variants of the cMNIST dataset corresponding to different standard deviations $\sigma$ for the colour sampling:
 $\sigma \in \{0.00, 0.01, ..., 0.05 \}$.
@@ -124,7 +125,7 @@ For this specific dataset, we can establish an additional baseline by simply gre
 % Since the data-generation process is known, we can establish a baseline an additional by following the simple heuristic of grey-scaling the dataset
 which only leaves the luminosity as spurious information.
 %The grey-scaling operation does not completely eliminate the bias in the dataset, it only mitigates it by reducing the number of unique values for $s$ it is still exhibited residually in the luminosity of the digits.
-We also evaluate the model, with all the associated hyperparameters, from~\cite{ln2l}.
+We also evaluate the model, with all the associated hyperparameters, from~\citet{kim2019learning}.
 The only difference between the setups is the dataset creation, including the range of $\sigma$ values we consider.
 Our versions of the dataset, on the whole, exhibit much stronger colour bias, to the point of the mapping the digit's colour and class being bijective.
 Fig.~\ref{fig:cmnist_chart} shows that the model significantly underperforms even the na\"ive baseline, aside from at $\sigma = 0$, where they are on par.
@@ -140,7 +141,7 @@ cFlow, on the other hand, is consistent across $\sigma$ values.
 
 
 \subsubsection{CelebA}
-To evaluate the effectiveness of our framework on real-world image data we use the CelebA dataset~\cite{liu2015faceattributes}, consisting of 202,599 celebrity images.
+To evaluate the effectiveness of our framework on real-world image data we use the CelebA dataset~\citep{liu2015faceattributes}, consisting of 202,599 celebrity images.
 These images are annotated with various binary physical  attributes, including ``gender'', ``hair color'', ``young'', etc, from which we  select our sensitive and target attributes.
 The images are centre cropped and resized to $64\times64$, as is standard practice.
 For our experiments, we designate ``gender'' as the sensitive attribute,

@@ -1,4 +1,37 @@
-\chapter{Null-sampling for Interpretable and Fair Representations}\label{ch:nifr}
+\chapter{Content}\label{ch:content}
+\section{Tuning Fairness by Balancing Target Labels}\label{sec:target-labels}
+This chapter is predominantly concerned with label bias.
+The main idea is that we make use of pseudo labels to implicitly learn from a \emph{balanced} dataset,
+in which \(y\perp s\) holds, and which thus satisfies \acf{DP}.
+This falls under the area of \emph{fair classifiers} discussed in \secref{fair-classifiers}
+
+We can interpret the contributions of this chapter in two ways.
+The first corresponds to the definition-centric view of dataset bias,
+and the second to the groundtruth-centric view.
+\begin{enumerate}
+  \item
+    We can say that the classifier should satisfy demographic parity in its predictions,
+    and learning from a balanced training set is just one particular way to achieve this.
+    In this view, the pseudo labels have no deeper meaning and are just a computational trick.
+  \item
+    We can see the training set as a corrupted version of a true dataset, which is balanced (\(y\perp s\)),
+    and so, by learning from these pseudo labels, we are simply approximating the true dataset.
+    However, we do not actually have access to the true dataset; we only know that it is balanced.
+    In order to evaluate the trained model, we compute fairness metrics with respect to \ac{DP}.
+\end{enumerate}
+Within the chapter, we sometimes jump between these two views.
+
+While the main focus is on label bias,
+the experiments are performed on real-world fairness datasets,
+which also display a significant amount of sample bias (disadvantaged groups are underrepresented).
+Furthermore, in addition to the result for \ac{DP}, we also show that the proposed scheme improves \acf{EOpp}.
+
+In order to construct the pseudo labels,
+we use side information about summary statistics for an unbalanced training set.
+This allows us to target a specific balanced set, instead of just any balanced set.
+In other words, rather than just enforcing \ac{DP}, the method gives control over the target rates \(P(\hat{y}=1|s)\).
+
+\section{Null-sampling for Interpretable and Fair Representations}\label{sec:nifr}
 In the setting from the previous chapter,
 labels were untrustworthy because they had been flipped;
 a phenomenon we referred to as \emph{label bias}.
@@ -44,3 +77,34 @@ a classifier can then be trained to accurately predict the class label \(y\).
 A parallel to the previous chapter is that the method makes use of side information
 (in this case the pre-training/context set)
 in order to overcome the bias in the training set.
+
+\section{Zero-shot Fairness with Invisible Demographics}\label{sec:zsf}
+A shortcoming of the approach from the previous chapter
+is its reliance on a context/pre-training set which has \(s\) labels.
+As discussed, it is necessary to make use of \emph{some} kind of side information,
+but perhaps we can relax some requirements.
+In particular, while it is already easier to collect data without \(y\) labels (but with \(s\) labels),
+it is even easier to collect data without \emph{any} label.
+So, requiring only an unlabeled context set would improve the applicability of the method.
+This chapter presents an approach based on that idea.
+
+The setting is very similar to the previous chapter:
+the training set suffers from severe sampling bias, but we have access to a (mostly) unbiased context set.
+The change is that the context set may be completely unlabeled,
+but in exchange, we have some stronger requirements for the training set.
+Namely, the holes left by the sampling bias may not be so numerous
+as to make \(s\) and \(y\) completely indistinguishable.
+In the previous chapter, the example of colored MNIST had a training set
+where there was a strict one-to-one mapping of color and digit;
+but this kind of blending of \(s\) and \(y\) into one is not the focus of this chapter.
+The focus is instead on a setting where the training set lacks certain combinations of \(s\) and \(y\),
+which results in poor predictions for these combinations on the test set (or deployment setting)
+where those combinations do occur.
+We refer to these missing combinations as \emph{invisible demographics}.
+The value of \(s\) acts as a spurious attribute and should be ignored in order to make accurate predictions.
+
+As in the previous chapter, the first step is to train a neural network to produce an invariant representation.
+The second step is then to train a classifier on that.
+The invariant representation is trained by doing distribution matching between the training set and the context set.
+Finally, the training set is transformed into the invariant representation,
+to serve as training set for the classifier.

@@ -12,6 +12,20 @@
 \automark[section]{chapter}
 \renewcommand{\chaptermark}[1]{\markboth{\spacedlowsmallcaps{#1}}{\spacedlowsmallcaps{#1}}}
 \renewcommand{\sectionmark}[1]{\markright{\textsc{\thesection}\enspace\spacedlowsmallcaps{#1}}}
+
+\makeatletter
+\newcommand\invisiblechapter[1]{%
+  \refstepcounter{chapter}%
+  \addtocontents{toc}{\begingroup}%
+        % \renewcommand{\cftchapaftersnumb}{\spacedlowsmallcaps}%
+        % \renewcommand{\cftchapfont}{\normalfont}%
+        % \renewcommand{\cftchappagefont}{\normalfont}%
+        % }%
+  % \addcontentsline{toc}{chapter}{\bfseries#1}%
+  \addcontentsline{toc}{chapter}{\protect\numberline{\thechapter}\ct@caps#1}%
+  \addtocontents{toc}{\endgroup}%
+  \chaptermark{#1}}
+\makeatother
 %*******************************************************
 % List of Figures and of the Tables
 %*******************************************************
@@ -58,6 +72,7 @@
   % Acronyms
   %*******************************************************
   %\phantomsection
+
   \pdfbookmark[1]{Acronyms}{acronyms}
   \markboth{\spacedlowsmallcaps{Acronyms}}{\spacedlowsmallcaps{Acronyms}}
   \chapter*{Acronyms}

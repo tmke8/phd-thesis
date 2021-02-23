@@ -69,17 +69,17 @@ We optimise this loss in an adversarial fashion by playing a min-max game, in wh
 The adversary is an auxiliary classifier $g$, which receives $\bm{z}_u$ as input and attempts to predict the spurious variable $s$.
 We denote the parameters of the adversary as $\phi$;
 for the parameters of the encoder we use $\theta$, as before.
-The objective from Eq~\eqref{eq:objectivetheory} is then% realised as
+The objective from~\eqref{eq:objectivetheory} is then% realised as
 \begin{align}
   \min_{\theta\in\Theta} \max_{\phi\in\Phi} \mathbb{E}_{x \sim X}[\log p_\theta(x) -\lambda\mathcal{L}_c(g_\phi(f_\theta(x))); s)]
   \label{eq:objectivepractical}
 \end{align}
 where $\mathcal{L}_c$ is the cross-entropy between the predictions for $s$ and the provided labels.
-In practice, this adversarial term is realised with a gradient reversal layer (GRL) \cite{ganin2016domain} between $\bm{z}_u$ and $g$ as is common in adversarial approaches~\cite{edwardsstorkey}.
+In practice, this adversarial term is realised with a gradient reversal layer (GRL) \citep{ganin2016domain} between $\bm{z}_u$ and $g$ as is common in adversarial approaches~\citep{edwards2016censoring}.
 % to fair representation learning
 
 \subsection{The Disentanglement Dilemma} % HEADING IS JUST TO HELP ORGANIZE THOUGHTS, WILL BE DELETED LATER
-The objective in Eq~\eqref{eq:objectivepractical} balances the two desiderata: predicting $y$ and being invariant to $s$.
+The objective in~\eqref{eq:objectivepractical} balances the two desiderata: predicting $y$ and being invariant to $s$.
 However, in the training set $(X^\mathit{tr}, S^\mathit{tr}, Y^\mathit{tr})$,
 $y$ and $s$ are so strongly correlated that removing information about $s$ inevitably removes information about $y$.
 This strong correlation makes existing methods fail under this setting.
@@ -93,7 +93,7 @@ For this, we assume the existence of another set of samples that follow a simila
 but whilst the sensitive attribute is available, the class labels are not.
 In reality, this is not an unreasonable assumption,
 as, while properly annotated data is scarce, unlabelled data can be obtained in abundance (with demographic information from census data, electoral rolls, etc.).
-Previous work has also considered treated ``unlabelled data'' as still having $s$ labels \cite{wick2019unlocking}.
+Previous work has also considered treated ``unlabelled data'' as still having $s$ labels~\citep{wick2019unlocking}.
 We are restricted only in the sense that the spurious correlations we want to sever are indicated in the features.
 We call this the \emph{representative set}, consisting of $X^\mathit{rep}$ and $S^\mathit{rep}$.
 It fulfils $\mathcal{I}(S^\mathit{rep}; Y^\mathit{rep}) \approx 0$
@@ -116,17 +116,17 @@ and $\bm{z}_b$ for cFlow, with a zero vector of equivalent size.
 We refer to this procedure used to generate $\bm{x}_u$ as \emph{null-sampling} (here, with respect to $\bm{z}_b)$.
 
 % This That said, we do wish to draw a distinction between null-sampling and the annihilation operation featured in .
-Null-sampling resembles the \emph{annihilation} operation described in \cite{xiao2017dna}, however we note that the two serve very different roles.  Whereas the annihilation operation serves as a regulariser to prevent trivial solutions (similar to \cite{jaiswal2018unsupervised}), null-sampling is used to generate the invariant representations post-training.
+Null-sampling resembles the \emph{annihilation} operation described in \citet{xiao2017dna}, however we note that the two serve very different roles.  Whereas the annihilation operation serves as a regulariser to prevent trivial solutions (similar to \cite{jaiswal2018unsupervised}), null-sampling is used to generate the invariant representations post-training.
 
 \subsection{Conditional Decoding}%
 \label{conddec}
-\noindent We first describe a VAE-based model similar to that proposed in~\cite{madras2018learning}, before highlighting some of its shortcomings that motivate the choice of an invertible representation learner.
+\noindent We first describe a VAE-based model similar to that proposed in~\citet{madras2018learning}, before highlighting some of its shortcomings that motivate the choice of an invertible representation learner.
 
-The model takes the form of a class conditional $\beta$-VAE \cite{higgins2017beta}, in which the decoder is conditioned on the spurious attribute.
+The model takes the form of a class conditional $\beta$-VAE \citep{higgins2017beta}, in which the decoder is conditioned on the spurious attribute.
 We use $\theta_{enc}, \theta_{dec} \in \theta$ to denote the parameters of the encoder and decoder sub-networks, respectively.
 Concretely, the encoder component performs the mapping $x \rightarrow{\bm{z}_u}$, while $\mathcal{B}$ is instantiated as the decoder,
 $\mathcal{B} \coloneqq p_{\theta_{dec}}(x|z_u, s)$, which takes in a concatenation of the learned non-spurious latent vector $\bm{z}_u$ and a one-hot encoding of the spurious label $s$ to produce a reconstruction of the input $\hat{x}$.
-Conditioning on a one-hot encoding of $s$, rather than a single value, as done in \cite{madras2018learning} is the key to visualising invariant representations in the data domain.
+Conditioning on a one-hot encoding of $s$, rather than a single value, as done in \citet{madras2018learning} is the key to visualising invariant representations in the data domain.
 If $\mathcal{I}(z_u; s)$ is properly minimised, the decoder can only derive its information about $s$ from the label, thereby freeing up $\bm{z}_u$ from encoding the unwanted information while still allowing for reconstruction of the input.
 Thus, by feeding a zero-vector to the decoder we achieve $\hat{x} \perp s$.
 The full learning objective for the cVAE is given as
@@ -141,17 +141,17 @@ and $p(\bm{z}_u)$ is the prior imposed on the variational posterior.
 For all our experiments, $p(\bm{z}_u)$ is realised as an Isotropic Gaussian.
 Fig.~\ref{fig:cvae_diagram} summarises the procedure as a diagram.
 
-While we show this setup can indeed work for simple problems, as~\cite{madras2018learning} before us have, we show that it lacks scalability due to disagreement between the components of the loss.
+While we show this setup can indeed work for simple problems, as~\citet{madras2018learning} before us have, we show that it lacks scalability due to disagreement between the components of the loss.
 Since information about $s$ is only available to the decoder as a binary encoding,
 if the relationship between $s$ and $x$ is highly non-linear and cannot be summarised by a simple on/off mechanism, as is the case if $s$ is an attribute such as gender,
 off-loading information to the decoder by conditioning is no longer possible. As a result, $\bm{z}_u$ is forced to carry information about $s$ in order to minimise the reconstruction error. 
 
-The obvious solution to this is to allow the encoder to store information about $s$ in a partition of the latent space as in  \cite{creager2019flexibly}.  However, we question whether an autoencoder is the best choice for this setup, with the view that an invertible model is the better tool for the task. Using an invertible model has several guarantees, namely complete information-preservation and freedom from a reconstruction loss, the importance of which we elaborate on below.
+The obvious solution to this is to allow the encoder to store information about $s$ in a partition of the latent space as in  \citet{creager2019flexibly}.  However, we question whether an autoencoder is the best choice for this setup, with the view that an invertible model is the better tool for the task. Using an invertible model has several guarantees, namely complete information-preservation and freedom from a reconstruction loss, the importance of which we elaborate on below.
 
 \subsection{Conditional Flow}\label{cflow}
 \subsubsection{Invertible Neural Networks}
-Invertible neural networks are a class of neural network architecture characterised by a bijective mapping between their inputs and output \cite{Dinh2014}. The transformations are designed such that their inverses and Jacobians are efficiently computable.
-These flow-based models permit \emph{exact} likelihood estimation \cite{normflows2015} through the warping of a base density with a series of invertible transformations and computing the resulting, highly multi-modal, but still normalised, density, using the change of variable theorem:
+Invertible neural networks are a class of neural network architecture characterised by a bijective mapping between their inputs and output \citep{Dinh2014}. The transformations are designed such that their inverses and Jacobians are efficiently computable.
+These flow-based models permit \emph{exact} likelihood estimation \citep{normflows2015} through the warping of a base density with a series of invertible transformations and computing the resulting, highly multi-modal, but still normalised, density, using the change of variable theorem:
 % Flow-GAN \cite{grover2018flowgan} combines the \emph{exact} log-likelihood estimation of the invertible network with the adversarial training of a GAN.
 \begin{align}
 \begin{split}
@@ -179,7 +179,7 @@ i.e.\ maximising the probability the network assigns to samples in the training 
 \subsubsection{The Benefits of Bijectivity}
 Using an invertible network to generate our encoding, $\bm{z}_u$, carries a number of advantages over other approaches.
 Ordinarily, the main benefit of flow-based models is that they permit exact density estimation. 
-However, since we are not interested in sampling from the model's distribution, in our case the likelihood term serves as a regulariser, as it does for  \cite{JacSmeOya18}. 
+However, since we are not interested in sampling from the model's distribution, in our case the likelihood term serves as a regulariser, as it does for  \citet{JacSmeOya18}. 
 Critically, this forces the mean of each latent dimension to zero enabling null-sampling. 
 The invertible property of the network guarantees the preservation of all information relevant to $y$ which is independent of $s$, regardless of how it is allocated in the output space.
 Secondly, we conjecture that the encodings are more robust to out-of-distribution data.

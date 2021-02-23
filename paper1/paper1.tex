@@ -30,7 +30,7 @@
 % \usepackage{authblk}
 % \usepackage{url,hyperref,microtype,subcaption}
 
-% \author[1]{Thomas Kehrenberg}
+% \textsc{Authors}: Thomas Kehrenberg\footnote{}
 % \author[1,2]{Zexun Chen}
 % \author[1]{Novi Quadrianto}
 % \affil[1]{Predictive Analytics Lab (PAL), University of Sussex, Brighton, UK}
@@ -50,6 +50,15 @@
 % \maketitle
 
 % ============= content ====================
+\chapter{Paper 1: Tuning Fairness by Balancing Target Labels}
+\textsc{Authors}:\;\;Thomas Kehrenberg$^1$, Zexun Chen$^{1,2}$, and Novi Quadrianto$^1$ \\
+\textsc{Affiliations}:\\
+$^1$ Predictive Analytics Lab (PAL), University of Sussex, Brighton, UK\\
+$^2$ BioComplex Laboratory, University of Exeter, Exeter, UK \\
+\textsc{Journal}:\;\;\textit{Frontiers in Artificial Intelligence}, Volume 3 \\
+\textsc{DOI}:\;\;10.3389/frai.2020.00033 \\
+\textsc{Note}:\;\;The appendix has been included as section~\ref{sec:tuning-appendix}.
+
 \section{Abstract}
 
 %%% Leave the Abstract empty if your article does not require one, please see the Summary Table for full details.
@@ -147,7 +156,7 @@ We assume that a positive label $y=1$ corresponds to a positive outcome for an i
 The term $\hat{y}$ below is the prediction of a machine learning model that,
 in most works, uses only non-sensitive attributes $x$.
 %
-Several group fairness criteria have been proposed (e.g. \citet{zafar2017fairnesstreatment,chouldechova2017fair,hardt2016equality}):
+Several group fairness criteria have been proposed (e.g. \cite{zafar2017fairnesstreatment,chouldechova2017fair,hardt2016equality}):
 \begin{align}
 & \text{equality of positive rate (Demographic Parity):}\nonumber\\
 & \text{Pr}(\hat{y}=1|s)=\text{Pr}(\hat{y}=1|s\sp{\prime}) \label{eq:eq_dem_par}\\
@@ -413,14 +422,14 @@ This leads us to the following constraints for $s\prime\in\{0, 1\}$:
 \end{align}
 %$P(y|s=s\prime)$ has to be set to the value at which we want our constraint to hold.
 We call $P(y=1|s=j)$ the base rate $\mathit{PR}_b^j$ which we estimate from the training set:
-\begin{align*}
+\begin{align}
   P(y=1|s=i) = \frac{\text{number of points with } y=1 \text{ in group }i}
   {\text{number of points in group }i}~.
-\end{align*}
+\end{align}
 Expanding the sum, we get
 \begin{align}
-  &\mathit{PR}_t \nonumber\\
-  =\,\, &P(\bar{y}=1|y=0,s=s\prime) \cdot (1-\mathit{PR}_b^1) 
+  \mathit{PR}_t %\nonumber\\
+  =\,\, P(\bar{y}=1|y=0,s=s\prime) \cdot (1-\mathit{PR}_b^1) 
   +P(\bar{y}=1|y=1,s=s\prime) \cdot \mathit{PR}_b^1~.\label{eq:dpconstexpanded}
 \end{align}
 This is a system of linear equations consisting of two equations (one for each value of $s\prime$)
@@ -584,7 +593,7 @@ We compare the two choices ($\mathit{PR}_t^{max}$ and $\mathit{PR}_t^{avg}$) in 
 
 \subsection{Conditionally balanced dataset}
 \noindent There is a fairness definition related to demographic parity which allows conditioning on ``legitimate'' risk factors $\ell$
-when considering how equal the demographic groups are treated~\cite{corbett2017algorithmic}.
+when considering how equal the demographic groups are treated~\citep{corbett2017algorithmic}.
 This cleanly translates into balanced datasets which are balanced conditioned on $\ell$:
 \begin{align}
   &P(\bar{y}=1|\ell=\ell\prime, s=0) \overset{!}{=} P(\bar{y}=1|\ell=\ell\prime, s=1)~.
@@ -598,7 +607,7 @@ and computing the transition probabilities for each sample depending on $\ell$.
 There are several ways to enforce fairness in machine learning models:
 as a pre-processing step
 % (e.g.~),
-\citep{kamiran2012data,louizos2015variational,lum2016statistical,zemel2013learning,Chiappa19,QuaShaTho19},
+\citep{kamiran2012data,louizos2016variational,lum2016statistical,zemel2013learning,Chiappa19,QuaShaTho19},
 % kusner2017counterfactual
 as a post-processing step \citep{feldman2015certifying,hardt2016equality}, %(e.g.~\citep{feldman2015certifying,hardt2016equality}),
  or as a constraint during the learning phase
@@ -608,7 +617,7 @@ as a post-processing step \citep{feldman2015certifying,hardt2016equality}, %(e.g
 Our method enforces fairness during the learning phase (an in-processing approach) but, unlike other approaches, we do not cast fair-learning as a \emph{constrained} optimisation problem.
 Constrained optimisation requires a customised procedure.
 %
-In \citet{GohCotGupFri16}, \citet{zafar2017fairnesstreatment}, and \citet{zafar2017fairnessconstraints},
+In \citet{GohCotGupFri16}, \citet{zafar2017fairnessconstraints}, and \citet{zafar2017fairnesstreatment},
 % In~\citet{GohCotGupFri16,zafar2017fairnesstreatment,zafar2017fairnessconstraints},
 suitable majorisation-minimisation/convex-concave procedures~\citep{LanSri09} were derived.
 %
@@ -625,7 +634,7 @@ All the methods given by \citet{kamiran2012data} aim only at enforcing demograph
 The massaging approach uses a classifier to first rank all samples according to their probability of having a positive label ($y=1$)
 and then flips the labels that are closest to the decision boundary such that the data then satisfies demographic parity.
 This \emph{pre-processing} approach is similar in spirit to our \emph{in-processing} method but differs in the execution.
-In our method (Section \ref{sec:dp}), ``ranking'' and classification happen in one step and labels are not explicitly flipped
+In our method (section \ref{sec:dp}), ``ranking'' and classification happen in one step and labels are not explicitly flipped
 but assigned probabilities of being flipped.
 %{\color{red}This protects us from flipping the wrong labels.}
 
@@ -788,7 +797,7 @@ In addition to the GP and LR baselines, we compare our proposed model with the f
 Support Vector Machine (\emph{SVM}), \emph{Kamiran \& Calders}~\citep{kamiran2012data} (``reweighing'' method),
 \emph{Agarwal et al.}~\citep{AgaBeyDudLanetal18} (using logistic regression as the classifier)
 % Logistic Regression (\emph{LR})
-and several methods given by Zafar et al.~\citep{zafar2017fairnessconstraints,zafar2017fairnesstreatment},
+and several methods given by \citet{zafar2017fairnessconstraints,zafar2017fairnesstreatment},
 %\citet{zafar2017fairnessconstraints} and \citet{zafar2017fairnesstreatment},
 which include maximising accuracy under demographic parity fairness constraints (\emph{ZafarFairness}),
 maximising demographic parity fairness under accuracy constraints (\emph{ZafarAccuracy}),
@@ -818,7 +827,7 @@ the observed rate of positive predictions per demographic group $P (\hat{y} = 1 
 Thus, $\mathit{PR}_{s=0} / \mathit{PR}_{s=1}$ is a measure for demographic parity,
 where a completely fair model would attain a value of $1.0$.
 This measure for demographic parity is also called ``disparate impact''
-(see e.g.~\citet{feldman2015certifying,zafar2017fairnesstreatment}).
+(see e.g.~\cite{feldman2015certifying,zafar2017fairnesstreatment}).
 %
 As the results in Table~\ref{tab:dempar} show, FairGP and FairLR are clearly fairer than the baseline GP and LR\@.
 We use the mean ($\mathit{PR}_t^{avg}$) for the target acceptance rate.
@@ -847,7 +856,7 @@ $\mathit{PR}_t^{avg}$ performs best in term of the trade-off.%equal (for \emph{r
     (b): $\mathit{PR}_{s=0}$ vs $\mathit{PR}_{s=1}$ using gender.
   }%
   \label{fig:adult_parity_scatter_pr_pr}
-\end{figure}
+\end{figure}%
 \begin{figure}[t]
   \centering
   \includegraphics[width=0.98\textwidth]{./figures/adult_parity_scatter_acc.eps}
@@ -857,7 +866,7 @@ $\mathit{PR}_t^{avg}$ performs best in term of the trade-off.%equal (for \emph{r
     (b): disparate impact vs accuracy using gender.
   }%
   \label{fig:adult_parity_scatter_acc}
-\end{figure}
+\end{figure}%
 
 Fig.~\ref{fig:adult_parity_scatter_pr_pr}(a) and (b) show runs of FairLR
 where we explicitly set a target acceptance rate, $\mathit{PR}_t := P(\bar{y}=1)$,
@@ -895,7 +904,7 @@ we define a measure of equality of opportunity via the ratio of the true positiv
 We use $\mathit{TPR}_{s=i}$ to denote the observed TPR in group $i$: $P(\hat{y}=1|y=1, s=i)$,
 and $\mathit{TNR}_{s=i}$ for the observed true negative rate (TNR) in the same manner.
 The measure is then given by $\mathit{TPR}_{s=0} / \mathit{TPR}_{s=1}$.
-A perfectly fair algorithm would achieve $1.0$ on the measure.
+A perfectly fair algorithm would achieve $1.0$ on the measure.%
 \begin{figure*}[t]
   \centering
   \includegraphics[width=0.98\textwidth]{./figures/propublica_opp_box_with_agarwal.eps}
@@ -909,7 +918,7 @@ A perfectly fair algorithm would achieve $1.0$ on the measure.
     $\mathit{TPR}_{s=0}$ vs $\mathit{TPR}_{s=1}$. %and TPR vs TNR.
   }%
   \label{fig:propublica_opp_box}
-\end{figure*}
+\end{figure*}%
 \begin{figure*}[!ht]
   \centering
   \includegraphics[width=0.98\textwidth]{./figures/propublica_opp_scatter_tpr.eps}
@@ -919,7 +928,7 @@ A perfectly fair algorithm would achieve $1.0$ on the measure.
     (b): using gender.
   }%
   \label{fig:propublica_opp_scatter_tpr}
-\end{figure*}
+\end{figure*}%
 
 The results of 10 runs are shown in Fig.~\ref{fig:propublica_opp_box} and Fig.~\ref{fig:propublica_opp_scatter_tpr}.
 Fig.~\ref{fig:propublica_opp_box}(a) and (b) show the accuracy-fairness trade-off;
@@ -941,7 +950,7 @@ Fairness is fundamentally not a challenge of algorithms alone, but very much a s
 A lot of proposals have emerged recently for defining and obtaining fairness in machine learning-based decision making systems. 
 %
 % A vast amount
-The vast majority of academic work has focused on two categories of definitions: statistical (group) notions of fairness and individual notions of fairness (see~\cite{verma2018fairness} for at least twenty different notions of fairness).
+The vast majority of academic work has focused on two categories of definitions: statistical (group) notions of fairness and individual notions of fairness (see~\citet{verma2018fairness} for at least twenty different notions of fairness).
 %
 Statistical notions are easy to verify but do not provide protections to individuals. 
 %
@@ -1119,7 +1128,7 @@ We thank Chao Chen and Songzhu Zheng for their inspiration of our main proof.
 %%% Frontiers will add the figures at the end of the provisional pdf automatically
 %%% The use of LaTeX coding to draw Diagrams/Figures/Structures should be avoided. They should be external callouts including graphics.
 % \clearpage
-\section{Appendix}
+\section{Appendix}\label{sec:tuning-appendix}
 \subsection{Proof of Theorem 1}
 Let $\eta(x,s)=P(y=1|x,s)$ be the distribution of the training data.
 % todo: specify the tysbakov condition explicitly

@@ -36,6 +36,7 @@ titlepage,numbers=noenddot,%1headlines,
 % this solves a warning about bullet points
 \usepackage{textcomp}
 \usepackage{import}
+% \usepackage{titling}
 
 % ****************************************************************************************************
 % 1. Configure classicthesis for your needs here, e.g., remove "drafting" below
@@ -83,6 +84,7 @@ titlepage,numbers=noenddot,%1headlines,
 \newcommand{\Ie}{I.\,e.}
 \newcommand{\eg}{e.\,g.}
 \newcommand{\Eg}{E.\,g.}
+\def\wrt{w.r.t\onedot}
 \newcommand{\thomas}[1]{\textcolor{red}{\textbf{Thomas:} #1}}
 % ****************************************************************************************************
 
@@ -445,21 +447,19 @@ titlepage,numbers=noenddot,%1headlines,
 \part{Introduction}\label{pt:intro}
 \include{ch/1-introduction}
 \include{ch/2-related-work}
+\include{ch/3-0-common-notation}
+\include{ch/4-nifr}
 
 \cleardoublepage
-% \ctparttext{
-%   The main part comprises three published works.
-%   They are presented here with short explanations for the context.
-% }
-\part{Main works}\label{pt:main}
-% \include{ch/3-0-common-notation}
-\include{ch/3-target-labels}
-\chapter{Paper 1}
+\ctparttext{
+  The main part comprises two peer-reviewed publications and one submitted paper currently under review.
+  They are reproduced here with minimal changes.
+}
+\part{Publications}\label{pt:main}
+% \include{ch/3-target-labels}
 \import{paper1/}{paper1.tex}
-\include{ch/4-nifr}
-\chapter{Paper 2}
 \import{paper2/}{paper2.tex}
-\include{ch/5-zsf}
+% \include{ch/5-zsf}
 
 \cleardoublepage
 \part{Conclusion}\label{pt:end}

@@ -4,7 +4,7 @@
 %Fair representations are a means of removing potentially sensitive information from training data
 %in order to avoid wrongly relying on the sensitive information for classification.
 
-Without due consideration for the data collection process, machine learning algorithms can exacerbate biases, or even introduce new ones if proper control is not exerted over their learning \cite{holstein2019improving}. 
+Without due consideration for the data collection process, machine learning algorithms can exacerbate biases, or even introduce new ones if proper control is not exerted over their learning \citep{holstein2019improving}. 
 While most of these issues can be solved by
 % While efforts should be made to
 controlling and curating data collection in a fairness-conscious fashion, 
@@ -15,11 +15,11 @@ One popular definition of fairness used to guide the training of fair classifier
 
 In the typical setup, we have an input $\bm{x}$, a sensitive attribute $s$ that represents some non-admissible information like gender
 and a class label $y$ which is the prediction target.
-The idea of fair \emph{representation} learning \cite{ZemWuSwePitetal13}\cite{edwardsstorkey}\cite{madras2018learning}
+The idea of fair \emph{representation} learning \citep{ZemWuSwePitetal13,edwards2016censoring,madras2018learning}
 is then to transform the input $\bm{x}$ to a representation $\bm{z}$ which is invariant to $s$.
 Thus, learning from $\bm{z}$ will not introduce a forbidden dependence on $s$.
 % $\bm{z}$ can then be used to learn a predictor
-% In fair representation learning \cite{ZemWuSwePitetal13}\cite{edwardsstorkey}\cite{madras2018learning}, the goal is then to find a representation $\bm{z}$ that is invariant to $s$.
+% In fair representation learning \cite{ZemWuSwePitetal13}\cite{edwards2016censoring}\cite{madras2018learning}, the goal is then to find a representation $\bm{z}$ that is invariant to $s$.
 A good fair representation is one that preserves most of the information from $\bm{x}$ while satisfying the aforementioned constraints.
 % While fair \emph{representations} are by no means the only method of achieving this goal, approaches that explicitly depend on the target label \cite{kamiran2012data} are restrictive in that they do not readily admit transfer to unseen tasks, and are bound by the requirement of having $s$ and $y$ labels be present together.
 
@@ -31,7 +31,7 @@ This will allow us to draw on a much more diverse pool of data to learn from.
 %nevertheless appears to improve fairness measures with respect to $s$.
 %However, as pointed out by \cite{locatello2019challenging},
 %some supervision or inductive bias is needed in order to recognise a well-disentangled representation.
-While annotations for $y$ are often hard to come by (and often noisy \cite{kehrenberg2020tuning}),
+While annotations for $y$ are often hard to come by (and often noisy; see~\cite{kehrenberg2020tuning}),
 annotations for the sensitive attribute $s$ are usually less so, as $s$ can often be obtained from demographic information provided by census data.
 We thus consider the setting where the representation is learned from data
 that is only labelled with $s$ and not $y$.
@@ -58,7 +58,7 @@ thereby rendering the representative set essential for learning the right invari
 From hereon, we will use the terms \emph{spurious} and \emph{sensitive} interchangeably, depending on the context, to refer to an attribute of the data we seek invariance to.
 % This is essentially a form of strong sampling bias and is not an unrealistic complication, having been shown to plague real-world datasets \cite{kallus2018residual}.
 %Classifiers trained on ImageNet for example, have been shown to be biased towards texture \cite{Geir18}. \cite{zhang2018visual} similarly examine the problem of learning from biased data, showing that pre-trained models can exploit biases in the data by learning patterns semantically unrelated to the target, an issue that can be difficult to identify when the bias pervades both the training and test sets.
-We can draw a connection between learning in the presence of spurious correlations and what \cite{kallus2018residual} call \emph{residual unfairness}.
+We can draw a connection between learning in the presence of spurious correlations and what \citet{kallus2018residual} call \emph{residual unfairness}.
 Consider the Stop, Question and Frisk (SQF) dataset for example:
 the data was collected in New York City, but the demographics of the recorded cases do not represent the true demographics of NYC well.
 The demographic attributes of the recorded individuals might correlate so strongly with the prediction target that the two are nearly indistinguishable.
@@ -70,8 +70,8 @@ In our approach, we make use of the (partially labelled) representative set to l
 
 While there is a substantial body of literature devoted to the problems of fair representation-learning, exactly how the invariance in question is achieved is often overlooked. 
 When critical decisions, such as who should receive bail or be released from jail, are being deferred to an automated decision making system, it is critical that people be able to trust the logic of the model underlying it, whether it be via semantic or visual explanations. 
-We build on the work of \cite{QuaShaTho19} and learn a decomposition ($f^{-1}: Z_s \times Z_{\neg s} \rightarrow X$) of the \emph{data domain} ($X$) into independent subspaces \emph{invariant} to  $s$ ($Z_{\neg s}$) and \emph{indicative} of $s$ ($Z_{s}$), which lends an interpretability that is absent from most representation-learning methods.
-While model interpretability has no strict definition \cite{zhang2018visual}, we follow the intuition of \cite{adel2018discovering} -- \emph{a simple relationship to something we can understand}, a definition which representations in the data domain naturally fulfil.
+We build on the work of \citet{QuaShaTho19} and learn a decomposition ($f^{-1}: Z_s \times Z_{\neg s} \rightarrow X$) of the \emph{data domain} ($X$) into independent subspaces \emph{invariant} to  $s$ ($Z_{\neg s}$) and \emph{indicative} of $s$ ($Z_{s}$), which lends an interpretability that is absent from most representation-learning methods.
+While model interpretability has no strict definition \citep{zhang2018visual}, we follow the intuition of \citet{adel2018discovering} -- \emph{a simple relationship to something we can understand}, a definition which representations in the data domain naturally fulfil.
 
 Whether as a result of the aforementioned sampling bias or simply because the features necessarily co-occur, it is not rare for features to correlate with one another in real-world datasets.
 Lipstick and gender for example, are two attributes that we expect to be highly correlated and to enforce invariance to gender can implicitly enforce invariance to makeup.
@@ -80,9 +80,9 @@ However, unforeseen biases in the data may engender cases which are less justifi
 By baking interpretability into our model (by having representations in the data domain), though we still have no better control over what is learned, we can at least diagnose such pathologies.
 
 To render our representations interpretable, we rely on a simple transformation we call \emph{null-sampling} to map invariant representations in the data domain.
-Previous approaches to fair representation learning \cite{beutel,edwardsstorkey,madras2018learning,LouSweLi15} predominantly rely upon autoencoder models to jointly minimise reconstruction loss and invariance.
+Previous approaches to fair representation learning \citep{beutel2017data,edwards2016censoring,madras2018learning,louizos2016variational} predominantly rely upon autoencoder models to jointly minimise reconstruction loss and invariance.
 We discuss first how this can be done with such a model that we refer to as cVAE (conditional VAE),
-before arguing that the bijectivity of invertible neural networks (INNs)~\cite{Dinh2014} makes them better suited to this task. 
+before arguing that the bijectivity of invertible neural networks (INNs)~\citep{Dinh2014} makes them better suited to this task. 
 We refer to the variant of our method based on these as cFlow (conditional Flow).
 INNs have several properties that make them appealing for unsupervised representation learning. 
 The focus of our approach is on creating invariant representations that preserve the non-sensitive information maximally, with only knowledge of $s$ and not of the target $y$, while at the same time having the ability to easily probe what has been learnt.
