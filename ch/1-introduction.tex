@@ -34,7 +34,7 @@ One could imagine a hybrid approach where an automated system makes preliminary 
 but random samples are reviewed by humans and decisions can always be challenged.
 Ideally, the model itself would tell us about decisions it is uncertain about.
 
-Moreover, two of the three methods presented in this thesis require access to (unlabeled) \emph{unbiased} data,
+Moreover, two of the three methods presented in this thesis require access to (unlabelled) \emph{unbiased} data,
 which is used during the training process.
 So, the criticism that we are only learning from biased data does not apply here.
 This should allow us to be more confident in the predictions of those methods.
@@ -128,21 +128,22 @@ In particular, for \ac{EOpp}, the \acp{TPR} need to be the same for all demograp
 Just like \ac{DP},
 \ac{EOpp} and \ac{EOdds} can help us evaluate how much a classifier is affected by the bias in the training set.
 
-\section{Claims and contributions}%
+% \section{Claims and contributions}%
+\section{List of publications and author contributions}%
 \label{sec:claims-contributions}
-This thesis is based on 3 publications, corresponding to \rangechapref{ch:target-labels}{ch:zsf}.
+This thesis is based on 3 publications, corresponding to \rangechapref{ch:paper1}{ch:paper3}.
 The first one is concerned with \emph{label bias} and the other two with \emph{sampling bias}.
 \begin{enumerate}
   \item Thomas Kehrenberg, Zexun Chen, and Novi Quadrianto (2020). ``Tuning Fairness by Balancing Target Labels.''
-    In: \emph{Frontiers in Artificial Intelligence} 3, p.\ 33.
+    In: \textit{Frontiers in Artificial Intelligence} 3, p.\ 33.
     \citep{kehrenberg2020tuning}
   \item Thomas Kehrenberg, Myles Bartlett, Oliver Thomas, and Novi Quad\-ri\-an\-to (2020).
     ``Null-sampling for Interpretable and Fair Representations.''
-    In: \emph{Computer Vision - ECCV 2020}. Glasgow, UK: Springer International Publishing.
+    In: \textit{Computer Vision - ECCV 2020}. Glasgow, UK: Springer International Publishing.
     \citep{kehrenberg2020nullsampling}
   \item Thomas Kehrenberg, Viktoriia Sharmanska, Myles Bartlett, and Novi Quadrianto (2021).
-    ``Zero-shot Fairness with Invisible Demographics.''
-    Under review.
+    ``Learning with Perfect Bags: Addressing Hidden Stratification with Zero Labeled Data.''
+    \textit{Under review at ICML 2021}.
     \citep{kehrenberg2020zeroshot}
 \end{enumerate}
 A shorter version of \citet{kehrenberg2020tuning} was published as a workshop paper:
@@ -152,54 +153,14 @@ A shorter version of \citet{kehrenberg2020tuning} was published as a workshop pa
     In: \emph{Workshop on Ethical, Social and Governance Issues in AI at NeurIPS}. Montreal, Canada.
 \end{itemize}
 
-The contributions of these publications are as follows.
-All presented approaches rely on some form of side information which helps us overcome the dataset bias.
-This side information is always significantly easier to obtain than unbiased training data.
-
-To tackle the problem of label bias, we introduce the concept of \emph{target labels} $\bar{y}$.
-These represent an uncertain estimate of the true labels.
-The side information needed here is true acceptance rate for each of the demographic groups: $P(\bar{y}=1|s=s')$
-(assuming a binary label $y$).
-Via the sum rule, it is then possible to express the likelihood in terms of these target labels,
-such that maximizing the likelihood corresponds to improving the prediction of the target labels
-instead of the given (biased) training labels.
-
-The next approach is concerned with sampling bias.
-We consider a very extreme sampling bias from which it is not possible to recover without additional information.
-Concretely, there is a one-to-one mapping between the class label $y$ and a spurious attribute $s$ in the training set,
-such that the model learns the (easier-to-predict) $s$ instead of $y$.
-In order to nudge the model towards learning the right target,
-we make use of a \emph{context set} which is approximately balanced ($y\perp s$),
-but where we only have access to the $s$ labels and \emph{not} the $y$ labels.
-Thus, the context set cannot be used directly for training, but it can be used to learn an \emph{invariant representation}.
-Such a representation captures all information in $\vx$ that is relevant to the task of predicting $y$,
-but is invariant to the spurious attribute.
-I present a particularly suitable method for this based on Invertible Neural Networks,
-which ensures that no information is lost that is unrelated to $s$.
-
-The final approach is in the setting of sampling bias as well,
-but compared to the previous method, some assumptions are relaxed and different trade-offs exist.
-One perhaps strong assumption in the previous method was
-that the context set needs to include labels for $s$.
-Conversely, in this new setting, we have a completely unlabeled context set
-and a training set which is missing certain combinations of $s$ and $y$.
-In this setting, it is possible to learn an invariant representation
-by enforcing the representation for the training set to be indistinguishable from the representation on the context set,
-when conditioning on $y$.
-This enforcement is realized with adversarial networks which compare batches of samples
-in order to compare data drawn from the training set and the context set.
-This process requires balanced batches which is achieved via clustering.
-The end result is an invariant representation which allows training a classifier
-that learns the correct relationship between $x$ and $y$.
-
 (MISSING HERE: ``a declaration confirming [the candidate's] contribution to each paper,
 especially in cases where the co-author is a supervisor''.)
 
-\section{Thesis structure}%
+\section{Structure of document}%
 \label{sec:thesis-structure}
 In \chapref{ch:related-work}, I present related work,
-concentrated on the area of algorithmic fairness and dataset bias.
-\Rangechapref{ch:target-labels}{ch:zsf} comprise the main contribution of this thesis.
+concentrating on the area of algorithmic fairness and dataset bias.
+\Rangechapref{ch:paper1}{ch:paper3} constitute the main contribution of this thesis.
 Each of these chapters starts with a brief section which positions the chapter in the context of the this document.
 This is followed by the contents of publications.
 In the final chapter, \chapref{ch:conclusion}, I present conclusions from the main work and directions for future work.

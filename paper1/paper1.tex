@@ -50,7 +50,6 @@
 % \maketitle
 
 % ============= content ====================
-\chapter{Paper 1: Tuning Fairness by Balancing Target Labels}
 \textsc{Authors}:\;\;Thomas Kehrenberg$^1$, Zexun Chen$^{1,2}$, and Novi Quadrianto$^1$ \\
 \textsc{Affiliations}:\\
 $^1$ Predictive Analytics Lab (PAL), University of Sussex, Brighton, UK\\
@@ -1313,7 +1312,7 @@ From the definition it is clear that $0\leq\mathit{acc} \leq 1$.
 \end{corollary}
 \begin{figure}[t]
   \centering
-  \includegraphics[width=0.5\textwidth]{./figures/plot.pdf}
+  \includegraphics[width=0.6\textwidth]{./figures/plot.pdf}
   \caption{Achievable accuracy for different target values.}%
   \label{fig:accvstarget}
 \end{figure}
@@ -1334,7 +1333,7 @@ From the definition it is clear that $0\leq\mathit{acc} \leq 1$.
 \subsection{Illustration of restrictions on PR}
 \begin{figure}[t]
   \centering
-  \includegraphics[width=0.3\textwidth]{figures/label_shift.pdf}
+  \includegraphics[width=0.6\textwidth]{figures/label_shift.pdf}
   \caption{%
     Illustration of demographic parity with target labels.
     In the situation in the upper part, $P(\bar{y}=1|y=1)$ cannot be set to 1,
@@ -1350,18 +1349,15 @@ We start by setting a target rate $r_t$:
 
 This leads us to the following constraint for $s\prime\in\{0, 1\}$:
 \begin{align}
-  r_t &= P(\bar{y}=1|s=s\prime)\nonumber\\
-  &= \sum\limits_y P(\bar{y}=1|y,s=s\prime) P(y|s=s\prime)
+  r_t = P(\bar{y}=1|s=s\prime)= \sum\limits_y P(\bar{y}=1|y,s=s\prime) P(y|s=s\prime)
 \end{align}
 
 For $P(y|s=s\prime)$ we will put in the value at which we want our constraint to hold.
-We denote $P(y=1|s=j)$ as the base rate $r_b^j$ which we estimate from the training set.
+We use $r_b^j$ to denote the base rate $P(y=1|s=j)$ which we estimate from the training set.
 Plugging this in, we are left with
 \begin{align}
-  r_t = \,\,&P(\bar{y}=1|y=0,s=0) \cdot (1-r_b^0) \nonumber\\
-  +\, &P(\bar{y}=1|y=1,s=0) \cdot r_b^0 \\
-  r_t = \,\,&P(\bar{y}=1|y=0,s=1) \cdot (1-r_b^1)\nonumber\\
-  +\, &P(\bar{y}=1|y=1,s=1) \cdot r_b^1~.
+  r_t &= P(\bar{y}=1|y=0,s=0) \cdot (1-r_b^0) +P(\bar{y}=1|y=1,s=0) \cdot r_b^0 \\
+  r_t &= P(\bar{y}=1|y=0,s=1) \cdot (1-r_b^1) +P(\bar{y}=1|y=1,s=1) \cdot r_b^1~.
 \end{align}
 This is a system of linear equations with two equations and four free variables.
 There is thus still considerable freedom in how we want our constraint to be realized.
@@ -1374,16 +1370,20 @@ we make $P(\bar{y}=1|y=1,s)$ as high as possible and $P(\bar{y}=1|y=0,s)$ as low
 
 We solve for $P(\bar{y}=1|y=0,s=j)$:
 \begin{align}
-  &P(\bar{y}=1|y=0,s=j)\nonumber\\
-  =\,\, &\frac{r_b^j}{1-r_b^j} \left(\frac{r_t}{r_b^j} - P(\bar{y}=1|y=1,s=j)\right)~.
+  P(\bar{y}=1|y=0,s=j) = \frac{r_b^j}{1-r_b^j} \left(\frac{r_t}{r_b^j} - P(\bar{y}=1|y=1,s=j)\right)~.
 \end{align}
 However, we can set $P(\bar{y}=1|y=0,s=j)$ to 0
 only if that does not imply $P(\bar{y}=1|y=1,s=j)$ will be greater than 1.
 This would happen if $\nicefrac{r_t}{r_b^j}$ were greater than 1.
 
 Figure~\ref{fig:shift} illustrates this.
-In the upper part of the figure we have $\nicefrac{r_t}{r_b^j}$ less than 1.
-In this case
+In the upper part of the figure, we have $\nicefrac{r_t}{r_b^j}$ less than 1.
+This means, the target positive rate is less than the base positive rate,
+and implies that the positive rate has to be lowered somehow.
+This is accomplished by mapping some of the $y=1$ samples to $\bar{y}=0$.
+Thus, $P(\bar{y}=1|y=1,s=j)$ is less than 1, and $P(\bar{y}=0|y=1,s=j)$ greater than 0.
+In the lower part of the figure, we have the opposite case; essentially, $\bar{y}$ and $y$ swap places.
+Here, $P(\bar{y}=1|y=1,s=j)=1$ is possible.
 
 % \section{Supplementary Tables and Figures}
 

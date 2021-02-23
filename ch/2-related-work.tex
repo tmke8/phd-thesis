@@ -156,7 +156,7 @@ where the same discrimination criterion is used as before,
 but called \emph{dependency} between \(s\) and \(y\).
 They again present the same dataset changing technique
 and a different technique based on giving training examples different weights
-instead of re-labeling them.
+instead of re-labelling them.
 Examples with \(y=1\) and \(s=0\) get higher weight than those with \(y=0\) and \(s=0\).
 For \(s=1\), those with \(y=0\) get higher weight than those with \(y=1\).
 Weighting means that when the training examples are sampled from the dataset,
@@ -165,7 +165,7 @@ The two approaches are compared on the Adult/Census Income dataset \citep{kohavi
 where the task is to estimate if someone earns more than \$50K per year.
 The sensitive attribute is \emph{sex}.
 In addition to Na\"ive Bayes,
-two classifiers based on nearest neighbors and a decision tree classifier are used.
+two classifiers based on nearest neighbours and a decision tree classifier are used.
 The comparison shows that changing the labels leads to lower dependency (discrimination)
 than reweighting the examples.
 However, reweighting the examples leads to lower dependency than the baseline.
@@ -270,7 +270,7 @@ at the underlying causes for unfair predictors and condense it to three main cau
   Negative Legacy:
   sampling bias and wrong labels in the dataset.
   In contrast to the problem of \emph{prejudice},
-  \emph{negative legacy} might not be detectable by analyzing the dataset.
+  \emph{negative legacy} might not be detectable by analysing the dataset.
   \emph{Sampling bias}, meaning that certain data points simply are missing,
   and \emph{wrong labels} can only be corrected if other sources of information are available.
 \end{enumerate}
@@ -279,10 +279,10 @@ We see that previous works nearly exclusively dealt with the first of these issu
 and more precisely \emph{indirect prejudice}.
 \citet{kamishima2011fairness} also focus on \emph{indirect prejudice};
 essentially because it is the easiest to deal with, apart from \emph{direct prejudice}.
-They use \href{https://en.wikipedia.org/wiki/Logistic_regression}{logistic regression} as the basis for their fair classifier.
+They use \acf{LR} as the basis for their fair classifier.
 Their approach to enforcing fairness is qualitatively different from the previous proposals.
 Instead of manipulating the dataset or using explicit algorithm to make a classifier fair,
-\citet{kamishima2011fairness} treat the fairness constraint like a regularizer.
+\citet{kamishima2011fairness} treat the fairness constraint like a regulariser.
 A term is added to the objective function
 that estimates the mutual information between \(y\) and \(s\)
 and gets minimized together with the other parts of the objective function.
@@ -304,13 +304,13 @@ Nearly all previously discussed papers express some dissatisfaction
 with the \emph{Demographic Parity} metric for measuring discrimination.
 \citet{luong2011k} use a very different fairness metric
 based on the idea that similar people should be treated similarly.
-They first define a distance metric which defines a neighborhood
+They first define a distance metric which defines a neighbourhood
 and is basically the Manhattan distance on the z-scores of the attributes.
 The distance metric is supposed to be only make use of legally admissible attributes.
 An individual is then considered to be unfairly treated
-if it is treated differently than its neighbors.
+if it is treated differently than its neighbours.
 More concretely, for any data point we can check
-how many of the \(k\) nearest neighbors have the same class label as that data point.
+how many of the \(k\) nearest neighbours have the same class label as that data point.
 If the percentage is under a certain threshold
 then there was discrimination against the individual corresponding to that data point.
 In order to create a fair classifier, for this definition of fairness,
@@ -341,7 +341,7 @@ Defining fairness via group membership will always leave open the possibility
 to discriminate against ever smaller subgroups down to individuals.
 
 For these reasons, \citet{dwork2012fairness} try to do better with a metric
-that is centered around a measure of similarity between \emph{individuals}.
+that is centred around a measure of similarity between \emph{individuals}.
 The goal with this is to achieve \emph{individual fairness} instead of just \emph{group fairness}.
 Just like \citet{luong2011k}, they want to treat similar people similarly.
 However, the authors do not give a general recipe to construct the necessary similarity measure.
@@ -359,7 +359,7 @@ The authors propose two practical similarity measures for distributions
 that are well-known in the respective literature.
 In order to train a fair classifier,
 the Lipschitz condition is then used as a constraint for the optimization.
-This is similar to how \citet{kamishima2011fairness} used the fairness criterion as a regularizer.
+This is similar to how \citet{kamishima2011fairness} used the fairness criterion as a regulariser.
 However, \citet{dwork2012fairness} intend to realize it as a strict constraint.
 Furthermore, they show that their criterion is compatible with Demographic Parity
 but does not guarantee it in general.
@@ -386,7 +386,7 @@ to make the data unsuitable for discrimination.
 They speculate that the Lipschitz condition would work better,
 but ultimately do not provide a real solution to the problem.
 
-\section{Fair representation}\label{fair-representation}
+\section{Fair representation}\label{sec:fair-representation}
 \citet{zemel2013learning} expand on the idea of creating a \emph{fair representation}.
 That is, the features of the data points are transformed such that all bias is removed
 but still carry the information necessary for predicting the class label.
@@ -444,14 +444,14 @@ compared to the one that was trained together with the representation.
 
 \citet{feldman2015certifying} try to improve upon the work by \citet{zemel2013learning},
 focusing on fair representation as well.
-The authors try to ground their definition of fairness in U.S. law.
+The authors try to ground their definition of fairness in U.S.\ law.
 They define \emph{Disparate Impact} (DI) as
 \begin{align}
   \label{eq:disparate-impace}
   DI = \frac{P(y=1|s=0)}{P(y=1|s=1)} ~.
 \end{align}
 With a target of \(DI = 1\), this would simply enforce Demographic Parity.
-However, based on some rulings and recommendations of the U.S. legal system,
+However, based on some rulings and recommendations of the U.S.\ legal system,
 they advocate the 80\% Rule, which states that \(DI\) should not be below 80\% (or above 125\%).
 This means that the acceptance rate of a disadvantaged demographic group
 should not be less than 80\% of the acceptance rate of the other group.
@@ -516,7 +516,7 @@ While the algorithms by \citet{feldman2015certifying} are manually constructed a
 \citet{louizos2016variational} use an approach
 that falls more in the area of end-to-end learning where fewer hand-crafted algorithms are used.
 The method is based on deep variational autoencoders (VAE).
-There is an encoder and a decoder that are both modeled as deep neural networks.
+There is an encoder and a decoder that are both modelled as deep neural networks.
 The encoder produces the distribution of the latent (fair) representation \(z\)
 from the original features \(x\) and the sensitive attribute \(s\).
 The decoder recovers the distribution of \(x\) from \(z\) and \(s\).
@@ -588,12 +588,12 @@ The next question is whether we can achieve all of these criteria simultaneously
 The authors show that a perfect predictor,
 which gives a score of \(P(\hat{y}=1|x) = 1\) to data points with \(y=1\)
 and \(P(\hat{y}=0|x) = 1\) to those with \(y=0\),
-automatically fulfills all three criteria.
+automatically satisfies all three criteria.
 As we saw before, this is not true of Demographic Parity.
 Furthermore, the authors show that if the dataset is fair in the sense that it satisfies \(P(y=1|s=0) = P(y=1|s=1)\),
 \ie, the base acceptance rate is the same for both classes,
 then a ``random'' classifier which assigns that base rate as the prediction score to all data points indiscriminately
-also fulfills all three criteria.
+also satisfies all three criteria.
 For this case, even Demographic Parity is fulfilled.
 The paper provides a proof
 that those two cases are the only ones that achieve the three presented guarantees simultaneously.
@@ -625,7 +625,7 @@ This is equivalent to the true positive rate and the false positive rate being t
 \emph{Equality of Opportunity} is, as mentioned above,
 the case where just the true positive rate is the same for all groups.
 This means that \(\hat{y}\) and \(s\) are independent conditional on \(y=1\).
-One main advantage that these definitions have over Demographic Parity is that a perfect predictor fulfills them.
+One main advantage that these definitions have over Demographic Parity is that a perfect predictor satisfies them.
 Demographic Parity is at odds with achieving perfect accuracy.
 Furthermore, for Demographic Parity a classifier might be forced to give a positive prediction to a lot of individuals
 where it is really not appropriate.
@@ -724,7 +724,7 @@ how well the class label \(y \in \{0, 1\}\) and the predicted score for a data p
   \label{eq:zafar-constraint-2}
   g(y, x) = \min \left(0, \left(y - \tfrac{1}{2}\right) \cdot \left(f(x) - \tfrac{1}{2}\right)\right)
 \end{align}
-Subtracting \(\tfrac{1}{2}\) is necessary to center the values around \(0\).
+Subtracting \(\tfrac{1}{2}\) is necessary to centre the values around \(0\).
 The proxy for Equalized Odds is then the covariance between the sensitive attribute and \(g\).
 \(g\) can also be modified to only take into account cases with \(y=1\) which corresponds to Equality of Opportunity.
 The paper contains experiments on the ProPublica/COMPAS dataset.
@@ -748,7 +748,7 @@ the degree of discrimination cannot be accurately estimated by the algorithm if 
 \citet{woodworth2017learning} also consider Equalized Odds as a fairness definition
 but give strong criticism for the post-processing approach from \citet{hardt2016equality}.
 They present examples where finding the optimal (but discriminatory) predictor in a particular hypothesis class
-and then correcting it post hoc performs poorly.
+and then correcting it post-hoc performs poorly.
 The proofs are based on the PAC learning framework.
 Certain training distributions allow the training of good fair classifiers from scratch
 but when doing post-processing on a Bayes-optimal predictor for this distribution,
@@ -875,7 +875,7 @@ If the goal is to admit those students that have a chance of graduating,
 then we could employ a machine learning algorithm to predict graduation rate.
 One attribute that might turn out to be predictive of graduation is physical fitness.
 If this attribute's causal influence is through,
-for example, signaling a character trait such as grit,
+for example, signalling a character trait such as grit,
 then this is an admissible attribute.
 However, if on the other hand physical fitness is caused by access to expensive gyms,
 then it is a signal for high socioeconomic status which we do not want to use as a criterion.
@@ -978,7 +978,7 @@ The two criteria share some strengths and weaknesses.
 A strength is that they are both fair on the individual level,
 which is not the case for Demographic Parity and Equality of Opportunity.
 In Demographic Parity and Equality of Opportunity,
-we can achieve fairness by doing ``nege'' discrimination on some individuals
+we can achieve fairness by doing ``negative'' discrimination on some individuals
 and ``positive'' discrimination on others, as long as those two effects cancel out.
 This is because those criteria are defined on \emph{groups} and not individuals.
 However, in turn this implies that individual fairness and counterfactual fairness
@@ -1059,12 +1059,12 @@ that enforcing fairness can in some situations improve the accuracy on the (unbi
 \citet{kim2019learning} also consider the problem of learning from biased data (and evaluating on unbiased data).
 While they do not formulate the problem as a fairness problem,
 it is equivalent to enforcing fairness in the presence of severe sampling bias.
-Their main motivating example is the Colored MNIST dataset:
-in this dataset, digits are randomly colored in the test set,
-but in the training set there is a one-to-one correspondence between digit class and color.
-A na\"ive classifier will learn to predict color instead of digit class.
+Their main motivating example is the Coloured MNIST dataset:
+in this dataset, digits are randomly coloured in the test set,
+but in the training set there is a one-to-one correspondence between digit class and colour.
+A na\"ive classifier will learn to predict colour instead of digit class.
 The proposed method is very similar to \citet{ganin2016domain} and \citet{edwards2016censoring},
-if we think of the colors as forming different domains
+if we think of the colours as forming different domains
 (\ie, the \emph{red} domain contains all red digits, etc).
 The goal is then to learn a domain-independent representation.
 The main difference to previous work is an additional entropy loss term in the adversarial loss.
@@ -1075,12 +1075,12 @@ Just like the approach by \citet{kim2019learning},
 As with \citet{kim2019learning},
 the goal is to ignore spurious correlations that only appear in the very imperfect training set,
 but not in the test set;
-and they also perform experiments on Colored MNIST (see above).
+and they also perform experiments on Coloured MNIST (see above).
 They formalize the problem as one of different environments $e\in E$,
 where each environment is a different, biased view of the same underlying data distribution.
 The idea is to train a predictor that is simultaneously optimal for all the environments,
 with the expectation that this generalizes to the test set.
-This idea is formulated as a (untractable) bi-level, constrained optimization problem,
+This idea is formulated as a (intractable) bi-level, constrained optimization problem,
 which they approximate with a tractable regularized optimization.
 
 \citet{creager2020environment} build directly on \citet{arjovsky2019invariant}.
@@ -1088,7 +1088,7 @@ They aim to address the limitation that the environments -- that one wants to be
 Their contribution is to infer these environments instead,
 based on identifying which environment splits would most negatively affect an ERM classifier.
 Their experiments show that this can even approve upon hand-crafted environments;
-experiments are performed on a synthetic dataset and Colored MNIST.
+experiments are performed on a synthetic dataset and Coloured MNIST.
 In contrast to \citet{kim2019learning} and \citet{arjovsky2019invariant},
 the authors explicitly point out the connection to traditional fairness methods.
 
@@ -1098,7 +1098,7 @@ their concepts of the construct space and the observed space are close
 to the idea of the (biased) training distribution and the true underlying distribution.
 
 \citet{jiang2020identifying} also formulate their problem this way:
-in their setting, the underlying unbiased labels become corrupted by a biased labeler,
+in their setting, the underlying unbiased labels become corrupted by a biased labeller,
 which results in a biased training set.
 Their goal is to train a classifier that makes correct predictions consistent with the true labels.
 However, they treat the true labels as completely unknown
@@ -1112,10 +1112,10 @@ They explicitly state not being affected by a fairness-accuracy trade-off,
 because the true distribution in the considered problem satisfies \acf{DP}.
 Their formalized dataset generation process has multiple steps:
 First, a small amount of random noise is applied to the (true) labels;
-this models general inaccuracies in the labeling process and does not introduce bias yet.
+this models general inaccuracies in the labelling process and does not introduce bias yet.
 Second, sampling bias is added, by dropping samples based on what the sample's \(s\) and \(y\) values are.
 Concretely, only samples with \(s=0\) are dropped.
-Finally, labeling bias is added, by flipping labels for one of the demographic groups (\eg, \(s=0\)),
+Finally, labelling bias is added, by flipping labels for one of the demographic groups (\eg, \(s=0\)),
 in one specific direction (from \(y=1\) to \(y=0\)).
 The authors show that in this specific situation,
 an unbiased classifier (as determined by evaluation on the unbiased test set) can be recovered

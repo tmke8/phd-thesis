@@ -96,13 +96,13 @@ titlepage,numbers=noenddot,%1headlines,
 % Packages with options that might require adjustments
 % ********************************************************************
 \usepackage{polyglossia}
-\setdefaultlanguage[variant=us]{english}
+\setdefaultlanguage[variant=british]{english}
 
 \usepackage{csquotes}
 \PassOptionsToPackage{%
   backend=biber,bibencoding=utf8, %instead of bibtex
   % backend=bibtex8,bibencoding=ascii,%
-  language=american,%
+  language=british,%
   %style=numeric-comp,%
   %bibstyle=authoryear,dashed=false, % dashed: substitute rep. author with ---
   sorting=nyt, % name, year, title
@@ -217,9 +217,6 @@ titlepage,numbers=noenddot,%1headlines,
 % \setmathfont{TeX Gyre Pagella Math} % this font seems quite incomplete
 
 \newfontfamily{\noligatures}[Kerning=Off, Contextuals={NoAlternate}, Ligatures={NoCommon}]{Libertinus Serif}
-% \newfontfamily{\noligatures}[Ligatures={NoRequired, NoCommon, NoContextual}]{TeX Gyre Pagella}
-% Letters={UppercaseSmallCaps,SmallCaps},
-% LetterSpace=80,WordSpace=3]
 
 \usepackage{setspace}
 % \setstretch{1.4}
@@ -389,16 +386,37 @@ titlepage,numbers=noenddot,%1headlines,
 
 \input{math_commands.tex}
 
-\newtheorem{theorem}{Theorem}%[section]
+% Custom theorem style to replace standard bold theorem names by small caps
+\newtheoremstyle{capsitalic}
+  {\topsep}   % ABOVESPACE
+  {\topsep}   % BELOWSPACE
+  {\itshape}  % BODYFONT
+  {0pt}       % INDENT (empty value is the same as 0pt)
+  {}          % HEADFONT
+  {.}         % HEADPUNCT
+  {5pt plus 1pt minus 1pt} % HEADSPACE
+  {\textsc{\thmname{#1}\thmnumber{ #2}}\thmnote{ (#3)}} % CUSTOM-HEAD-SPEC
+\newtheoremstyle{capsregular}
+  {\topsep}   % ABOVESPACE
+  {\topsep}   % BELOWSPACE
+  {}  % BODYFONT
+  {0pt}       % INDENT (empty value is the same as 0pt)
+  {}          % HEADFONT
+  {.}         % HEADPUNCT
+  {5pt plus 1pt minus 1pt} % HEADSPACE
+  {\textsc{\thmname{#1}\thmnumber{ #2}}\thmnote{ (#3)}} % CUSTOM-HEAD-SPEC
+
+\theoremstyle{capsitalic}
+\newtheorem{theorem}{Theorem}[chapter]
 \newtheorem{corollary}{Corollary}[theorem]
 \newtheorem{lemma}[theorem]{Lemma}
-\theoremstyle{definition}
-\newtheorem{definition}{Definition}%[section]
-\newtheorem{example}{Example}%[section]
+\theoremstyle{capsregular}
+\newtheorem{definition}{Definition}[chapter]
+\newtheorem{example}{Example}[chapter]
 \usepackage{algorithm}
 \usepackage{algorithmic}
-\renewcommand{\algorithmicrequire}{\textbf{Input:}}
-\renewcommand{\algorithmicensure}{\textbf{Output:}}
+\renewcommand{\algorithmicrequire}{\textsc{Input:}}
+\renewcommand{\algorithmicensure}{\textsc{Output:}}
 \usepackage{nicefrac}
 \def\ci{\perp\!\!\!\perp}
 \newcommand*\diff{\mathop{}\!\mathrm{d}}
@@ -447,8 +465,8 @@ titlepage,numbers=noenddot,%1headlines,
 \part{Introduction}\label{pt:intro}
 \include{ch/1-introduction}
 \include{ch/2-related-work}
-\include{ch/3-0-common-notation}
-\include{ch/4-nifr}
+% \include{ch/3-0-common-notation}
+\include{ch/4-structure}
 
 \cleardoublepage
 \ctparttext{
@@ -456,10 +474,12 @@ titlepage,numbers=noenddot,%1headlines,
   They are reproduced here with minimal changes.
 }
 \part{Publications}\label{pt:main}
-% \include{ch/3-target-labels}
-\import{paper1/}{paper1.tex}
-\import{paper2/}{paper2.tex}
-% \include{ch/5-zsf}
+\chapter{Paper 1: Tuning Fairness by Balancing Target Labels}\label{ch:paper1}
+% \import{paper1/}{paper1.tex}
+\chapter{Paper 2: Null-sampling for Interpretable and Fair Representations}\label{ch:paper2}
+% \import{paper2/}{paper2.tex}
+\chapter{Paper 3: Learning with Perfect Bags: Addressing Hidden Stratification with Zero Labelled Data}\label{ch:paper3}
+% \import{paper3/}{paper3.tex}
 
 \cleardoublepage
 \part{Conclusion}\label{pt:end}
