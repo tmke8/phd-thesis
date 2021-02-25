@@ -116,6 +116,19 @@ titlepage,numbers=noenddot,%1headlines,
 }{biblatex}
     \usepackage{biblatex}
 
+\defbibenvironment{bibwithnumlabel}
+  {\list
+    {\printfield[labelnumberwidth]{labelnumber}}
+    {\setlength{\labelwidth}{\labelnumberwidth}%
+    \setlength{\leftmargin}{\labelwidth}%
+    \setlength{\labelsep}{\biblabelsep}%
+    \addtolength{\leftmargin}{\labelsep}%
+    \setlength{\itemsep}{\bibitemsep}%
+    \setlength{\parsep}{\bibparsep}}%
+    \renewcommand*{\makelabel}[1]{\hss##1}}
+  {\endlist}
+  {\item}
+
 \usepackage{amsmath}
   
 % ********************************************************************
@@ -422,6 +435,8 @@ titlepage,numbers=noenddot,%1headlines,
 \newcommand*\diff{\mathop{}\!\mathrm{d}}
 \def\httilde{\mbox{\tt\raisebox{-.5ex}{\symbol{126}}}}
 
+\AtBeginDocument{\renewcommand{\thepart}{\Roman{part}}}
+
 % ********************************************************************
 % GO!GO!GO! MOVE IT!
 %*******************************************************
@@ -462,7 +477,10 @@ titlepage,numbers=noenddot,%1headlines,
 %\setcounter{page}{90}
 % use \cleardoublepage here to avoid problems with pdfbookmark
 \cleardoublepage
-\part{Introduction}\label{pt:intro}
+\ctparttext{
+  The first part covers the introduction, the related work and a summary of the work presented in part~\ref{pt:main}.
+}
+\part{Preliminaries}\label{pt:intro}
 \include{ch/1-introduction}
 \include{ch/2-related-work}
 % \include{ch/3-0-common-notation}

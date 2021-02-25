@@ -4,7 +4,7 @@
 \pagestyle{scrheadings}
 %\phantomsection
 \pdfbookmark[1]{\contentsname}{tableofcontents}
-\setcounter{tocdepth}{2} % <-- 2 includes up to subsections in the ToC
+\setcounter{tocdepth}{1} % <-- 1 includes up to sections in the ToC
 \setcounter{secnumdepth}{3} % <-- 3 numbers up to subsubsections
 \manualmark
 \markboth{\spacedlowsmallcaps{\contentsname}}{\spacedlowsmallcaps{\contentsname}}
@@ -77,17 +77,17 @@
   \markboth{\spacedlowsmallcaps{Acronyms}}{\spacedlowsmallcaps{Acronyms}}
   \chapter*{Acronyms}
   \begin{acronym}[UMLX]
-    \acro{ANN}{artificial neural network}
+    \acro{NN}{(artificial) neural network}
     \acro{AR}{acceptance rate}
-    \acro{CNN}{convolutional neural network}
+    \acro{CNN}{Convolutional Neural Network}
     \acro{DP}{demographic parity}
     \acro{EOdds}{equalised odds}
     \acro{EOpp}{equality of opportunity}
-    \acro{INN}{invertible neural network}
-    \acro{LR}{logistic regression}
+    \acro{INN}{Invertible Neural Network}
+    \acro{LR}{Logistic Regression}
     \acro{ML}{machine learning}
-    \acro{MMD}{maximum mean discrepancy}
-    \acro{SVM}{support vector machine}
+    \acro{MMD}{Maximum Mean Discrepancy}
+    \acro{SVM}{Support Vector Machine}
     \acro{TNR}{true negative rate}
     \acro{TPR}{true positive rate}
   \end{acronym}
@@ -101,6 +101,7 @@
   \markboth{\spacedlowsmallcaps{Nomenclature}}{\spacedlowsmallcaps{Nomenclature}}
   \begin{nomenclature}
     \entry{$\vx$}{Input features (without sensitive attributes)}
+    % \entry{$\hat{\vx}$}{Reconstructed input}
     \entry{$s$}{Sensitive attribute}
     \entry{$y$}{Class label (ground truth)}
     \entry{$\hat{y}$}{Predicted label}
@@ -120,6 +121,7 @@
     \entry{demographic group}{Set induced by the sensitive attribute}
     \entry{fairness definition}{An aspirational specification of a fair classifier}
     \entry{fairness metric}{A metric which quantifies how well a fairness definition is satisfied}
+    \entry{MNIST}{dataset of handwritten digits}
   \end{glossaryenv}
 
 

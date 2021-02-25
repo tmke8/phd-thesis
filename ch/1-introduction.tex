@@ -2,9 +2,9 @@
 \section{Problem statement}
 In order for \ac{ML} systems to be used more widely,
 they have to become more trustworthy.
-The susceptibility of \acp{ANN} to adversarial attacks has been well documented, but there are other problems as well.
+The susceptibility of \acp{NN} to adversarial attacks has been well documented, but there are other problems as well.
 This includes their opaqueness and their general tendency to take shortcuts;
-leading to situations where \acp{ANN} do not do `what we meant', but just what they were explicitly told to do.
+leading to situations where neural networks do not do `what we meant', but just what they were explicitly told to do.
 
 This problem becomes especially severe when the training data is biased in some way,
 which, by default, makes the \ac{ML} system internalize the bias, or, in some cases, even exacerbate it.
@@ -133,28 +133,62 @@ Just like \ac{DP},
 \label{sec:claims-contributions}
 This thesis is based on 3 publications, corresponding to \rangechapref{ch:paper1}{ch:paper3}.
 The first one is concerned with \emph{label bias} and the other two with \emph{sampling bias}.
-\begin{enumerate}
-  \item Thomas Kehrenberg, Zexun Chen, and Novi Quadrianto (2020). ``Tuning Fairness by Balancing Target Labels.''
-    In: \textit{Frontiers in Artificial Intelligence} 3, p.\ 33.
-    \citep{kehrenberg2020tuning}
-  \item Thomas Kehrenberg, Myles Bartlett, Oliver Thomas, and Novi Quad\-ri\-an\-to (2020).
-    ``Null-sampling for Interpretable and Fair Representations.''
-    In: \textit{Computer Vision - ECCV 2020}. Glasgow, UK: Springer International Publishing.
-    \citep{kehrenberg2020nullsampling}
-  \item Thomas Kehrenberg, Viktoriia Sharmanska, Myles Bartlett, and Novi Quadrianto (2021).
-    ``Learning with Perfect Bags: Addressing Hidden Stratification with Zero Labeled Data.''
-    \textit{Under review at ICML 2021}.
-    \citep{kehrenberg2020zeroshot}
-\end{enumerate}
-A shorter version of \citet{kehrenberg2020tuning} was published as a workshop paper:
-\begin{itemize}
-  \item Thomas Kehrenberg, Zexun Chen, and Novi Quadrianto (2018).
-    ``Interpretable Fairness via Target Labels in Gaussian Process Models.''
-    In: \emph{Workshop on Ethical, Social and Governance Issues in AI at NeurIPS}. Montreal, Canada.
-\end{itemize}
 
 (MISSING HERE: ``a declaration confirming [the candidate's] contribution to each paper,
 especially in cases where the co-author is a supervisor''.)
+
+\subsection{Publication 1}
+\begin{refsection}[allreferences]
+    \nocite{kehrenberg2020tuning}
+    \printbibliography[heading=none]
+\end{refsection}
+\noindent A shorter version was published as a workshop paper:
+\begin{refsection}[allreferences]
+    \nocite{kehrenberg2018interpretable}
+    \printbibliography[heading=none]
+\end{refsection}
+\noindent\textsc{Contributions:}
+\begin{itemize}
+  \item I conceived the idea of using Target Labels to target a balanced set. I developed the proof from a starting point that my supervisor pointed me to. I wrote all of the code dealing with the modified loss function and nearly all of the remaining code as well. I ran most of the experiments and wrote all of the methods section and most of the remaining text as well.
+  \item Z. Chen was a discussion partner and helped run the experiments, and wrote some parts of the code.
+  \item N. Quadrianto suggested the initial direction of the work, was a discussion partner, and helped write the introduction and related work.
+\end{itemize}
+
+\subsection{Publication 2}
+\begin{refsection}[allreferences]
+    \nocite{kehrenberg2020nullsampling}
+    \printbibliography[heading=none]
+\end{refsection}%
+\noindent\textsc{Contributions:}
+\begin{itemize}
+  \item I conceived the idea of using an \acf{INN} and a representative set to learn an invariant representation. I wrote a large part of the code, and ran about half the experiments. I wrote a significant part of the text.
+  \item M. Bartlett developed a large part of the tricks needed for training the \ac{INN} successfully. He wrote a significant part of the code, and of the text.
+  \item O. Thomas helped with writing the code and with running the experiments.
+  \item N. Quadrianto gave feedback on the progress and suggested directions to explore.
+\end{itemize}
+
+\subsection{Publication 3}
+\begin{refsection}[allreferences]
+    \nocite{kehrenberg2020zeroshot}
+    \printbibliography[heading=none]
+\end{refsection}%
+\noindent\textsc{Contributions:}
+% -  perfect bags
+%     - I
+%         - developed the idea of distribution matching
+%         - developed the idea of clustering an auxiliary set
+%     - Vika
+%         - head the idea for how to frame the method
+%         - worked on introduction/related work/method
+%     - Myles
+%         - ran experiments
+%         - came up with NN architecture
+%         - came up with idea of bags-of-batches
+%     - Novi
+%         - combined the two pieces that I had into a whole
+\begin{itemize}
+  \item I developed the idea of distribution matching as an extension of the previous paper. In addition, I tried to achieve similar goals by applying clustering to
+\end{itemize}
 
 \section{Structure of document}%
 \label{sec:thesis-structure}

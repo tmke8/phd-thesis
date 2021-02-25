@@ -39,7 +39,7 @@
 \section{\NoCaseChange{Two views of the dataset bias problem}}\label{two-views-of-the-dataset-bias-problem}
 As hinted to in the introduction,
 there is a divide in the relevant literature in how the problem of dataset bias is approached.
-On the one hand, there is the ``groundtruth-centric'' view -- expressed through most of the introduction --
+On the one hand, there is the ``ground-truth-centric'' view -- expressed through most of the introduction --
 that the training set is biased but the deployment setting is not.
 By \emph{deployment setting} I am here referring to the real distribution
 that will be encountered by the machine learning system once it is in use.
@@ -535,8 +535,7 @@ However, this introduces a new problem:
 if \(y\) is correlated with \(s\), then \(z\) will be as well.
 To overcome this, an additional penalty term is introduced that forces \(P(z|s=0)\)
 and \(P(z|s=1)\) to be as close as possible.
-This is realized with a measure of distance
-between distributions called Maximum Mean Discrepancy (MMD).
+This is realized with a measure of distance between distributions called \acf{MMD}.
 
 The experiments were done on the Adult/Census Income dataset,
 the German Credit dataset and the Heritage Health dataset.
@@ -544,16 +543,16 @@ To test whether \(s\) can be recovered from \(z\),
 a Random Forest model and a Logistic Regression model were trained to predict \(s\) from \(z\).
 This is compared to \citet{zemel2013learning}.
 The proposed model can outperform \citet{zemel2013learning} on some tasks, but many results seem inconclusive.
-Using MMD for an additional unfairness penalty, seems to improve fairness.
+Using \ac{MMD} for an additional unfairness penalty, seems to improve fairness.
 When training a classifier on \(z\) to predict \(y\), there is a small drop in accuracy.
-In general, it is not clear whether this method gives better performance than Feldman et
-al.~However, the algorithm by Louizos seems more general and more widely applicable
+In general, it is not clear whether this method gives better performance than \citet{feldman2015certifying}.
+However, the algorithm by \citet{louizos2016variational} seems more general and more widely applicable
 as it simply re-uses a widely used technique, variational autoencoders.
 
 \section{Other fairness criteria}%
 \label{improved-definitions-of-fairness}
 The early literature on fairness in machine learning used only \ac{DP}
-and similarity-based fairness to judge the fairness of a classifier.
+and si\-mi\-la\-ri\-ty-based fairness to judge the fairness of a classifier.
 \citet{kleinberg2016inherent} formalized three different fairness conditions.
 The authors consider a scenario where the data points \(x\) are sorted into bins \(b\)
 and each bin is associated with a prediction score \(f = P(\hat{y}=1|b)\)
