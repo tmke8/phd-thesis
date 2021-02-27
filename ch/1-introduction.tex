@@ -173,21 +173,11 @@ especially in cases where the co-author is a supervisor''.)
     \printbibliography[heading=none]
 \end{refsection}%
 \noindent\textsc{Contributions:}
-% -  perfect bags
-%     - I
-%         - developed the idea of distribution matching
-%         - developed the idea of clustering an auxiliary set
-%     - Vika
-%         - head the idea for how to frame the method
-%         - worked on introduction/related work/method
-%     - Myles
-%         - ran experiments
-%         - came up with NN architecture
-%         - came up with idea of bags-of-batches
-%     - Novi
-%         - combined the two pieces that I had into a whole
 \begin{itemize}
-  \item I developed the idea of distribution matching as an extension of the previous paper. In addition, I tried to achieve similar goals by applying clustering to
+  \item I developed the idea of distribution matching as an extension of the previous paper. In addition, I tried to achieve similar goals by applying clustering to an unlabelled auxiliary set, with supervision from the labelled training set. I wrote all of the initial implementation of the method, and a large part of the later refined implementation. I ran the majority of the experiments.
+  \item V. Sharmanska developed the original link to a fairness problem and wrote parts of the introduction and related work and contributed to other sections.
+  \item M. Bartlett introduced the idea of batches-of-bags. He also improved the \ac{NN} architectures of the encoder and the discriminator, ran experiments, wrote the sections on architecture and contributed to other parts of the paper.
+  \item N. Quadrianto suggested how to combine the two research directions that I had into a coherent whole. He also gave general feedback and suggested directions to explore.
 \end{itemize}
 
 \section{Structure of document}%
