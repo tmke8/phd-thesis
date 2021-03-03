@@ -1,8 +1,8 @@
 \chapter{Introduction}\label{ch:introduction}
 \section{Problem statement}
 In order for \ac{ML} systems to be used more widely,
-they have to become more trustworthy.
-The susceptibility of \acp{NN} to adversarial attacks has been well documented, but there are other problems as well.
+they have to become more trustworthy \citep{hleg2019ethics}.
+The susceptibility of deep \acp{NN} to adversarial attacks has been well documented, but there are other problems as well.
 This includes their opaqueness and their general tendency to take shortcuts;
 leading to situations where neural networks do not do `what we meant', but just what they were explicitly told to do.
 
@@ -50,22 +50,25 @@ This thesis will discuss two kinds of dataset bias: \emph{label bias} and \emph{
 In both cases,
 we consider a classification problem in which the class labels $y$ needs to be predicted from input features $\vx$.
 
-In the setup for \emph{label bias},
-there is additionally a \emph{sensitive attribute} $s$ associated with each input.
-This sensitive attribute usually encodes membership in a demographic group, such as gender,
+In all cases, there is a special attribute $s$ associated with each input.
+This attribute can have different meanings:
+In the setting of \emph{label bias}, $s$ usually encodes membership in a demographic group, such as gender,
 but more generally is a feature that should not be used to make predictions for legal or ethical reasons.
-We will also refer to the set of all samples with a specific sensitive attribute as one \emph{demographic group}.
-In our examples, $s$ and $y$ are binary variables, but this does not have to be the case.
-The label bias now manifests itself in a specific way:
-depending on $s$, labels are either flipped from $y=0$ to $y=1$ or vice versa,
+(See below for other possible meanings of $s$.)
+In this setting, we call $s$ the \emph{sensitive attribute} (because it carries sensitive information).
+We will often refer to the set of all samples with a specific sensitive attribute as one \emph{demographic group}.
+In most of the examples, $s$ and $y$ are binary variables, but this does not have to be the case.
+The label bias is related to $s$ in a very specific way:
+depending on the value of $s$, labels are either flipped from $y=0$ to $y=1$ or vice versa,
 \ie, there is an error in the labels which is correlated with the sensitive attribute.
 
 For \emph{sampling bias},
 there is also a special attribute $s$, but it does not necessarily have to denote a \emph{sensitive} attribute;
 it can more generally be a \emph{spurious} variable which is correlated with the class label $y$ in the training set,
 but is not truly predictive of $y$ in the general case.
-Sampling bias then means that the training set is not uniformly sampled from the underlying distribution,
-instead, sampling depends on $s$ and $y$;
+Or, it can refer to natural \emph{subgroups} of the $y$ classes.
+Sampling bias then means that the training set is not uniformly sampled from the underlying distribution:
+Instead, sampling depends on $s$ and $y$;
 \eg, there might be almost no samples of $s=0$ and $y=1$ in the training set.
 The effect is that \ac{ML} models are tempted to take shortcuts and use $s$ as a shorthand for $y$.
 
@@ -84,7 +87,7 @@ While fairness metrics are primarily useful when no truly unbiased test sets are
 even when they are provided,
 these metrics can be useful in identifying where models retained some of the bias from the training set.
 
-The fairness definition that most fits the described setup of label bias and sampling bias is \acf{DP},
+The fairness definition that best fits the described setup of label bias and sampling bias is \acf{DP},
 also called statistical parity or independence.
 It demands that the predictions $\hat{y}$ be independent of the sensitive attribute \(s\).
 So, for binary $s$ and $y$:
