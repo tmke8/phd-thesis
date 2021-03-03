@@ -130,6 +130,8 @@ titlepage,numbers=noenddot,%1headlines,
   {\item}
 
 \usepackage{amsmath}
+% \usepackage{bm}
+\def\bm{\symbf}
   
 % ********************************************************************
 % General useful packages
@@ -226,6 +228,7 @@ titlepage,numbers=noenddot,%1headlines,
 \setmainfont[Ligatures=TeX]{Libertinus Serif} % fork of Linux Libertine O
 \usepackage{unicode-math}
 \setmathfont{Libertinus Math}
+\setmathfont[version=bold,FakeBold=3.5]{Libertinus Math}
 % \setmathfont{XITS Math}
 % \setmathfont{TeX Gyre Pagella Math} % this font seems quite incomplete
 

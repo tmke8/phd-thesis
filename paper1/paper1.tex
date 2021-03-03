@@ -158,11 +158,11 @@ in most works, uses only non-sensitive attributes $x$.
 Several group fairness criteria have been proposed (e.g. \cite{zafar2017fairnesstreatment,chouldechova2017fair,hardt2016equality}):
 \begin{align}
 & \text{equality of positive rate (Demographic Parity):}\nonumber\\
-& \text{Pr}(\hat{y}=1|s)=\text{Pr}(\hat{y}=1|s\sp{\prime}) \label{eq:eq_dem_par}\\
+& P(\hat{y}=1|s)=P(\hat{y}=1|s\sp{\prime}) \label{eq:eq_dem_par}\\
 & \text{equality of accuracy:}\nonumber\\
-& \text{Pr}(\hat{y}=y|s)=\text{Pr}(\hat{y}=y|s\sp{\prime}) \\
+& P(\hat{y}=y|s)=P(\hat{y}=y|s\sp{\prime}) \\
 & \text{equality of true positive rate (Equality of Opportunity):} \nonumber\\
-& \text{Pr}(\hat{y}=1|s,y=1)=\text{Pr}(\hat{y}=1|s\sp{\prime},y=1)  \label{eq:eq_opp_cri}~.
+& P(\hat{y}=1|s,y=1)=P(\hat{y}=1|s\sp{\prime},y=1)  \label{eq:eq_opp_cri}~.
 \end{align}
 \emph{Equalised odds} criterion corresponds to Equality of Opportunity (\ref{eq:eq_opp_cri}) plus equality of false positive rate.
 
