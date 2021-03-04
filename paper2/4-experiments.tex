@@ -44,7 +44,7 @@ Detailed information regarding model architectures can be found in Appendix~\ref
 
 \begin{figure}[tb]
     \centering
-    \includegraphics[width=0.7\textwidth]{./Figures/nosinn_celeba_multiplot_all_landscape_Smiling.pdf}
+    \includegraphics[width=0.85\textwidth]{./Figures/nosinn_celeba_multiplot_all_landscape_Smiling.pdf}
     \caption{
         Performance of our model for the target ``smiling'' for different mixing factors $\eta$.
         \emph{DP diff} measures fairness with respect to demographic parity.
@@ -130,15 +130,14 @@ The only difference between the setups is the dataset creation, including the ra
 Our versions of the dataset, on the whole, exhibit much stronger colour bias, to the point of the mapping the digit's colour and class being bijective.
 Fig.~\ref{fig:cmnist_chart} shows that the model significantly underperforms even the na\"ive baseline, aside from at $\sigma = 0$, where they are on par.
 
-Inspection of the null-samples shows that both the cVAE and cFlow model succeed in removing almost all colour information, which is supported quantitatively by Fig.~\ref{fig:cmnist_chart}.
+Inspection of the null-samples shows that both the cVAE and cFlow model succeed in removing almost all colour information, which is supported quantitatively by fig.~\ref{fig:cmnist_chart}.
 While the cVAE outperforms cFlow marginally at low $\sigma$ values, performance degrades
 %rapidly
 as this increases.
-This highlights the problems with the conditional decoder we anticipated in Section~\ref{conddec}.
+This highlights the problems with the conditional decoder we anticipated in section~\ref{conddec}.
 The lower $\sigma$, and therefore the variation in sampled colour, is, the more reliably the $s$ label, corresponding to the mean of RGB distribution, encodes information about the colour.
 For higher $\sigma$ values, the sampled colours can deviate far from the mean and so the encoder must incorporate information about $s$ into its representation if it is to minimise the reconstruction loss.
 cFlow, on the other hand, is consistent across $\sigma$ values.
-
 
 \paragraph{CelebA.}
 To evaluate the effectiveness of our framework on real-world image data we use the CelebA dataset~\citep{liu2015faceattributes}, consisting of 202,599 celebrity images.
@@ -153,15 +152,15 @@ For the target attributes, we chose attributes that are harder to learn than gen
 % We evaluate the performance of all models for mixing factors ($\eta$) of value $\{0, 0.1, ..., 1\}$. 
 The model is trained on the representative set (normal subset of CelebA)
 and is then used to encode the artificially biased training set and the test set.
-The results for the most strongly biased training set ($\eta=0$) can be found in Fig.~\ref{fig:celeba-targets}.
+The results for the most strongly biased training set ($\eta=0$) can be found in fig.~\ref{fig:celeba-targets}.
 Our method outperforms the baselines in accuracy and fairness.
 
 We also assess performance for different mixing factors ($\eta$) which correspond to varying degrees of bias in the training set
-(see Fig.~\ref{fig:celeba-multiplot}).
+(see fig.~\ref{fig:celeba-multiplot}).
 This is to verify that the model does not \emph{harm} performance when there is not much bias in the training set.
 For these experiments, the model is trained once on the representative set and is then used to encode different training sets.
 The results show that for the intermediate values of $\eta$, our model incurs a small penalty in terms of accuracy,
-but at the same time makes the results \emph{fairer} (corresponding to an accuracy-fairness trade-off). Qualitative results can be found in Fig.~\ref{fig:celeba_cflow} (images from cVAE can be found in section~\ref{sec:qual-results-celeba}).
+but at the same time makes the results \emph{fairer} (corresponding to an accuracy-fairness trade-off). Qualitative results can be found in fig.~\ref{fig:celeba_cflow} (images from cVAE can be found in section~\ref{sec:qual-results-celeba}).
 
 To show that our method can handle multinomial, as well as binary, sensitive attributes, we also conduct experiments with $s=\textrm{hair color}$ as a ternary attribute (``Blonde'', ``Black'', ``Brown''), excluding ``Red'' because of the paucity of samples and the noisiness of their labels. The results for these experiments can be found in section~\ref{sec:additional-results}.
 % Looking at the produced invariant representations,
@@ -193,9 +192,9 @@ To show that our method can handle multinomial, as well as binary, sensitive att
 \paragraph{Results for the UCI Adult dataset.}
 The UCI Adult dataset consists of census data and is commonly used to evaluate models focused on algorithmic fairness.
 Following convention, we designate ``gender'' as the sensitive attribute $s$ and whether an individual's salary is \$50,000 or greater as $y$.
-We show the performance of our approach in comparison to baseline approaches in Fig. \ref{fig:adult-chart}.
+We show the performance of our approach in comparison to baseline approaches in fig. \ref{fig:adult-chart}.
 We evaluate the performance of all models for mixing factors ($\eta$) $0$ and $1$. 
-Results shown in Fig. \ref{fig:adult-chart} show that
+Results shown in fig. \ref{fig:adult-chart} show that
 %while our model fails to surpass the baseline models in terms of accuracy for the balanced case (and those close to it),
 we match or exceed the baseline.
 %as $\eta$ moves the dataset towards a more imbalanced setting.

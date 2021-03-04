@@ -94,9 +94,9 @@ Details of the encoder architectures can be found in table \ref{tab:vae_architec
 \caption{INN architecture used for each dataset.}
 \label{tab:inn_architectures}
 \centering
-\begin{tabular}{l@{\extracolsep{1cm}}llllll}
+\begin{tabular}{lllll}
 \toprule
-\multicolumn{1}{l}{Dataset} & Levels & Level depth & Coupling channels & Input to discriminator(s) \\ \midrule
+Dataset & Levels & Level depth & Coupl. chan. & Input to discr. \\ \midrule
 UCI Adult                   & 1      & 1     & 35       & Null-samples       \\
 cMNIST                      & 3      & 16     & 512      & Encodings               \\
 CelebA                      & 3      & 32     & 512      & Encodings        \\ \bottomrule
@@ -107,7 +107,7 @@ CelebA                      & 3      & 32     & 512      & Encodings        \\ \
 \caption{cVAE encoder architecture used for each dataset. The decoder architecture in each case mirrors that of its encoder counterpart through use of transposed convolutions. For the adult dataset we apply $\ell_2$ and cross-entropy losses to the reconstructions of the continuous features and discrete features, respectively.}
 \label{tab:vae_architectures}
 \centering
-\begin{tabular}{l@{\extracolsep{1cm}}lllll}
+\begin{tabular}{lllll}
 \toprule
 Dataset   & Initial channels & Levels & $\beta$ & Recon. loss \\
 \midrule
@@ -122,9 +122,9 @@ CelebA    & 32               & 5      & 1       & $\ell_1$ \\
 \paragraph{Detailed results for UCI Adult dataset.}
 This census data is commonly used to evaluate models focused on algorithmic fairness.
 Following convention, we designate ``gender'' as the $s$ and whether an individual's salary is \$50,000 or greater as $y$.
-We show the performance of our approach in comparison to baseline approaches in Fig.~\ref{fig:big-adult-chart}.
+We show the performance of our approach in comparison to baseline approaches in fig.~\ref{fig:big-adult-chart}.
 We evaluate the performance of all models for mixing factors ($\eta$) of value $\{0, 0.1, ..., 1\}$. 
-Results shown in Fig.~\ref{fig:big-adult-chart} show that whilst our model fails to surpass the baseline models in terms of accuracy for the balanced case (and those close to it), we match or exceed the baseline as $\eta $ moves the dataset to a more imbalanced setting. In terms of fairness metrics,  our approach generally outperforms the baseline models regardless of $\eta$.
+Results shown in fig.~\ref{fig:big-adult-chart} show that whilst our model fails to surpass the baseline models in terms of accuracy for the balanced case (and those close to it), we match or exceed the baseline as $\eta $ moves the dataset to a more imbalanced setting. In terms of fairness metrics,  our approach generally outperforms the baseline models regardless of $\eta$.
 
 \begin{figure}[htb]
   \centering
@@ -156,7 +156,7 @@ where $s$ has four possible values, each of which is a combination of a gender a
 Young/Female, Young/Male, Old/Female and Old/Male.
 To evaluate the fairness for multinomial $s$, we use the Hirschfeld-Gebelein-R\'enyi Maximum Correlation Coefficient (HGR) \citep{mary2019fairness} that is defined on the domain $[0, 1]$ and gives $\text{HGR}(Y,S)=0$ iff $Y \perp S$
 and 1 if there is a deterministic function to map between them.
-Results can be found in Figure~\ref{fig:multi-s}.\\
+Results can be found in figure~\ref{fig:multi-s}.\\
 
 \begin{table}[tp]
 \caption{Results on the CelebA dataset with different sizes of $z_b$.}
@@ -185,7 +185,7 @@ both sizes 5 and 10 achieve nearly identical results.
 
 \begin{table}[tbp]
     \caption{
-        Additional fairness metrics for the experiments on the CelebA dataset (Fig. 5 from the main text).
+        Additional fairness metrics for the experiments on the CelebA dataset (fig.~\ref{fig:celeba-multiplot} from the main text).
         \emph{TPR diff.} refers to the difference in true positive rate.
         \emph{TNR diff.} refers to the difference in true negative rate.
         \textsc{Left:} $\eta = 0$. \textsc{Right:} $\eta=1$.
@@ -291,7 +291,7 @@ Digit & Colour Name & Mean RGB      \\ \midrule
 \subsection{Qualitative Results for CelebA}\label{sec:qual-results-celeba}
 \noindent Learning a representation alongside its inverse mapping, be it approximate or exact, enables us to probe the behaviour of the model that produced it,
 and any biases it may have implicitly captured due to entanglement between the sensitive attribute and other attributes present in the data.
-We highlight a few examples of such biases manifesting in the cFlow model's CelebA null-samples in Fig.~\ref{fig:celeba_cflow_suppmat}. In these cases, makeup and hair style have been inadvertently modified during the null-sampling due to the tight correlation between these two attributes and the sensitive attribute, gender, to which we had aimed to make our representations invariant. Additionally, in all highlighted images, the skin tone has changed: from male to gender-neutral, the skin becomes lighter and from female to gender-neutral, the skin becomes darker; in the change from male to gender-neutral, glasses are also often removed.
+We highlight a few examples of such biases manifesting in the cFlow model's CelebA null-samples in fig.~\ref{fig:celeba_cflow_suppmat}. In these cases, makeup and hair style have been inadvertently modified during the null-sampling due to the tight correlation between these two attributes and the sensitive attribute, gender, to which we had aimed to make our representations invariant. Additionally, in all highlighted images, the skin tone has changed: from male to gender-neutral, the skin becomes lighter and from female to gender-neutral, the skin becomes darker; in the change from male to gender-neutral, glasses are also often removed.
 As the model cannot know that the label is meant to only refer to gender, and not to these other (correlated) attributes,
 the links cannot be disentangled by the model.
 However, the advantage of our method is that we can at least identify such biases due to the interpretability that comes with the representations being in the data domain.
@@ -365,9 +365,9 @@ If $s$ takes a form similar to that which we pre-trained on, and can thus be cor
 \paragraph{Transferring from mixed-NIST to MNIST.}
 We test our hypothesis by comparing the performance of the cFlow and cVAE models pre-trained on a mixture of datasets belonging to the NIST family, colourised in the same way as cMNIST, while the downstream train and test sets remain the same as in the original cMNIST experiments. Specifically, we create this representative set by sampling 24,000 images (to match the cardinality of the original representative set) from EMNIST (letters only)~\citep{cohen2017emnist}, Fashion\-MNIST~\citep{xiao2017fashion} and KMNIST~\citep{clanuwat2018deep}, in equal proportion. We use the same architectures for the cVAE and cFlow models as we did in the non-transfer learning setting. In terms of hyperparameters, the only change made was to the KL-divergence's pre-factor, finding it necessary to increase it to $1$ to guarantee stability.
 
-The results for the range of $\sigma$ values are shown in Fig.~\ref{fig:cmnist-transfer}. Unsurprisingly, the performance of both models suffers when the representative and test sets do not completely correspond. However, the cFlow model consistently outperforms the cVAE model, with the gap increasing as the bias decreases.
+The results for the range of $\sigma$ values are shown in fig.~\ref{fig:cmnist-transfer}. Unsurprisingly, the performance of both models suffers when the representative and test sets do not completely correspond. However, the cFlow model consistently outperforms the cVAE model, with the gap increasing as the bias decreases.
 Although some colour information is retained in the cFlow null-samples, symptomatic of an imperfect transfer, semantic information is almost entirely retained as well.
-Conversely, the cVAE is very much flawed in this respect; as can be seen in the bottom row of Fig.~\ref{fig:cmnist-transfer}, for some samples, semantic information is degraded to the point of the digit's identity being altered. As a result of this semantic degradation, the performance of the downstream classifier is curtailed by the noisiness of the digit's identity and is relatively unchanging across $\sigma$-values, in contrast to the monotonic improvement of that achieved on the cFlow null-samples.
+Conversely, the cVAE is very much flawed in this respect; as can be seen in the bottom row of fig.~\ref{fig:cmnist-transfer}, for some samples, semantic information is degraded to the point of the digit's identity being altered. As a result of this semantic degradation, the performance of the downstream classifier is curtailed by the noisiness of the digit's identity and is relatively unchanging across $\sigma$-values, in contrast to the monotonic improvement of that achieved on the cFlow null-samples.
 % \begin{figure}
 %   \includegraphics[width=0.6\textwidth]{./Figures/nosinn_cmnist_transfer.pdf}
 %   \caption{

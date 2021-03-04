@@ -134,7 +134,7 @@ for learning the fair model, and for handling large amounts of data.
 The method presented in this paper is closely related to a number of previous works,
 e.g.\ \citet{kamiran2012data,calders2010three}.
 Proper comparison with them requires knowledge of our approach.
-We will thus explain our approach in the subsequent sections, and defer detailed comparisons to Section~\ref{sec:relatedwork} (Related Work).
+We will thus explain our approach in the subsequent sections, and defer detailed comparisons to section~\ref{sec:relatedwork} (Related Work).
 
 \section{Target labels for tuning group fairness}
 We will start by describing several notions of group fairness.
@@ -238,7 +238,7 @@ Thus, if the threshold $t_s$ is small,
 then only if there are inputs very close to the decision boundary ($\eta_s(x)$ close to $\tfrac{1}{2}$)
 would we have $\bar{y}\neq y$.
 $t_s$ determines the accuracy penalty that we have to accept in order to gain fairness.
-The value of $t_s$ can be taken into account when choosing $m_s$ and $b_s$ (see Section~\ref{sec:fairness}).
+The value of $t_s$ can be taken into account when choosing $m_s$ and $b_s$ (see section~\ref{sec:fairness}).
 If $\eta_s$ satisfies the Tsybakov condition~\citep{tsybakov2004optimal},
 then we can give an upper bound for the probability.
 \begin{definition}
@@ -296,7 +296,7 @@ For training, we are only given the unbalanced distribution $\eta_s(x)$
 and not the target distribution $\bar{\eta}_s(x)$.
 However, $\bar{\eta}_s(x)$ is needed in order to train a fair classifier.
 One approach is to explicitly change the labels $y$ in the dataset, in order to construct $\bar{\eta}_s(x)$.
-We discuss this approach and its drawback in the related work section (Section~\ref{sec:relatedwork}).
+We discuss this approach and its drawback in the related work section (section~\ref{sec:relatedwork}).
 %(taken by~\citet{kamiran2012data}) 
 
 %We now present a novel method for learning from an only implicitly-defined balanced dataset.
@@ -561,7 +561,7 @@ that is compensated by a very good accuracy in the (larger) subset $\mathcal{S}_
 A decidedly ``fairer'' approach is to aim for the same accuracy in both subsets.
 This is achieved by using the average of the base acceptance rates for the target rate.
 As we balance the test set in our experiments, this kind of sacrificing of one demographic group does not work there.
-We compare the two choices ($\mathit{PR}_t^{max}$ and $\mathit{PR}_t^{avg}$) in Section~\ref{sec:experiments}.
+We compare the two choices ($\mathit{PR}_t^{max}$ and $\mathit{PR}_t^{avg}$) in section~\ref{sec:experiments}.
 
 \begin{algorithm}[t]
   \caption{Targeting a balanced dataset}%
@@ -832,10 +832,10 @@ FairLR achieves similar results to FairGP, but with generally slightly lower acc
 We used the two step procedure of \citet{DonOneBenShaetal18}
 to verify that we cannot achieve the same fairness result with just parameter search on LR\@.
 
-In Fig.~\ref{fig:tar}, we investigate which choice of target ($\mathit{PR}_t^{avg}$, $\mathit{PR}_t^{min}$ or $\mathit{PR}_t^{max}$)
+In fig.~\ref{fig:tar}, we investigate which choice of target ($\mathit{PR}_t^{avg}$, $\mathit{PR}_t^{min}$ or $\mathit{PR}_t^{max}$)
 gives the best result.
-We use $\mathit{PR}_t^{avg}$ for all following experiments as this is the fairest choice (cf. Section~\ref{sec:dp}).
-The Fig.\ref{fig:tar}(a) shows results from Adult dataset with \emph{race} as sensitive attribute
+We use $\mathit{PR}_t^{avg}$ for all following experiments as this is the fairest choice (cf. section~\ref{sec:dp}).
+The fig.~\ref{fig:tar}(a) shows results from Adult dataset with \emph{race} as sensitive attribute
 where we have $\mathit{PR}_t^{min}=0.156$, $\mathit{PR}_t^{max}=0.267$ and $\mathit{PR}_t^{avg} =0.211$.
 $\mathit{PR}_t^{avg}$ performs best in term of the trade-off.%equal (for \emph{race} as sensitive attribute)
 %or better (for \emph{gender}) compared with the two other possibilities.
@@ -877,8 +877,8 @@ if TPR and TNR differ from 1,
 the overall positive rate is affected (see e.g.\ \citet{forman2005counting} for discussion of this).
 
 Fig.~\ref{fig:adult_parity_scatter_acc}(a) and (b) show the same data
-as Fig.~\ref{fig:adult_parity_scatter_pr_pr} but with different axes.
-It can be seen from this Fig.~\ref{fig:adult_parity_scatter_acc}(a) and (b)
+as fig.~\ref{fig:adult_parity_scatter_pr_pr} but with different axes.
+It can be seen from this fig.~\ref{fig:adult_parity_scatter_acc}(a) and (b)
 that the fairness-accuracy trade-off is usually best
 when the target rate is close to the average of the positive rates in the dataset
 (which is around 0.2 for both sensitive attribute).
@@ -908,7 +908,7 @@ A perfectly fair algorithm would achieve $1.0$ on the measure.%
     (a): using race as the sensitive attribute; (b): using gender.
     A completely fair model would achieve a value of 1.0 in the x-axis.
     %The best value for the TPR ratio is $1.0$.
-    See Fig.~\ref{fig:propublica_opp_scatter_tpr}(a) and (b) on how these choices of PR setting translate to
+    See fig.~\ref{fig:propublica_opp_scatter_tpr}(a) and (b) on how these choices of PR setting translate to
     $\mathit{TPR}_{s=0}$ vs $\mathit{TPR}_{s=1}$. %and TPR vs TNR.
   }%
   \label{fig:propublica_opp_box}
@@ -924,9 +924,9 @@ A perfectly fair algorithm would achieve $1.0$ on the measure.%
   \label{fig:propublica_opp_scatter_tpr}
 \end{figure*}%
 
-The results of 10 runs are shown in Fig.~\ref{fig:propublica_opp_box} and Fig.~\ref{fig:propublica_opp_scatter_tpr}.
+The results of 10 runs are shown in fig.~\ref{fig:propublica_opp_box} and fig.~\ref{fig:propublica_opp_scatter_tpr}.
 Fig.~\ref{fig:propublica_opp_box}(a) and (b) show the accuracy-fairness trade-off;
-Fig.~\ref{fig:propublica_opp_scatter_tpr}(a) and (b) show the achieved TPRs.
+fig.~\ref{fig:propublica_opp_scatter_tpr}(a) and (b) show the achieved TPRs.
 In the accuracy-fairness plot, varying $\mathit{PR}_t$ is shown to produce an inverted U-shape:
 Higher $\mathit{PR}_t$ still leads to improved fairness, but at a high cost in terms of accuracy.
 
