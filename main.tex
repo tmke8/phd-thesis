@@ -98,6 +98,7 @@ titlepage,numbers=noenddot,%1headlines,
 \usepackage{polyglossia}
 \setdefaultlanguage[variant=british]{english}
 
+\PassOptionsToPackage{hyphens}{url}
 \usepackage{csquotes}
 \PassOptionsToPackage{%
   backend=biber,bibencoding=utf8, %instead of bibtex
@@ -177,7 +178,7 @@ titlepage,numbers=noenddot,%1headlines,
 % ****************************************************************************************************
 % 4. Setup floats: tables, (sub)figures, and captions
 % ****************************************************************************************************
-\usepackage{booktabs} % better tables
+% \usepackage{booktabs} % better tables
   % \setlength{\extrarowheight}{3pt} % increase table row height
 % \newcommand{\tableheadline}[1]{\multicolumn{1}{l}{\spacedlowsmallcaps{#1}}}
 % \newcommand{\myfloatalign}{\centering} % to be used with each float for alignment
@@ -279,6 +280,11 @@ titlepage,numbers=noenddot,%1headlines,
 % don't make section titles all lower case
 \newcommand{\spacedsmallcaps}[1]{\spacedlowsmallcaps{\NoCaseChange{#1}}}
 \titleformat{\section}{\relax}{\thesection}{1em}{\spacedsmallcaps}
+\DeclareRobustCommand{\mytextsc}[1]{\textsc{#1}}
+% paragraphs
+\titleformat{\paragraph}[runin]
+    {\normalfont\normalsize}{\theparagraph}{0pt}{\mytextsc}
+\titlespacing*{\paragraph}{0pt}{1\baselineskip}{0.5\baselineskip}
 
 % ********************************************************************
 % Fine-tune hyperreferences (hyperref should be called last)
@@ -486,9 +492,9 @@ titlepage,numbers=noenddot,%1headlines,
 }
 \part{Preliminaries}\label{pt:intro}
 \include{ch/1-introduction}
-% \include{ch/2-related-work}
+\include{ch/2-related-work}
 % \include{ch/3-0-common-notation}
-% \include{ch/4-structure}
+\include{ch/4-structure}
 
 \cleardoublepage
 \ctparttext{
@@ -497,9 +503,9 @@ titlepage,numbers=noenddot,%1headlines,
 }
 \part{Publications}\label{pt:main}
 \chapter{Paper 1: Tuning Fairness by Balancing Target Labels}\label{ch:paper1}
-% \import{paper1/}{paper1.tex}
+\import{paper1/}{paper1.tex}
 \chapter{Paper 2: Null-sampling for Interpretable and Fair Representations}\label{ch:paper2}
-% \import{paper2/}{paper2.tex}
+\import{paper2/}{paper2.tex}
 \chapter{Paper 3: Learning with Perfect Bags: Addressing Hidden Stratification with Zero Labelled Data}\label{ch:paper3}
 \import{paper3/}{paper3.tex}
 

@@ -38,11 +38,6 @@
 % \title{Tuning Fairness by Balancing Target Labels} 
 
 % \newcommand{P}{\mathbb{P}} % Probability
-% \renewcommand{\algorithmicrequire}{\textbf{Input:}}
-% \renewcommand{\algorithmicensure}{\textbf{Output:}}
-% \newcommand{\thomas}[1]{\textcolor{brown}{\textbf{Thomas:} #1}}
-% \newcommand{\novi}[1]{\textcolor{red}{\textbf{Novi:} #1}}
-% \newcommand{\myles}[1]{\textcolor{blue}{\textbf{Myles:} #1}}
 
 
 % \iclrfinalcopy
@@ -117,7 +112,7 @@ This criterion is intended to be more compatible with the goal of building accur
 We discuss the suitability of the different fairness criteria in the discussion section at the end of the paper.
 
 There are many existing models for enforcing demographic parity and equalised odds
-\citep{CreMadJacWeietal19,AgaBeyDudLanetal18,calders2009building,kamishima2012fairness,zafar2017fairnesstreatment,zafar2017fairnessconstraints}.
+\citep{creager2019flexibly,AgaBeyDudLanetal18,calders2009building,kamishima2012fairness,zafar2017fairnesstreatment,zafar2017fairnessconstraints}.
 However, these existing approaches to balancing accuracy and fairness rely on intermediate, unintuitive control parameters such as allowable constraint violation $\epsilon$ (e.g. $0.01$) in \citet{AgaBeyDudLanetal18}, or a covariance threshold $c$
 (e.g. $0$ that is controlled by another parameters $\tau$ and $\mu$ -- $0.005$ and $1.2$ -- to trade off this threshold and accuracy)
 in \citet{zafar2017fairnesstreatment}.
@@ -470,8 +465,8 @@ are fully determined by applying Bayes' rule:
   P(y=1|s)}{P(\bar{y}|s)}~. \label{eq:debias}
 \end{align}
 
-\subsubsection{Choosing a target rate.}
-\noindent As shown, there is a remaining degree of freedom when targeting a balanced dataset:
+\paragraph{Choosing a target rate.}
+As shown, there is a remaining degree of freedom when targeting a balanced dataset:
 the target rate $\mathit{PR}_t := P(\bar{y}=1)$.
 This is true for both fairness criteria that we are targeting.
 The choice of targeting rate affects how much $\eta$ and $\bar{\eta}$ differ as implied by Theorem~\ref{th:prob}
@@ -591,7 +586,7 @@ We compare the two choices ($\mathit{PR}_t^{max}$ and $\mathit{PR}_t^{avg}$) in 
 \end{algorithm}
 
 \subsection{Conditionally balanced dataset}
-\noindent There is a fairness definition related to demographic parity which allows conditioning on ``legitimate'' risk factors $\ell$
+There is a fairness definition related to demographic parity which allows conditioning on ``legitimate'' risk factors $\ell$
 when considering how equal the demographic groups are treated~\citep{corbett2017algorithmic}.
 This cleanly translates into balanced datasets which are balanced conditioned on $\ell$:
 \begin{align}
@@ -606,7 +601,7 @@ and computing the transition probabilities for each sample depending on $\ell$.
 There are several ways to enforce fairness in machine learning models:
 as a pre-processing step
 % (e.g.~),
-\citep{kamiran2012data,louizos2016variational,lum2016statistical,zemel2013learning,Chiappa19,QuaShaTho19},
+\citep{kamiran2012data,louizos2016variational,lum2016statistical,zemel2013learning,chiappa2019path,QuaShaTho19},
 % kusner2017counterfactual
 as a post-processing step \citep{feldman2015certifying,hardt2016equality}, %(e.g.~\citep{feldman2015certifying,hardt2016equality}),
  or as a constraint during the learning phase
@@ -781,7 +776,7 @@ which corresponds to approximately $\nicefrac{1}{8}$ of the number of training p
 We use a squared-exponential (SE) kernel with automatic relevance determination (ARD)
 and the probit function as the likelihood function.
 We optimise the hyper-parameters and the variational parameters
-using the Adam method~\citep{kingma2014adam} with the default parameters. %($\beta_1 = 0.9$, $\beta_2 = 0.999$).
+using the Adam method~\citep{kingma2015adam} with the default parameters. %($\beta_1 = 0.9$, $\beta_2 = 0.999$).
 We use the full covariance matrix for the Gaussian variational distribution.
 %
 The logistic regression is trained with RAdam~\citep{liu2019variance} and uses L2 regularisation.

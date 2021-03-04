@@ -15,11 +15,11 @@ One popular definition of fairness used to guide the training of fair classifier
 
 In the typical setup, we have an input $\bm{x}$, a sensitive attribute $s$ that represents some non-admissible information like gender
 and a class label $y$ which is the prediction target.
-The idea of fair \emph{representation} learning \citep{ZemWuSwePitetal13,edwards2016censoring,madras2018learning}
+The idea of fair \emph{representation} learning \citep{zemel2013learning,edwards2016censoring,madras2018learning}
 is then to transform the input $\bm{x}$ to a representation $\bm{z}$ which is invariant to $s$.
 Thus, learning from $\bm{z}$ will not introduce a forbidden dependence on $s$.
 % $\bm{z}$ can then be used to learn a predictor
-% In fair representation learning \cite{ZemWuSwePitetal13}\cite{edwards2016censoring}\cite{madras2018learning}, the goal is then to find a representation $\bm{z}$ that is invariant to $s$.
+% In fair representation learning \cite{zemel2013learning}\cite{edwards2016censoring}\cite{madras2018learning}, the goal is then to find a representation $\bm{z}$ that is invariant to $s$.
 A good fair representation is one that preserves most of the information from $\bm{x}$ while satisfying the aforementioned constraints.
 % While fair \emph{representations} are by no means the only method of achieving this goal, approaches that explicitly depend on the target label \cite{kamiran2012data} are restrictive in that they do not readily admit transfer to unseen tasks, and are bound by the requirement of having $s$ and $y$ labels be present together.
 
@@ -107,7 +107,7 @@ Our contribution is thus two-fold:
 1) We propose a simple approach to generating representations 
 % through use of an INN, 
 that are invariant to a feature $s$, while having the benefit of interpretability that comes with being in the data domain.
-We call our model \emph{NIFR} (\textbf{N}ull-sampling for \textbf{I}nterpretable and \textbf{F}air \textbf{R}epresentations).
+We call our model \emph{NIFR} (\emph{N}ull-sampling for \emph{I}nterpretable and \emph{F}air \emph{R}epresentations).
 2) We explore a setting where the labelled training set suffers from varying levels of sampling bias,
 % which we expect to be common not only in fairness problems but machine learning problems more broadly,
 demonstrating an approach based on transferring information from a more diverse representative set,

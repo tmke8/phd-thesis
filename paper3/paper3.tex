@@ -116,10 +116,10 @@
 %\icmltitle{Learning with Perfect Bags:\\
 %Addressing Hidden Stratification with Zero Labelled Data}
 \textsc{Authors}:\\
-Thomas Kehrenberg$^1$, Myles Bartlett$^1$, Oliver Thomas$^1$, and Novi Quadrianto$^1$ \\
+Thomas Kehrenberg$^1$, Viktoriia Sharmanska$^1$, Myles Bartlett$^1$, and Novi Quadrianto$^1$ \\
 \textsc{Affiliations}:\\
 $^1$ Predictive Analytics Lab (PAL), University of Sussex, Brighton, UK\\
-\textsc{Conference}:\;\;\textit{European Conference on Computer Vision} (ECCV), 2020 \\
+\textsc{Conference}:\;\; Submitted to \textit{Internation Conference on Machine Learning} (ICML), 2021 \\
 % \textsc{DOI}:\;\;10.3389/frai.2020.00033
 \textsc{Note}:\;\;The appendix has been included as section~\ref{sec:zsf-appendix}.
 
@@ -152,7 +152,7 @@ We evaluate our approach on several classification benchmarks and show that it i
 
 \section{Introduction}%
 \label{sec:introduction}
-Machine learning has been deployed in safety-critical applications such as medicine (e.g. \citet{DunYiLanReetal19}), and socially important contexts such as the allocation of healthcare, education, and credit (\eg\ \citet{HurAde17,RagBarKleLev20}). 
+Machine learning has been deployed in safety-critical applications such as medicine (e.g. \citep{DunYiLanReetal19}), and socially important contexts such as the allocation of healthcare, education, and credit (\eg\ \citep{HurAde17,RagBarKleLev20}). 
 %
 Efficiency can be improved, costs can be reduced, and personalization of services and products can be greatly enhanced -- these are some of the drivers for the widespread development and deployment of machine learning algorithms. 
 %
@@ -169,19 +169,19 @@ Algorithms such as classifiers, however, are trained from large amount of labell
 In many real-world classification tasks, each labelled class consists of multiple semantically distinct subclasses, or subgroups.
 For example, the ``dog'' class label can have finer-grained intra-class variations, such as ``dog indoor'' and ``dog outdoor''.
 %
-This finer-grained subgrouping information is typically unavailable/unlabeled (e.g. \citet{SohDunAngGuetal20,nam2020learning}).
+This finer-grained subgrouping information is typically unavailable/unlabeled (e.g. \citep{SohDunAngGuetal20,nam2020learning}).
 %
-The standard training process brings about two inter-connected challenges: a) classifiers often under-perform on important hidden subgroups (\emph{hidden stratification}) \cite{RayDunCarRe20,SohDunAngGuetal20};
-and b) \emph{systematic bias}~\cite{KalZho18} affects whether or not entire collections of data points appear in the training dataset,
+The standard training process brings about two inter-connected challenges: a) classifiers often under-perform on important hidden subgroups (\emph{hidden stratification}) \citep{RayDunCarRe20,SohDunAngGuetal20};
+and b) \emph{systematic bias}~\citep{kallus2018residual} affects whether or not entire collections of data points appear in the training dataset,
 and can make the classifier unprepared for treating those subgroups in the eventual deployment setting
 % and can hamper attempts to correct for bias in the eventual deployment data
-(\emph{residual bias}). %\cite{KalZho18}.
+(\emph{residual bias}). %\cite{kallus2018residual}.
 
 We are interested in hidden stratification in which, for some of the subgroups, labelled training data is only available with a certain outcome, or labelled training samples are not available at all, due to systematic bias.
 This can be seen as a strong sampling bias.
 %
 For instance, data on loan defaults can only be collected on those loan
-applicants who were approved in the past \cite{KalZho18}.
+applicants who were approved in the past \citep{kallus2018residual}.
 %
 Here a loan decision policy specifies whether an individual will be included in the training dataset.
 %
@@ -206,7 +206,7 @@ A deployment set will contain data points from all subgroups.
 %
 We thus consider the setting where \emph{unlabelled} data is available for learning representations that disentangle the subgroup membership from the class membership. We note, however, that the test set could be used for this purpose in a transductive setting.
 
-We aim to convert our unlabelled data into a collection of \emph{perfect bags} \citep{KleMulRag16,chouldechova17}, \ie\ sample sets in which the class label $y$ and subgroup label $s$ are independent (\ie\ $y\perp s$).
+We aim to convert our unlabelled data into a collection of \emph{perfect bags} \citep{kleinberg2016inherent,chouldechova2017fair}, \ie\ sample sets in which the class label $y$ and subgroup label $s$ are independent (\ie\ $y\perp s$).
 Making use of the terminology from \emph{multiple-instance learning}, our batches comprise a certain number of bags which are a collection of samples.
 %
 We will then use these perfect bags as the inductive bias for learning the disentangled representations. 
@@ -235,35 +235,35 @@ Specifically, our paper provides the following contributions:
     \item A new parametric approach to disentangling that combines elements from adversarial learning and set-classification to guide an encoder network towards the goal of producing encodings invariant to the source distribution and thereby the subgroup factors in which source distributions differ.
 \end{enumerate}
 
-\textbf{Related work.}
+\section{Related work.}
 We describe related work in two areas: zero-shot learning and semi-supervised learning.
 %and disentangled representation learning. 
 
-\textbf{On zero-shot learning.}
+\subsection{On zero-shot learning.}
 The setting with incomplete training data, where we aim to account for seen and unseen outcomes is also known as \emph{generalised zero-shot learning}. 
 Traditionally, zero-shot learning transfers knowledge from classes for which we have training data to classes for which we do not, via auxiliary knowledge, e.g. via prototype examples \citep{larochelle2008}, intermediate class description such as semantic attributes \citep{lampert2009, xian2018zero}, word2vec embeddings \citep{bucher2019}. 
 Our method similarly uses a collection of perfect bags as a source of auxiliary knowledge but in contrast to generalised zero-shot learning, our perfect bag is an unlabelled pool of data, where class descriptions are unknown. 
 
-\textbf{On semi-supervised learning.} 
-\citet{WicPanTri19} proposed a semi-supervised method that can successfully harness unlabelled data to correct for the selection bias and label bias in the training data.
+\subsection{On semi-supervised learning.} 
+\citet{wick2019unlocking} proposed a semi-supervised method that can successfully harness unlabelled data to correct for the selection bias and label bias in the training data.
 %
 The unlabelled data, despite not containing the class label $y$, \emph{is} labelled in terms of the subgroup label $s$. 
 %
 Our setting is significantly harder because there is no label information about $y$ and $s$ in the perfect bag.
 
-\textbf{On disentangled representations learning.}
+\subsection{On disentangled representations learning.}
 \citet{LocAbbRaiBauetal19} suggested that disentanglement in representation learning may be a useful property to remove algorithmic bias when subgroup information is not observed.
 %
 In order for disentangled representations to reduce algorithmic bias without the knowledge of subgroup label $s$, they have to assume that the class label $y$ and the subgroup label $s$ are independent, i.e. $y\perp s$.
 %
-Though, in many real-world tasks, the variable $s$ is correlated with the variable $y$, and therefore unsupervised methods are not suitable  \citep{JaiWuAbdNat18,JaiWuAbdNat19}. 
+Though, in many real-world tasks, the variable $s$ is correlated with the variable $y$, and therefore unsupervised methods are not suitable  \citep{jaiswal2018unsupervised,JaiWuAbdNat19}. 
 %
 Indeed, experiments in \citet{LocAbbRaiBauetal19} were wholly done with procedurally generated synthetic datasets involving 2D and 3D shapes. 
 %
 Without some supervision or inductive bias, disentangled representation methods would not solve the issue of algorithmic fairness with invisible demographics \citep{LacBauLucGeletal19}. 
 
 %\begin{wrapfigure}{!t}{0.6\textwidth}
-\begin{figure}[ht]
+\begin{figure}[t]
 \centering
     %\includegraphics[width=0.9\textwidth]{figures/SSL-framework}
     % \includegraphics[width=\textwidth]{figures/SSL-framework-withPred.pdf}
@@ -277,11 +277,11 @@ Without some supervision or inductive bias, disentangled representation methods 
 %\end{wrapfigure}
 % \hfill
 % \begin{figure}
-\begin{figure}[ht]
+\begin{figure}[t]
     \centering
     % if you want to make changes to the diagram, it is located here:
     % https://drive.google.com/file/d/1M37m4rVj1EGrFJb9QzK32bs8swepiaZ1/view?usp=sharing
-    \includegraphics[width=\textwidth]{figures/fdm.pdf}
+    \includegraphics[width=0.5\textwidth]{figures/fdm.pdf}
     \caption{%
     Illustration of distribution matching.
     In this example, the training set is lacking {\color{purple}purple} 4's.
@@ -300,10 +300,11 @@ Without some supervision or inductive bias, disentangled representation methods 
 \subsection{Theoretical background}
 In this section, we first formalise the problem of hidden stratification with zero data (zero-label stratification) and the related issue of algorithmic bias. 
 %
-We then theoretically motivate the idea of perfect bags for reducing algorithmic bias, and their use as an inductive bias for disentanglement.
+We then theoretically motivate the idea of perfect bags for reducing algorithmic bias, and their use as an inductive bias for disentanglement.\\
 
-\textbf{Zero-label stratification and algorithmic bias.}
-Let $S$ denote a set of discrete-valued subgroup labels of the associated domains $\gS$.
+\noindent\textsc{Zero-label stratification and algorithmic bias.}
+% \textsc{Stratification.}
+\;\; Let $S$ denote a set of discrete-valued subgroup labels of the associated domains $\gS$.
 %
 % $S$ can take the values taken by a single subclass label, or, $S = S_1 \times S_2 \times \ldots \times S_p$ with $S_1, \ldots, S_p$ be discrete-valued subclass labels more generally.
 %
@@ -346,7 +347,7 @@ The model becomes biased against those subgroups, leading to unexpectedly poor p
 
 %Semi-supervised learning \cite{ChaSchZie06} can alleviate the issue of unfairness to the \emph{invisibles} by mixing labeled with unlabeled data, which is usually much cheaper to obtain. 
 %
-We propose to alleviate the issue of bias against missing subgroups by mixing labelled data with unlabelled data that is usually much cheaper to obtain \cite{ChaSchZie06}. 
+We propose to alleviate the issue of bias against missing subgroups by mixing labelled data with unlabelled data that is usually much cheaper to obtain \citep{ChaSchZie06}. 
 %
 In this paper, we refer to this set of \emph{unlabelled} data as the
 deployment set\footnote{In our experiments, we report accuracy and bias metrics on another independent test set instead of on the unlabelled data that is available at training time.} $\gD_{dep} =\{(x_i)\}$.
@@ -361,7 +362,7 @@ deployment set has overlap with all sources:
 %The deployment set is much like the deployment set: 
 Importantly, the deployment set has no information about class labels $y$ or the subgroup labels $s$.
 
-\textbf{Relation to algorithmic fairness.}
+\paragraph{Relation to algorithmic fairness.}
 Training set bias also affects what has been termed \emph{algorithmic fairness},
 which is commonly expressed in terms of the predicted class $\hat{y}$ of a machine learning model $M$.
 We adopt a statistical notion of algorithmic fairness in which outcomes are balanced under certain conditions between groups of data points with different subgroup labels.
@@ -371,7 +372,7 @@ We adopt a statistical notion of algorithmic fairness in which outcomes are bala
 %
 Several statistical bias measures have been proposed
 % equality of acceptance rate (demographic parity), equality of true positive rates, equality of true negative rate, equality of positive predicted value, equality of negative predicted value
-\citep{kamiran2012data,HarPriSre16,ZafValRodGum17b,chouldechova17,RagBarKleLev20}
+\citep{kamiran2012data,hardt2016equality,zafar2017fairnesstreatment,chouldechova2017fair,RagBarKleLev20}
 (shown below for the case where $s$ and $y$ are binary):
 \begin{align}
 & P(\hat{y}=1|s=0)=P(\hat{y}=1|s=1)\label{eq:AR}\\
@@ -387,8 +388,8 @@ $\hat{y}\perp s$ (\eqref{eq:AR}), $\hat{y}\perp s\ |\ y$ (\eqref{eq:TPR}), and $
 If our training set has no positive outcome for the subgroup label $s=0$, i.e. $\Omega_{y=1,s=0} = \varnothing$, the true positive rate for this subgroup will suffer, and therefore we will likely not be able to satisfy, among others, equality of true positive rate.
 In the experimental section, we use metrics based on these equalities to quantify how strongly the predictions are affected by the dataset bias.
 
-\textbf{Perfect bag.} 
-We call a sampled set for which $y\perp s$ holds, a perfect bag \citep{chouldechova17,KleMulRag16}.
+\paragraph{Perfect bag.}
+We call a sampled set for which $y\perp s$ holds, a perfect bag \citep{chouldechova2017fair,kleinberg2016inherent}.
 Such sets are also very desirable when training algorithmically fair classifiers
 (see the \emph{sampling} method in \citet{kamiran2012data}).
 %
@@ -416,14 +417,14 @@ Ideally, we would like to sample our deployment dataset as perfect bags.
 However, the deployment set is unlabelled and is unlikely to be perfect in practice. 
 Instead, we pursue learning under zero-label systematic bias as learning disentangled representations with a collection of \emph{approximately} perfect bags. We show that the disentangling procedure is robust enough to work with this relaxation, but that performance scales with how well the deployment set is balanced.
 
-\textbf{Disentangled representation.}
+\paragraph{Disentangled representation.}
 Disentanglement-learning aims to find a factorised representation of a data point $x$ through mapping functions $f_i$ such that $f_i(x)=z_i$ where $z_1,z_2,\ldots,z_p$ are $p$ distinct (independent) factors of variations, which together form $x$.
 %
-We can formalise this intuitive definition using group and representation theories \cite{HigAmoPfaRacetal18}, or using structural causal models \cite{SutMilSchBau19}.
+We can formalise this intuitive definition using group and representation theories \citep{HigAmoPfaRacetal18}, or using structural causal models \citep{SutMilSchBau19}.
 %
 Specifically for this paper, we would like to split the data representation into two factors as $f_y(x)=z_y$ and $f_s(x)=z_s$ where $z_y$ contains factors that are relevant for $y$-prediction and $z_s$ contains factors related to the subgroup label $s$.
 %
-Since $s$ is correlated with the class label $y$, we need annotations of the undesired nuisance variable $s$ \cite{JaiRexAbdNat18,JaiWuAbdNat19} to be successful in using disentanglement learning methods for zero-label stratification. %\citet{JaiRexAbdNat18,JaiWuAbdNat19}.
+Since $s$ is correlated with the class label $y$, we need annotations of the undesired nuisance variable $s$ \citep{jaiswal2018unsupervised,JaiWuAbdNat19} to be successful in using disentanglement learning methods for zero-label stratification. %\citet{jaiswal2018unsupervised,JaiWuAbdNat19}.
 %
 We have some annotations of subgroup label $s$ in the training set $\gD_{tr} =\{(x_i, s_i, y_i)\}$, however, crucially, due to systematic bias, this set is missing certain subgroups.
 %
@@ -447,9 +448,9 @@ deployment set for learning the disentangled representations.
     \label{fig:celeba-recons}
 \end{figure}
 
-\textbf{Disentanglement with a collection of perfect bags.} 
+\paragraph{Disentanglement with a collection of perfect bags.}
 Our framework for learning the disentangled representations comprises four core modules: 1) \emph{encoder} functions $f_y$ and $f_s$ (which share weights) that embed $x$ into $z_y$ and $z_s$, respectively; 2) a \emph{decoder} function $g$
- that learns the approximate-inverse mapping of $f_y$ and $f_s$: $g: (z_y, z_s) \rightarrow \tilde{x}$; 3) \emph{predictor} functions $\ell_y$ and $\ell_s$ that predict $y$ and $s$ from $z_y$ and $z_s$ respectively, and 4) a \emph{discriminator} function $h$ that classifies a given bag of samples embedded in $z_y$ as deriving from the deployment set or the training set; this marks a significant departure from the typical GAN discriminator, which takes as input batches of data and yields a prediction for each sample independently of the other samples in the batch. 
+ that learns the approximate-inverse mapping of $f_y$ and $f_s$: $g: (z_y, z_s) \rightarrow \tilde{x}$ ; 3) \emph{predictor} functions $\ell_y$ and $\ell_s$ that predict $y$ and $s$ from $z_y$ and $z_s$ respectively, and 4) a \emph{discriminator} function $h$ that classifies a given bag of samples embedded in $z_y$ as deriving from the deployment set or the training set; this marks a significant departure from the typical GAN discriminator, which takes as input batches of data and yields a prediction for each sample independently of the other samples in the batch. 
  %
  Fig. \ref{fig:architecture} shows our framework. %, where the training signal comes from the perfect dataset.
  %
@@ -463,15 +464,13 @@ Our framework for learning the disentangled representations comprises four core 
          &\quad\quad\,\,\, +  \log h(\{f_y(x) | x \in \mathcal{B}_{tr}\})
      ),
      \label{eq:disentangling}
- \end{align}
-
+ \end{align}%
 where $L_{\text{recon}}$ and $L_{\text{sup}}$ denote the reconstruction loss, and supervised loss, respectively, and $\lambda_1$, $\lambda_2$ and $\lambda_3$ are positive pre-factors.
 The overall objective, encompassing $f_y$, $f_s$, and $h$ can then be formulated in terms of $\mathcal{L}_{\text{enc}}$ as
 \begin{align}
-    \underset{f_y, f_s}{\textrm{min}} \underset{h}{\textrm{max}}\mathcal{L}_{\text{total}} = \mathcal{L}_{enc}(f_y, f_s, h)
+    \underset{f_y, f_s}{\textrm{min}}\; \underset{h}{\textrm{max}}\;\mathcal{L}_{\text{total}} = \mathcal{L}_{enc}(f_y, f_s, h)~.
     \label{eq:disentangling_total}
-\end{align}
-
+\end{align}%
 Aside from being computed over a bag of samples, our adversarial loss differs from that the standard one in that both of its constituent terms are dependent on $f_y$ (the encoder is responsible for producing the ``real'' \emph{and} ``fake'' samples); we allow the gradient to flow through both of these terms, finding that adding a stop-gradient to $\log h(\{f_y(x) | x \in \gB_\mathit{perf}\})$ drastically reduced the convergence-rate and stability of the algorithm.
 
 Eq.~(\ref{eq:disentangling_total}) is computed over batches of bags and the discriminator is trained to map a bag of data points from the training set and the deployment set to a binary label:
@@ -528,9 +527,9 @@ leaving only subgroup-unrelated information in $z_y$.
 In the \emph{missing subgroup} scenario, the disentangling supervision is weaker.
 Thus, for this case, we restrict the amount of information that can be encoded in $z_s$ by setting its dimensionality equal to $\ceil{\text{log}_2(\text{dim}(\mathcal{S}))}$;
 \eg, in the case of binary $s$, we restrict $z_s$ to be one-dimensional.
-Additionally, $z_s$ can be discretised with a straight-through estimator of the gradient \cite{bengio2013estimating}.
+Additionally, $z_s$ can be discretised with a straight-through estimator of the gradient \citep{bengio2013estimating}.
 
-\textbf{Disentanglement guarantees. }
+\paragraph{Disentanglement guarantees.}
 %\citet{ShuCheKumErmetal20} decomposed disentanglement into two distinct concepts: consistency and restrictiveness.
 %
 %The decomposition allows for correlated factors of variations, which is crucial in our case as the subgroup label $s$ is correlated with the class label $y$. 
@@ -542,7 +541,7 @@ We observe samples from a pair of distributions (deployment set and training set
 As an example, we consider colored MNIST with two classes (digits 2 and 4) and two subgroups (colors purple and green), where the training set is lacking the combination of digit 4 and color purple.
 Sample pairs from the two distributions have a shared underlying factor: 2's can be purple and green.
 The pairs also have a factor that differs: in the training set, a 4 can only be green; in the deployment set, it can have both colors.
-Theorem 1 in \cite{ShuCheKumErmetal20} guarantees then that a (sufficiently powerful) disentangling encoder will produce a disentangling that is \emph{consistent} with respect to the shared factor and \emph{restricted} with respect to the changing factor.
+Theorem 1 in \citep{ShuCheKumErmetal20} guarantees then that a (sufficiently powerful) disentangling encoder will produce a disentangling that is \emph{consistent} with respect to the shared factor and \emph{restricted} with respect to the changing factor.
 In our case, $z_y$ will capture the shared factor and $z_s$ the changing factor.
 For the invariant representation, we drop $z_s$, which can be seen as setting this value to 0; as $z_s$ has guaranteed \emph{restrictiveness}, the effect of changing $z_s$ is restricted to changing the corresponding factor,
 which in the example refers to whether or not 4's can be purple.
@@ -599,9 +598,9 @@ which in the example refers to whether or not 4's can be purple.
 %   \includegraphics[width=\columnwidth]{figures/cmnist_2v4_partial_tpr.pdf}
 %   \includegraphics[width=\columnwidth]{figures/cmnist_2v4_partial_tnr.pdf}
   \caption{
-    Results from \textbf{30 repeats} for the Colored MNIST dataset with two digits, 2 and 4, with \emph{subgroup bias} for the color `{\color{purple}purple}': for {\color{purple}purple}, only the digit class `2' is present.
-    \textbf{Left}: Accuracy.
-    \textbf{Right}: Positive rate ratio.
+    Results from 30 repeats for the Colored MNIST dataset with two digits, 2 and 4, with \emph{subgroup bias} for the color `{\color{purple}purple}': for {\color{purple}purple}, only the digit class `2' is present.
+    \textsc{Left}: Accuracy.
+    \textsc{Right}: Positive rate ratio.
     % \textbf{Bottom left}: True positive rate ratio.
     % \textbf{Bottom right}: True negative rate ratio.
     For the \texttt{Ranking} clustering, the clustering accuracy was 96\% $\pm$ 6\%;
@@ -616,9 +615,9 @@ which in the example refers to whether or not 4's can be purple.
 %   \includegraphics[width=\columnwidth]{figures/cmnist_2v4_miss_s_alt_tpr.pdf}
 %   \includegraphics[width=\columnwidth]{figures/cmnist_2v4_miss_s_alt_tnr.pdf}
   \caption{
-    Results from \textbf{30 repeats} for the Colored MNIST dataset with two digits, 2 and 4, with a \emph{missing subgroup}: the training dataset only has {\color{green}green} digits.
-    \textbf{Left}: Accuracy.
-    \textbf{Right}: Positive rate ratio.
+    Results from 30 repeats for the Colored MNIST dataset with two digits, 2 and 4, with a \emph{missing subgroup}: the training dataset only has {\color{green}green} digits.
+    \textsc{Left}: Accuracy.
+    \textsc{Right}: Positive rate ratio.
     % \textbf{Bottom left}: True positive rate ratio.
     % \textbf{Bottom right}: True negative rate ratio.
     For the \texttt{Ranking} clustering, the clustering accuracy was 88\% $\pm$ 5\%;
@@ -634,10 +633,10 @@ which in the example refers to whether or not 4's can be purple.
 %   \includegraphics[width=\columnwidth]{figures/cmnist_3dig_4miss_tpr.pdf}
 %   \includegraphics[width=\columnwidth]{figures/cmnist_3dig_4miss_tnr.pdf}
   \caption{
-    Results from \textbf{30 repeats} for the Colored MNIST dataset with three digits: `2', `4' and `6'.
+    Results from 30 repeats for the Colored MNIST dataset with three digits: `2', `4' and `6'.
     Four combinations of digit and color are missing: {\color{green}green} 2's, {\color{blue}blue} 2's, {\color{blue}blue} 4's and {\color{green}green} 6's.
-    \textbf{Left}: Accuracy.
-    \textbf{Right}: Hirschfeld-Gebelein-R\'enyi maximal correlation \citep{renyi1959measures} between $S$ and $Y$.
+    \textsc{Left}: Accuracy.
+    \textsc{Right}: Hirschfeld-Gebelein-R\'enyi maximal correlation \citep{renyi1959measures} between $S$ and $Y$.
     % \textbf{Right}: Positive rate ratio.
     % \textbf{Bottom left}: True positive rate ratio.
     % \textbf{Bottom right}: True negative rate ratio.
@@ -651,11 +650,11 @@ which in the example refers to whether or not 4's can be purple.
 %   \includegraphics[width=\columnwidth]{figures/celeba_gender_smiling_tpr.pdf}
 %   \includegraphics[width=\columnwidth]{figures/celeba_gender_smiling_tnr.pdf}
   \caption{
-    Results from \textbf{10 repeats} for the CelebA dataset with the \emph{subgroup bias} setting.
+    Results from 10 repeats for the CelebA dataset with the \emph{subgroup bias} setting.
     The task is to predict ``smiling'' vs ``non-smiling'' and the subgroups are based on gender.
     The subgroup ``female'' is missing samples for the ``smiling'' class.
-    \textbf{Left}: Accuracy.
-    \textbf{Right}: Positive rate ratio.
+    \textsc{Left}: Accuracy.
+    \textsc{Right}: Positive rate ratio.
     % \textbf{Bottom left}: True positive rate ratio.
     % \textbf{Bottom right}: True negative rate ratio.
   }%
@@ -666,7 +665,7 @@ which in the example refers to whether or not 4's can be purple.
 \label{sec:implementation}
 Our proposed framework, demonstrated in fig.\,\ref{fig:architecture}, entails two steps: 1) sample perfect bags from an unlabeled deployment set, and 2) produce disentangled representations using perfect bags for adversarial distribution-matching.
 
-\textbf{Constructing approximately perfect bags via clustering.}
+\paragraph{Constructing approximately perfect bags via clustering.}
 We cluster the data points from the deployment set into $K=\textrm{dim}(\mathcal{Y})\cdot \textrm{dim}(\mathcal{S})$ number of clusters, i.e. the number of data sources $\Omega_{y,s}$. 
 %, using a learned embedding $z$.
 %
@@ -711,7 +710,7 @@ We balance $\gD_\mathit{dep}$ so that all clusters have equal size to form a per
 %Note that our method of constructing the perfect dataset based on clustering does not require solving the linear assignment problem of cluster-source association. This is particularly suitable for exploring the setting where invisible demographics are formed of multiple sources.
 
 % \textbf{Is an \emph{explicit} identification of all clusters, i.e. which demographic groups and labels they correspond to, required?}
-\textbf{Clustering requirements.}
+\paragraph{Clustering requirements.}
 For constructing the perfect bags, the correspondence between the clusters and the class-labels/subgroup-label pairs does not need to be known.
 The clustering is only needed for drawing an equal number of samples from each cluster for each bag of samples.
 % Constructing the bags in this way does \emph{not} require us to solve linear assignment problem of cluster-source association.
@@ -720,7 +719,7 @@ The clustering is only needed for drawing an equal number of samples from each c
 In our experiments, we provide an analysis with unsupervised k-means clustering where we do not use annotations from the training set as side information, even for the \emph{known} groups. 
 When clustering with the training labels (such as with the rank statistics approach), we use the information that they provide to ensure samples from the \emph{known} subgroups are clustered together with others with the same label.
 
-\textbf{Clustering guarantees.} 
+\paragraph{Clustering guarantees.}
 By leveraging the feature space of deep models, previous research has shown that semantically meaningful clusters can be discovered without the need for ground-truth annotations
  (for example \citet{RayDunCarRe20,GanVanGeoProetal20,SohDunAngGuetal20,HanRebEhrVedetal20}). 
 \citet{SohDunAngGuetal20} recently provided a ``clustering guarantee'' when assuming access to ground truth class labels $y$ and using clustering within each class to generate approximate subgroups $s$.  
@@ -762,7 +761,7 @@ The cluster formed by an underrepresented subgroup can be easily overlooked by a
 %Clearly, the use of algorithmic approaches still requires human review in a manner that is similar to error auditing, but is less dependent on the specific human auditor to initially identify the stratifica- tion. While algorithmic approaches to measurement can reduce burden on human analysts and take advantage of learned encodings to identify subclasses, their efficacy is limited by the difficulty of separating important subclasses in the feature space analyzed.
 
 \section{Experiments}
-We perform experiments using image and tabular datasets: Colored MNIST \citep{kim2019learning}, CelebA \cite{liu2015celeba} and Adult Income\footnote{{Results for Adult Income dataset and discussion can be found in the supplementary material.}} \citep{Dua:2017} that are publicly available. 
+We perform experiments using image and tabular datasets: Colored MNIST \citep{kim2019learning}, CelebA \citep{liu2015faceattributes} and Adult Income\footnote{{Results for Adult Income dataset and discussion can be found in the supplementary material.}} \citep{Dua:2017} that are publicly available. 
 %arjovsky2019invariant, KehBarThoQua20
 %
 To validate the first step of creating the perfect bags, we compare the performance of our disentangling model when paired with each of four different balancing methods:
@@ -783,8 +782,8 @@ Third, we have the \texttt{LfF} model proposed by \citet{nam2020learning} that w
 %%%%%OR
 %During training, the {\color{green}green} color group is observed in both digits (sources $\Omega_{y=\text{'two' }s=\color{green}green}$ and $\Omega_{y=\text{'four' }s=\color{green}green}$), but for the {\color{purple}purple} color group, we only observe the one-sided outcome ($\Omega_{y=\text{'two'}s=\color{purple}purple}$), so the source $\Omega_{y=\text{'four'}s=\color{green}green}$ defines invisible demographic.  
 %
-\textbf{Colored MNIST.}
-The MNIST dataset \cite{lecun1998gradient} consists of 70,000 (60,000 designated for training, 10,000 for testing) images of gray-scale hand-written digits. We color the digits following a similar procedure to that outlined by \cite{kim2019learning}, randomly assigning each sample one of ten distinct RGB colors. Each source is then a combination of digit-class (class label) and color (subgroup label). We use no data-augmentation aside from symmetrically zero-padding the images to be of size 32x32.
+\subsection{Colored MNIST}
+The MNIST dataset \citep{lecun1998gradient} consists of 70,000 (60,000 designated for training, 10,000 for testing) images of gray-scale hand-written digits. We color the digits following a similar procedure to that outlined by \citep{kim2019learning}, randomly assigning each sample one of ten distinct RGB colors. Each source is then a combination of digit-class (class label) and color (subgroup label). We use no data-augmentation aside from symmetrically zero-padding the images to be of size 32x32.
 We create imbalance in both $D_{dep}$ and $D_{tr}$ by sub-sampling the remaining sources;
 we do this to render a more realistic setting in which the deployment set is not innately balanced and demands preliminary clustering to construct approximately perfect bags. The sub-sampling proportions used for each set of experiments can be found in the appendix.
 
@@ -810,7 +809,8 @@ As the PR ratio is not a suitable metric for non-binary $S$,
 we instead quantify the invariance of the predictions to the subgroup with
 the HGR maximal correlation \citep{renyi1959measures}.
  
-\textbf{CelebA.} To demonstrate our method can be used to mitigate biased decision making for real-world computer vision problems, we consider the CelebA dataset~\cite{liu2015celeba} comprising over 200,000 images of different celebrities.
+\subsection{CelebA}
+To demonstrate our method can be used to mitigate biased decision making for real-world computer vision problems, we consider the CelebA dataset~\citep{liu2015faceattributes} comprising over 200,000 images of different celebrities.
 The dataset comes with per-image annotations of attributes related to visual appearance, emotion, gender, age.
 %
 We predict the smiling attribute as the class label and use the binary attribute, gender, as the subgroup label.

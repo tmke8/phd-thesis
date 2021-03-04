@@ -11,7 +11,7 @@
 % However, the algorithms that are used in these decisions can have strong biases
 % that stem from the training data.
 % Often, the algorithms are even more biased than the training data.
-% \citet{kamishima2011fairness} give a great illustration for this
+% \citet{kamishima2012fairness} give a great illustration for this
 % (adapted from \citet{calders2010three}).
 % The illustration is based on the Adult/Census Income dataset \citep{kohavi1996scaling}
 % which contains records of individuals with thirteen attributes, among them age and gender.
@@ -240,7 +240,7 @@ that was based on fair latent class labels.
 The two first methods perform approximately equally well.
 The authors mention the possibility of a better fairness measure.
 
-\citet{kamishima2011fairness} take a closer look
+\citet{kamishima2012fairness} take a closer look
 at the underlying causes for unfair predictors and condense it to three main causes:
 \emph{prejudice}, \emph{underestimation} and \emph{negative legacy}.
 (Let \(x\) be the non-sensitive features.)
@@ -256,7 +256,7 @@ at the underlying causes for unfair predictors and condense it to three main cau
   \emph{direct prejudice} refers to classifiers that make direct use of the sensitive attribute.
   Indirect prejudice and latent prejudice can be quantified by
   the mutual information between \(y\) and \(s\) or \(x\) and \(s\) respectively.
-  \citet{kamishima2011fairness} do not consider latent prejudice to be immediately harmful,
+  \citet{kamishima2012fairness} do not consider latent prejudice to be immediately harmful,
   but it can be a problem with respect to the protection of personal data and compliance with laws.
 \item
   Underestimation:
@@ -277,19 +277,19 @@ at the underlying causes for unfair predictors and condense it to three main cau
 
 We see that previous works nearly exclusively dealt with the first of these issues, \emph{prejudice},
 and more precisely \emph{indirect prejudice}.
-\citet{kamishima2011fairness} also focus on \emph{indirect prejudice};
+\citet{kamishima2012fairness} also focus on \emph{indirect prejudice};
 essentially because it is the easiest to deal with, apart from \emph{direct prejudice}.
 They use \acf{LR} as the basis for their fair classifier.
 Their approach to enforcing fairness is qualitatively different from the previous proposals.
 Instead of manipulating the dataset or using explicit algorithm to make a classifier fair,
-\citet{kamishima2011fairness} treat the fairness constraint like a regulariser.
+\citet{kamishima2012fairness} treat the fairness constraint like a regulariser.
 A term is added to the objective function
 that estimates the mutual information between \(y\) and \(s\)
 and gets minimized together with the other parts of the objective function.
 This strategy leaves most of the work to the optimization that would need to be run anyway.
 A factor in front of the regularization term determines how much to value fairness over accuracy.
 
-In a comparison between \citet{kamishima2011fairness}'s algorithm
+In a comparison between \citet{kamishima2012fairness}'s algorithm
 and the Na\"ive Bayes method with two different models for the sensitive attributes from \citet{calders2010three},
 the latter performed better on the Adult/Census Income dataset
 (higher accuracy and lower discrimination score).
@@ -359,7 +359,7 @@ The authors propose two practical similarity measures for distributions
 that are well-known in the respective literature.
 In order to train a fair classifier,
 the Lipschitz condition is then used as a constraint for the optimization.
-This is similar to how \citet{kamishima2011fairness} used the fairness criterion as a regulariser.
+This is similar to how \citet{kamishima2012fairness} used the fairness criterion as a regulariser.
 However, \citet{dwork2012fairness} intend to realize it as a strict constraint.
 Furthermore, they show that their criterion is compatible with Demographic Parity
 but does not guarantee it in general.
@@ -423,7 +423,7 @@ The experiments are done on the German credit dataset, the Adult / Census Income
 and a dataset based on the Heritage Health Prize milestone 1 challenge
 where the goal is to predict how many days a given person will spend in the hospital in a year.
 The proposed methods performs better in these experiments
-than the methods from \citet{kamiran2009classifying} and the method from \citet{kamishima2011fairness}.
+than the methods from \citet{kamiran2009classifying} and the method from \citet{kamishima2012fairness}.
 However, they do not compare against \citet{calders2010three},
 presumably because those methods rely on the sensitive attribute for making predictions,
 which can be considered an unfair advantage.
@@ -504,7 +504,7 @@ To compare the method with previous work,
 several classifiers are trained on the fair representation:
 logistic regression, SVM and Na\"ive Bayes.
 Of these, the Na\"ive Bayes classifier seems to outperform the algorithms from previous works
-\citep{kamiran2009classifying,kamishima2011fairness,zemel2013learning}
+\citep{kamiran2009classifying,kamishima2012fairness,zemel2013learning}
 in both achieved fairness and accuracy.
 
 This work by \citet{feldman2015certifying} is a major improvement over the work by \citet{zemel2013learning}
