@@ -73,7 +73,7 @@ titlepage,numbers=noenddot,%1headlines,
 % \newcommand{\myDepartment}{Put data here\xspace}
 \newcommand{\myUni}{University of Sussex\xspace}
 \newcommand{\myLocation}{Hove\xspace}
-\newcommand{\myTime}{January 2021\xspace}
+\newcommand{\myTime}{March 2021\xspace}
 \newcommand{\myVersion}{Thesis v0.2}
 
 % ********************************************************************
@@ -177,37 +177,37 @@ titlepage,numbers=noenddot,%1headlines,
 % ****************************************************************************************************
 % 4. Setup floats: tables, (sub)figures, and captions
 % ****************************************************************************************************
-\usepackage{tabularx} % better tables
-  \setlength{\extrarowheight}{3pt} % increase table row height
-\newcommand{\tableheadline}[1]{\multicolumn{1}{l}{\spacedlowsmallcaps{#1}}}
-\newcommand{\myfloatalign}{\centering} % to be used with each float for alignment
-\usepackage{subfig}
+\usepackage{booktabs} % better tables
+  % \setlength{\extrarowheight}{3pt} % increase table row height
+% \newcommand{\tableheadline}[1]{\multicolumn{1}{l}{\spacedlowsmallcaps{#1}}}
+% \newcommand{\myfloatalign}{\centering} % to be used with each float for alignment
+\usepackage{subcaption}
 % ****************************************************************************************************
 
 
 % ****************************************************************************************************
 % 5. Setup code listings
 % ****************************************************************************************************
-\usepackage{listings}
-%\lstset{emph={trueIndex,root},emphstyle=\color{BlueViolet}}%\underbar} % for special keywords
-\lstset{language=[LaTeX]Tex,%C++,
-  morekeywords={PassOptionsToPackage,selectlanguage},
-  keywordstyle=\color{RoyalBlue},%\bfseries,
-  basicstyle=\small\ttfamily,
-  %identifierstyle=\color{NavyBlue},
-  commentstyle=\color{Green}\ttfamily,
-  stringstyle=\rmfamily,
-  numbers=none,%left,%
-  numberstyle=\scriptsize,%\tiny
-  stepnumber=5,
-  numbersep=8pt,
-  showstringspaces=false,
-  breaklines=true,
-  %frameround=ftff,
-  %frame=single,
-  belowcaptionskip=.75\baselineskip
-  %frame=L
-}
+% \usepackage{listings}
+% %\lstset{emph={trueIndex,root},emphstyle=\color{BlueViolet}}%\underbar} % for special keywords
+% \lstset{language=[LaTeX]Tex,%C++,
+%   morekeywords={PassOptionsToPackage,selectlanguage},
+%   keywordstyle=\color{RoyalBlue},%\bfseries,
+%   basicstyle=\small\ttfamily,
+%   %identifierstyle=\color{NavyBlue},
+%   commentstyle=\color{Green}\ttfamily,
+%   stringstyle=\rmfamily,
+%   numbers=none,%left,%
+%   numberstyle=\scriptsize,%\tiny
+%   stepnumber=5,
+%   numbersep=8pt,
+%   showstringspaces=false,
+%   breaklines=true,
+%   %frameround=ftff,
+%   %frame=single,
+%   belowcaptionskip=.75\baselineskip
+%   %frame=L
+% }
 % ****************************************************************************************************
 
 
@@ -229,6 +229,9 @@ titlepage,numbers=noenddot,%1headlines,
 \setmathfont[version=bold,FakeBold=3.5]{Libertinus Math}
 % \setmathfont{XITS Math}
 % \setmathfont{TeX Gyre Pagella Math} % this font seems quite incomplete
+\newfontfamily\boxedsymbols{DejaVu Sans}
+\newcommand{\cmark}{{\boxedsymbols ✓}}%
+\newcommand{\xmark}{{\boxedsymbols ✗}}%
 
 \newfontfamily{\noligatures}[Kerning=Off, Contextuals={NoAlternate}, Ligatures={NoCommon}]{Libertinus Serif}
 
@@ -483,9 +486,9 @@ titlepage,numbers=noenddot,%1headlines,
 }
 \part{Preliminaries}\label{pt:intro}
 \include{ch/1-introduction}
-\include{ch/2-related-work}
+% \include{ch/2-related-work}
 % \include{ch/3-0-common-notation}
-\include{ch/4-structure}
+% \include{ch/4-structure}
 
 \cleardoublepage
 \ctparttext{
@@ -498,7 +501,7 @@ titlepage,numbers=noenddot,%1headlines,
 \chapter{Paper 2: Null-sampling for Interpretable and Fair Representations}\label{ch:paper2}
 % \import{paper2/}{paper2.tex}
 \chapter{Paper 3: Learning with Perfect Bags: Addressing Hidden Stratification with Zero Labelled Data}\label{ch:paper3}
-% \import{paper3/}{paper3.tex}
+\import{paper3/}{paper3.tex}
 
 \cleardoublepage
 \part{Conclusion}\label{pt:end}

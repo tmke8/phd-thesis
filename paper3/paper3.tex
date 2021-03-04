@@ -115,6 +115,13 @@
 
 %\icmltitle{Learning with Perfect Bags:\\
 %Addressing Hidden Stratification with Zero Labelled Data}
+\textsc{Authors}:\\
+Thomas Kehrenberg$^1$, Myles Bartlett$^1$, Oliver Thomas$^1$, and Novi Quadrianto$^1$ \\
+\textsc{Affiliations}:\\
+$^1$ Predictive Analytics Lab (PAL), University of Sussex, Brighton, UK\\
+\textsc{Conference}:\;\;\textit{European Conference on Computer Vision} (ECCV), 2020 \\
+% \textsc{DOI}:\;\;10.3389/frai.2020.00033
+\textsc{Note}:\;\;The appendix has been included as section~\ref{sec:sec:zsf-appendix}.
 
 \section{Abstract}
 Machine learning models are typically trained to optimise global metrics such as average classification accuracy. 
@@ -221,7 +228,7 @@ In the standard GAN setting, the discriminator assigns a score to each sample co
 In contrast, we train a discriminator to assign scores at the level of bags of samples, with a bag being deemed authentic if it was drawn from the originally unbiased distribution and not the de-biased one (with the de-biaser playing the role of the generator). To do so, we take inspiration from set-classification and multiple-instance learning and equip the discriminator with a learnable attention mechanism to model interdependencies between samples in a bag.
 
 Specifically, our paper provides the following contributions:
-\begin{enumerate}[topsep=0pt,itemsep=-1ex,partopsep=1ex,parsep=1ex]
+\begin{enumerate}
     \item An example of systematic bias leading to one or more  subgroups having \emph{zero labelled data}.
     \item Applying clustering methods to the task of transforming an \emph{unlabelled dataset} into perfect bags.
     \item Theoretical and experimental justification that the disentangling model with \emph{the perfect bag as an inductive bias} provides a well-disentangled representation, where one component captures the subgrouping factors and another component is invariant to them.
@@ -256,10 +263,8 @@ Indeed, experiments in \citet{LocAbbRaiBauetal19} were wholly done with procedur
 Without some supervision or inductive bias, disentangled representation methods would not solve the issue of algorithmic fairness with invisible demographics \citep{LacBauLucGeletal19}. 
 
 %\begin{wrapfigure}{!t}{0.6\textwidth}
-\begin{figure*}[ht]
+\begin{figure}[ht]
 \centering
-\begin{subfigure}[b]{0.74\textwidth}
-    \centering
     %\includegraphics[width=0.9\textwidth]{figures/SSL-framework}
     % \includegraphics[width=\textwidth]{figures/SSL-framework-withPred.pdf}
     \includegraphics[width=\textwidth]{figures/zsf_diagram.pdf}
@@ -267,12 +272,12 @@ Without some supervision or inductive bias, disentangled representation methods 
     The main components involved in our proposed disentangling method, $f_y$ (debiaser) and $h$ (discriminator). The debiaser is trained to produce encodings, $z_y$ of the data that are invariant to the source dataset and thereby the subgroups identifying it. In order to determine whether a bag of encodings originates from the training set or the deployment set, the discriminator performs an attention-weighted aggregation over the bag dimension to model interdependencies between the samples. In the case of Coloured MNIST where {\color{purple}purple} fours constitute the missing subgroup, the discriminator can identify an encoding of a bag from the training set by the absence of such samples so long as colour information is detectable in $z_y$, serving as an error signal for the debiaser.
     }%
     \label{fig:architecture}
-\end{subfigure}%
+\end{figure}%
 % \end{figure}
 %\end{wrapfigure}
-\hfill
+% \hfill
 % \begin{figure}
-\begin{subfigure}[b]{0.24\textwidth}
+\begin{figure}[ht]
     \centering
     % if you want to make changes to the diagram, it is located here:
     % https://drive.google.com/file/d/1M37m4rVj1EGrFJb9QzK32bs8swepiaZ1/view?usp=sharing
@@ -284,12 +289,12 @@ Without some supervision or inductive bias, disentangled representation methods 
     For this to work, it is crucial that the bags be approximately balanced (perfect bags).
     }%
     \label{fig:matching-diagram}
-\end{subfigure}
-\caption{%
-Overview of the disentangling framework with a perfect (balanced) bag as an inductive bias.
-}%
-\label{fig:framework}
-\end{figure*}
+% \end{subfigure}
+% \caption{%
+% Overview of the disentangling framework with a perfect (balanced) bag as an inductive bias.
+% }%
+% \label{fig:framework}
+\end{figure}
 
 \section{Methodology}\label{sec:methodology}
 \subsection{Theoretical background}
@@ -298,13 +303,13 @@ In this section, we first formalise the problem of hidden stratification with ze
 We then theoretically motivate the idea of perfect bags for reducing algorithmic bias, and their use as an inductive bias for disentanglement.
 
 \textbf{Zero-label stratification and algorithmic bias.}
-Let $S$ denote a set of discrete-valued subgroup labels of the associated domains $\Scal$.
+Let $S$ denote a set of discrete-valued subgroup labels of the associated domains $\gS$.
 %
 % $S$ can take the values taken by a single subclass label, or, $S = S_1 \times S_2 \times \ldots \times S_p$ with $S_1, \ldots, S_p$ be discrete-valued subclass labels more generally.
 %
-$X$, with the associated domain $\Xcal$, represents other attributes of the data. % that may or may not be influenced by subgroup labels $S$.
+$X$, with the associated domain $\gX$, represents other attributes of the data. % that may or may not be influenced by subgroup labels $S$.
 %
-Let $\Ycal$ denote the space of class labels for a classification task; $\Ycal = \{0,1\}$ for binary classification or $\Ycal = \{1,2,\ldots,C_{\text{cls}}\}$ for multi-class classification.
+Let $\gY$ denote the space of class labels for a classification task; $\gY = \{0,1\}$ for binary classification or $\gY = \{1,2,\ldots,C_{\text{cls}}\}$ for multi-class classification.
 %
 For ease of exposition, we assume that we have multiple sources $\Omega$ of samples, one for each combination of class-label $y$ and subgroup-label $s$.
 That is, we have:
@@ -313,17 +318,17 @@ That is, we have:
 \end{align}
 where, for example, the source $\Omega_{y=0,s=0}$ supplies all data points with class label $y=0$ and subgroup label $s=0$. 
 %
-As in a standard supervised learning task, we have access to a labelled training set $\Dcal_{tr} =\{(x_i, s_i, y_i)\}$, that is used to learn a model $M:\Xcal \rightarrow \Ycal$. 
-$\Dcal_{tr}$ is composed of several sources, but lacks samples from some of the sources:
+As in a standard supervised learning task, we have access to a labelled training set $\gD_{tr} =\{(x_i, s_i, y_i)\}$, that is used to learn a model $M:\gX \rightarrow \gY$. 
+$\gD_{tr}$ is composed of several sources, but lacks samples from some of the sources:
 \begin{align}
-\exists y'\in \Ycal,\exists s'\in \Scal: \Dcal_{tr}\cap \Omega_{y=y',s=s'} = \varnothing.
+\exists y'\in \gY,\exists s'\in \gS: \gD_{tr}\cap \Omega_{y=y',s=s'} = \varnothing.
 \end{align}
 For example, we might be missing samples from two sources: $\Omega_{y=0,s=0}$ and $\Omega_{y=1,s=0}$. 
 %
 In binary classification, this corresponds to no labelled data for the subgroup label $s=0$, a setting we refer to as \emph{missing subgroup} (MS).
 %
 Other times, we may observe a one-sided (negative) outcome for the subgroup label $s=0$
-(\ie, we have $\Dcal_\mathit{tr} \cap\Omega_{y=1,s=0} = \varnothing$), giving rise to a setting we refer to as \emph{subgroup bias} (SB).
+(\ie, we have $\gD_\mathit{tr} \cap\Omega_{y=1,s=0} = \varnothing$), giving rise to a setting we refer to as \emph{subgroup bias} (SB).
 
 Once the model $M$ is trained, we deploy it to the diverse real-world data.
 %
@@ -344,14 +349,14 @@ The model becomes biased against those subgroups, leading to unexpectedly poor p
 We propose to alleviate the issue of bias against missing subgroups by mixing labelled data with unlabelled data that is usually much cheaper to obtain \cite{ChaSchZie06}. 
 %
 In this paper, we refer to this set of \emph{unlabelled} data as the
-deployment set\footnote{In our experiments, we report accuracy and bias metrics on another independent test set instead of on the unlabelled data that is available at training time.} $\Dcal_{dep} =\{(x_i)\}$.
+deployment set\footnote{In our experiments, we report accuracy and bias metrics on another independent test set instead of on the unlabelled data that is available at training time.} $\gD_{dep} =\{(x_i)\}$.
 %_{i=1}^{N^c}
 %
 This 
 %context 
 deployment set has overlap with all sources:
 \begin{align}
-  \Dcal_{dep} \cap \Omega_{y=y',s=s'} \neq \varnothing\quad\quad\forall y'\in\Ycal,\forall s'\in\Scal~.
+  \gD_{dep} \cap \Omega_{y=y',s=s'} \neq \varnothing\quad\quad\forall y'\in\gY,\forall s'\in\gS~.
 \end{align}
 %The deployment set is much like the deployment set: 
 Importantly, the deployment set has no information about class labels $y$ or the subgroup labels $s$.
@@ -420,9 +425,9 @@ Specifically for this paper, we would like to split the data representation into
 %
 Since $s$ is correlated with the class label $y$, we need annotations of the undesired nuisance variable $s$ \cite{JaiRexAbdNat18,JaiWuAbdNat19} to be successful in using disentanglement learning methods for zero-label stratification. %\citet{JaiRexAbdNat18,JaiWuAbdNat19}.
 %
-We have some annotations of subgroup label $s$ in the training set $\Dcal_{tr} =\{(x_i, s_i, y_i)\}$, however, crucially, due to systematic bias, this set is missing certain subgroups.
+We have some annotations of subgroup label $s$ in the training set $\gD_{tr} =\{(x_i, s_i, y_i)\}$, however, crucially, due to systematic bias, this set is missing certain subgroups.
 %
-We have all subgroups in the deployment set $\Dcal_{dep} =\{(x_i)\}$, 
+We have all subgroups in the deployment set $\gD_{dep} =\{(x_i)\}$, 
 %(also in the deployment set $\Dcal_{tr} =\{(x_i)\}$), 
 though, the challenge is that the subgrouping information is unavailable or hidden at the deployment time.
 %
@@ -452,9 +457,9 @@ Our framework for learning the disentangled representations comprises four core 
  \begin{align}
      &\,\mathcal{L}_{\text{enc}}(f_y, f_s, h) \nonumber\\
    =&\,\sum_{x \in \mathcal{B}_{tr} \bigcup \gB_\mathit{perf}} L_{\text{recon}} (x,g(f_y(x),f_s(x))) \nonumber\\
-     &\,+ \!\!\sum_{x\in \Bcal_{tr}} \lambda_1 L_{\text{sup}} (y, \ell_y(f_y(x))) + \lambda_2 L_{\text{sup}} (s, \ell_s(f_s(x)))\nonumber\\
+     &\,+ \!\!\sum_{x\in \gB_{tr}} \lambda_1 L_{\text{sup}} (y, \ell_y(f_y(x))) + \lambda_2 L_{\text{sup}} (s, \ell_s(f_s(x)))\nonumber\\
      &\,- \lambda_3 (
-          \log h(\{f_y(x) | x \in \Bcal_\mathit{perf}\}) \nonumber\\
+          \log h(\{f_y(x) | x \in \gB_\mathit{perf}\}) \nonumber\\
          &\quad\quad\,\,\, +  \log h(\{f_y(x) | x \in \mathcal{B}_{tr}\})
      ),
      \label{eq:disentangling}
@@ -467,14 +472,17 @@ The overall objective, encompassing $f_y$, $f_s$, and $h$ can then be formulated
     \label{eq:disentangling_total}
 \end{align}
 
-Aside from being computed over a bag of samples, our adversarial loss differs from that the standard one in that both of its constituent terms are dependent on $f_y$ (the encoder is responsible for producing the ``real'' \emph{and} ``fake'' samples); we allow the gradient to flow through both of these terms, finding that adding a stop-gradient to $\log h(\{f_y(x) | x \in \Bcal_{perf}\})$ drastically reduced the convergence-rate and stability of the algorithm.
+Aside from being computed over a bag of samples, our adversarial loss differs from that the standard one in that both of its constituent terms are dependent on $f_y$ (the encoder is responsible for producing the ``real'' \emph{and} ``fake'' samples); we allow the gradient to flow through both of these terms, finding that adding a stop-gradient to $\log h(\{f_y(x) | x \in \gB_\mathit{perf}\})$ drastically reduced the convergence-rate and stability of the algorithm.
 
 Eq.~(\ref{eq:disentangling_total}) is computed over batches of bags and the discriminator is trained to map a bag of data points from the training set and the deployment set to a binary label:
 $1$ if the bag is judged to have been sampled from the deployment set, $0$ if from the training set.
 % Its goal is to effectively estimate the probability that a bag of samples has been sampled from one distribution or the other.
-Since the task is a set-classification one, we require that the function it defines respects the exchangeability of the bag dimension -- that is, the discriminator's predictions should take into account dependencies between samples in a bag but should be invariant to the order in which they appear, \ie\ we have $h(\{f_y(x_i)\}^\mathcal{B}_{b=i}) = h(\{f_y(x_i)\}^\mathcal{B}_{b=\pi (i)})$ for all permutations $\pi$.
+Since the task is a set-classification one, we require that the function it defines respects the exchangeability of the bag dimension -- that is, the discriminator's predictions should take into account dependencies between samples in a bag but should be invariant to the order in which they appear,
+\ie\ we have
+\(h(\{f_y(x_i)\}^\gB_{b=i}) = h(\{f_y(x_i)\}^\gB_{b=\pi (i)})\)
+for all permutations $\pi$.
 To make the entirety of the function $h$ -- composed of sub-functions $h_1(h_2(h_3...)))$ -- have this property, requires only the innermost, sub-function, $\rho$ in the chain to have it.
-While there are a number of choices when it comes to defining $\rho$, we choose a weighted average $\rho = \frac{1}{\mathcal{B}} \sum_i(\{\mathrm{attention}(f_y(x_i))\}^\mathcal{B}_{b=i})$, with weights computed according to a learned attention mechanism. The idea of using an attention mechanism for set-wise classification has been previously successfully explored by \citet{ilse2018attention} and  \citet{lee2019set};
+While there are a number of choices when it comes to defining $\rho$, we choose a weighted average $\rho = \frac{1}{\gB} \sum_i(\{\mathrm{attention}(f_y(x_i))\}^\gB_{b=i})$, with weights computed according to a learned attention mechanism. The idea of using an attention mechanism for set-wise classification has been previously successfully explored by \citet{ilse2018attention} and  \citet{lee2019set};
 we use the gated attention mechanism proposed by \citet{ilse2018attention} in the experiments, but also tried out the scaled dot-product attention per \citet{vaswani2017attention}, as the bag-wise pooling layer of our discriminator.
 % For the latter, we had success defining K and V to be  $z_y$, and Q to be the mean of $z_y$ over $\mathcal{B}$.
 % , weighting values (V) according to the similarity between the associated key (K) and query (Q) matrices, as measured by their dot-product. 
@@ -656,7 +664,7 @@ which in the example refers to whether or not 4's can be purple.
 
 \subsection{Implementation}
 \label{sec:implementation}
-Our proposed framework, demonstrated in fig.\,\ref{fig:framework}, entails two steps: 1) sample perfect bags from an unlabeled deployment set, and 2) produce disentangled representations using perfect bags for adversarial distribution-matching.
+Our proposed framework, demonstrated in fig.\,\ref{fig:architecture}, entails two steps: 1) sample perfect bags from an unlabeled deployment set, and 2) produce disentangled representations using perfect bags for adversarial distribution-matching.
 
 \textbf{Constructing approximately perfect bags via clustering.}
 We cluster the data points from the deployment set into $K=\textrm{dim}(\mathcal{Y})\cdot \textrm{dim}(\mathcal{S})$ number of clusters, i.e. the number of data sources $\Omega_{y,s}$. 
@@ -693,10 +701,10 @@ The cluster assignments can then be used to evenly stratify the deployment set i
 % %
 % If the rankings obtained for two unlabeled data points $z_i$ and $z_j$ are the same, they are assigned to the same class, $s_{ij}=1$. 
 % %
-As a result of clustering, the data points in the deployment set $\Dcal_\mathit{dep}$ are labeled with cluster assignments 
-$\Dcal_\mathit{dep}=\{(x_i, c_i)\}$, $c_i = C(z_i)$.
+As a result of clustering, the data points in the deployment set $\gD_\mathit{dep}$ are labeled with cluster assignments 
+$\gD_\mathit{dep}=\{(x_i, c_i)\}$, $c_i = C(z_i)$.
 %
-We balance $\Dcal_\mathit{dep}$ so that all clusters have equal size to form a perfect bag
+We balance $\gD_\mathit{dep}$ so that all clusters have equal size to form a perfect bag
 % (see fig. \ref{fig:teaser})
 , and use it as a supervision signal for the disentangling step.
 %
@@ -760,7 +768,7 @@ We perform experiments using image and tabular datasets: Colored MNIST \citep{ki
 To validate the first step of creating the perfect bags, we compare the performance of our disentangling model when paired with each of four different balancing methods:
 1) with clustering via rank statistics (\texttt{Ranking});
 2) with clustering via k-means (\texttt{K-means}); 
-3) without balancing, when the deployment set $\Dcal_{dep}$ is used as is (\texttt{No bal.});
+3) without balancing, when the deployment set $\gD_{dep}$ is used as is (\texttt{No bal.});
 4) with balancing done using the ground-truth class and subgroup labels (\texttt{Perfect}) that would in practice be unobservable; this provides insight into what can be achieved under ideal conditions and how sensitive the method is to imperfections in the bag-balancing.
  
 To validate the disentangling step, we compare with three other baselines.

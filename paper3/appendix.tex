@@ -212,7 +212,7 @@ This observation motivated us to devise an alternative scheme, where we balance 
     = &|\{x \in X |s=1, y=1\}|
     = |\{x \in X |s=1, y=0\}|~.
  \end{align}
-That is, all subsets of $\Scal \times \Ycal$ are made to be equally sized. Under this new scheme the accuracy of the the majority classifier is 50\% for the binary-classification task.
+That is, all subsets of $\gS \times \gY$ are made to be equally sized. Under this new scheme the accuracy of the the majority classifier is 50\% for the binary-classification task.
 
 
 \subsection{Optimization}
@@ -245,7 +245,7 @@ That is, all subsets of $\Scal \times \Ycal$ are made to be equally sized. Under
  Bag size   & $256$/$8$/$18$ & $32$ & $8$ \\
  Training iterations    & $8\text{k}/8\text{k}/20\text{k}$ & $5\text{k}$ & $15\text{k}$ \\
  Encoding ($z$) size$^2$  & $128$   & $35$  & $128$ \\
- Binarised $z_s$ & \xmark\, / \cmark\, / \cmark & \xmark & \xmark \\
+ Binarised $z_s$ & {\boxedsymbols ✗}\, / \cmark\, / \cmark & \xmark & \xmark \\
  $y$-predictor weight ($\lambda_1$) & $1$ & $0$ & $1$  \\ 
  $s$-predictor weight ($\lambda_2$) & $1$ & $0$ & $0$  \\ 
  Adversarial weight ($\lambda_3$)   & $1 \times
@@ -295,13 +295,13 @@ Figures~\ref{fig:attn_maps} and \ref{fig:cmnist-recon} show some additional visu
 For details, see the captions.
 \begin{figure*}[tb]
   \centering
-    \begin{subfigure}[b]{0.49\textwidth}
+    % \begin{subfigure}[b]{0.49\textwidth}
     \includegraphics[width=\textwidth]{figures/celeba_attn_map.png}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[b]{0.49\textwidth}
+    % \end{subfigure}
+    % \hfill
+    % \begin{subfigure}[b]{0.49\textwidth}
     \includegraphics[width=\textwidth]{figures/cmnist_attn_map.png}
-    \end{subfigure}
+    % \end{subfigure}
   \caption{
     Example sample-wise attention maps for bags of CelebA (left) and Coloured MNIST (right) images sampled from a balanced deployment set. The training set is biased according to the SB setting where for CelebA ``smiling females'' constitute the missing source and for Colored MNIST {\color{purple}purple} fours constitute the missing source. The attention weights are used during the discriminator's aggregation step to compute a weighted sum over the bag. The attention-weight assigned to each sample is proportional to the lightness of its frame, with black signifying a weight of 0, white a weight of 1. Those samples belonging to the missing subgroup are assigned the highest weight as they signal from which dataset (training vs. deployment) the bag containing them was drawn from.
   }%
