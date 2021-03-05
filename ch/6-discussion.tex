@@ -19,23 +19,23 @@ especially if the collected data is human-related.
 The possible effects of these data imperfections are certainly highly undesirable:
 a photo tagging service might only work for a certain kind of person;
 a speech recognition system might only work for a certain kind of dialect.
-If, in these situations, enough representative (but unlabeled) data is available,
+If, in these situations, enough representative (but unlabelled) data is available,
 then the methods presented here can be used to try and correct the problem.
 
 One area of machine learning that has recently seen increased interest is unsupervised learning.
 The latter two chapters also make use of it to some degree.
 The exciting promise of unsupervised learning in general is
-that labor-intensive labeling is not needed and so vast amounts of existing, unlabeled data can be put to good use.
+that labor-intensive labeling is not needed and so vast amounts of existing, unlabelled data can be put to good use.
 One could ask the question whether bias-correcting methods are still needed, with access to so much data.
 It could be that, while the data is certainly not perfect,
 there is so much of it that the biased parts ``cancel each other out''.
 However, recent investigations of the GPT models do not seem to bear this out.
 One reason for this might be the way these models are trained at the moment:
-they maximize the probability assigned to the next token.
+they maximise the probability assigned to the next token.
 Thus, such a model has to account for the wide array of human opinions and assign a non-zero probability to all of them.
-So, when asked to summarize a text, GPT does not give the \emph{best} summary;
+So, when asked to summarise a text, GPT does not give the \emph{best} summary;
 it will give a summary that an average person might have written.
-However, with the help of a very high quality labeled dataset (that was expensive to create),
+However, with the help of a very high quality labelled dataset (that was expensive to create),
 GPT could be finetuned to actually produce very good summaries.
 I suspect this pattern of learning the basics in an unsupervised fashion
 and then finetuning with high-quality labels will continue in the future.

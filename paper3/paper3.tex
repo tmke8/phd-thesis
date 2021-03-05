@@ -1,3 +1,4 @@
+\chapter{Paper 3: Learning with Perfect Bags: Addressing Hidden Stratification with Zero Labelled Data}\label{ch:paper3}
 %%%%%%%%% ICML 2021 EXAMPLE LATEX SUBMISSION FILE %%%%%%%%%%%%%%%%%
 
 %\documentclass{article}
@@ -161,7 +162,7 @@ Algorithms such as classifiers, however, are trained from large amount of labell
 %
 % \begin{figure*}[t]
 % \centering
-% \includegraphics[width=0.6\textwidth,page=2]{figures/ideal.pdf}
+% \includegraphics[width=0.6\textwidth,page=2]{paper3/figures/ideal.pdf}
 % \caption{Overview of the zero-shot stratification problem. Training dataset (pairs of input data $x$ and class label $y$) will only contain data points that are labelled ``yes'' by the decision policy. This systematic bias might result in a subgroup(s) to have zero labelled data (in the example above, ``married'' subgroup has zero labelled data). The subgrouping information $s$ is unavailable/unlabelled at deployment time, and is only partially labelled at train time.}
 % \vspace{-0.5cm}
 % \label{fig:censoring}
@@ -265,9 +266,9 @@ Without some supervision or inductive bias, disentangled representation methods 
 %\begin{wrapfigure}{!t}{0.6\textwidth}
 \begin{figure}[t]
 \centering
-    %\includegraphics[width=0.9\textwidth]{figures/SSL-framework}
-    % \includegraphics[width=\textwidth]{figures/SSL-framework-withPred.pdf}
-    \includegraphics[width=\textwidth]{figures/zsf_diagram.pdf}
+    %\includegraphics[width=0.9\textwidth]{paper3/figures/SSL-framework}
+    % \includegraphics[width=\textwidth]{paper3/figures/SSL-framework-withPred.pdf}
+    \includegraphics[width=\textwidth]{paper3/figures/zsf_diagram.pdf}
     \caption{%
     The main components involved in our proposed disentangling method, $f_y$ (debiaser) and $h$ (discriminator). The debiaser is trained to produce encodings, $z_y$ of the data that are invariant to the source dataset and thereby the subgroups identifying it. In order to determine whether a bag of encodings originates from the training set or the deployment set, the discriminator performs an attention-weighted aggregation over the bag dimension to model interdependencies between the samples. In the case of Coloured MNIST where {\color{purple}purple} fours constitute the missing subgroup, the discriminator can identify an encoding of a bag from the training set by the absence of such samples so long as colour information is detectable in $z_y$, serving as an error signal for the debiaser.
     }%
@@ -281,7 +282,7 @@ Without some supervision or inductive bias, disentangled representation methods 
     \centering
     % if you want to make changes to the diagram, it is located here:
     % https://drive.google.com/file/d/1M37m4rVj1EGrFJb9QzK32bs8swepiaZ1/view?usp=sharing
-    \includegraphics[width=0.5\textwidth]{figures/fdm.pdf}
+    \includegraphics[width=0.5\textwidth]{paper3/figures/fdm.pdf}
     \caption{%
     Illustration of distribution matching.
     In this example, the training set is lacking {\color{purple}purple} 4's.
@@ -345,7 +346,7 @@ The model becomes biased against those subgroups, leading to unexpectedly poor p
 %
 % We will be precise about the adopted mathematical definitions of algorithmic bias.
 
-%Semi-supervised learning \cite{ChaSchZie06} can alleviate the issue of unfairness to the \emph{invisibles} by mixing labeled with unlabeled data, which is usually much cheaper to obtain. 
+%Semi-supervised learning \cite{ChaSchZie06} can alleviate the issue of unfairness to the \emph{invisibles} by mixing labelled with unlabelled data, which is usually much cheaper to obtain. 
 %
 We propose to alleviate the issue of bias against missing subgroups by mixing labelled data with unlabelled data that is usually much cheaper to obtain \citep{ChaSchZie06}. 
 %
@@ -437,7 +438,7 @@ deployment set for learning the disentangled representations.
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=\columnwidth]{figures/celeba_dep_recon.png}
+    \includegraphics[width=\columnwidth]{paper3/figures/celeba_dep_recon.png}
     \caption{%
     Visualization of our method's solutions for the CelebA dataset, with``smiling females'' as the missing subgroup.
     Column 1 shows the original images from $x$ from the deployment set of CelebA.
@@ -593,10 +594,10 @@ which in the example refers to whether or not 4's can be purple.
 % %
 \begin{figure*}[ht]
   \centering
-  \includegraphics[width=\columnwidth]{figures/cmnist_2v4_partial_acc.pdf}
-  \includegraphics[width=\columnwidth]{figures/cmnist_2v4_partial_prr.pdf}
-%   \includegraphics[width=\columnwidth]{figures/cmnist_2v4_partial_tpr.pdf}
-%   \includegraphics[width=\columnwidth]{figures/cmnist_2v4_partial_tnr.pdf}
+  \includegraphics[width=\columnwidth]{paper3/figures/cmnist_2v4_partial_acc.pdf}
+  \includegraphics[width=\columnwidth]{paper3/figures/cmnist_2v4_partial_prr.pdf}
+%   \includegraphics[width=\columnwidth]{paper3/figures/cmnist_2v4_partial_tpr.pdf}
+%   \includegraphics[width=\columnwidth]{paper3/figures/cmnist_2v4_partial_tnr.pdf}
   \caption{
     Results from 30 repeats for the Coloured MNIST dataset with two digits, 2 and 4, with \emph{subgroup bias} for the colour `{\color{purple}purple}': for {\color{purple}purple}, only the digit class `2' is present.
     \textsc{Left}: Accuracy.
@@ -610,10 +611,10 @@ which in the example refers to whether or not 4's can be purple.
 \end{figure*}
 \begin{figure*}[ht]
   \centering
-  \includegraphics[width=\columnwidth]{figures/cmnist_2v4_miss_s_acc.pdf}
-  \includegraphics[width=\columnwidth]{figures/cmnist_2v4_miss_s_prr.pdf}
-%   \includegraphics[width=\columnwidth]{figures/cmnist_2v4_miss_s_alt_tpr.pdf}
-%   \includegraphics[width=\columnwidth]{figures/cmnist_2v4_miss_s_alt_tnr.pdf}
+  \includegraphics[width=\columnwidth]{paper3/figures/cmnist_2v4_miss_s_acc.pdf}
+  \includegraphics[width=\columnwidth]{paper3/figures/cmnist_2v4_miss_s_prr.pdf}
+%   \includegraphics[width=\columnwidth]{paper3/figures/cmnist_2v4_miss_s_alt_tpr.pdf}
+%   \includegraphics[width=\columnwidth]{paper3/figures/cmnist_2v4_miss_s_alt_tnr.pdf}
   \caption{
     Results from 30 repeats for the Coloured MNIST dataset with two digits, 2 and 4, with a \emph{missing subgroup}: the training dataset only has {\color{green}green} digits.
     \textsc{Left}: Accuracy.
@@ -627,11 +628,11 @@ which in the example refers to whether or not 4's can be purple.
 \end{figure*}
 \begin{figure*}[ht]
   \centering
-  \includegraphics[width=\columnwidth]{figures/cmnist_3dig_4miss_acc.pdf}
-  \includegraphics[width=\columnwidth]{figures/cmnist_3dig_4miss_hgr.pdf}
-%   \includegraphics[width=\columnwidth]{figures/cmnist_3dig_4miss_pr.pdf}
-%   \includegraphics[width=\columnwidth]{figures/cmnist_3dig_4miss_tpr.pdf}
-%   \includegraphics[width=\columnwidth]{figures/cmnist_3dig_4miss_tnr.pdf}
+  \includegraphics[width=\columnwidth]{paper3/figures/cmnist_3dig_4miss_acc.pdf}
+  \includegraphics[width=\columnwidth]{paper3/figures/cmnist_3dig_4miss_hgr.pdf}
+%   \includegraphics[width=\columnwidth]{paper3/figures/cmnist_3dig_4miss_pr.pdf}
+%   \includegraphics[width=\columnwidth]{paper3/figures/cmnist_3dig_4miss_tpr.pdf}
+%   \includegraphics[width=\columnwidth]{paper3/figures/cmnist_3dig_4miss_tnr.pdf}
   \caption{
     Results from 30 repeats for the Coloured MNIST dataset with three digits: `2', `4' and `6'.
     Four combinations of digit and colour are missing: {\color{green}green} 2's, {\color{blue}blue} 2's, {\color{blue}blue} 4's and {\color{green}green} 6's.
@@ -645,10 +646,10 @@ which in the example refers to whether or not 4's can be purple.
 \end{figure*}
 \begin{figure*}[ht]
   \centering
-  \includegraphics[width=\columnwidth]{figures/celeba_gender_smiling_acc.pdf}
-  \includegraphics[width=\columnwidth]{figures/celeba_gender_smiling_prr.pdf}
-%   \includegraphics[width=\columnwidth]{figures/celeba_gender_smiling_tpr.pdf}
-%   \includegraphics[width=\columnwidth]{figures/celeba_gender_smiling_tnr.pdf}
+  \includegraphics[width=\columnwidth]{paper3/figures/celeba_gender_smiling_acc.pdf}
+  \includegraphics[width=\columnwidth]{paper3/figures/celeba_gender_smiling_prr.pdf}
+%   \includegraphics[width=\columnwidth]{paper3/figures/celeba_gender_smiling_tpr.pdf}
+%   \includegraphics[width=\columnwidth]{paper3/figures/celeba_gender_smiling_tnr.pdf}
   \caption{
     Results from 10 repeats for the CelebA dataset with the \emph{subgroup bias} setting.
     The task is to predict ``smiling'' vs ``non-smiling'' and the subgroups are based on gender.
@@ -691,14 +692,14 @@ The cluster assignments can then be used to evenly stratify the deployment set i
 % %
 % This is computed on the embedding of the softmax classifier $C: \mathcal{Z} \rightarrow \{1,\ldots, K\}$. 
 % %
-% In addition to this unsupervised training, the classifier $C$ is also trained on the labeled data using the standard cross-entropy loss.  
-% %We train the classifier $C$ on the training data using a standard cross-entropy loss and the labeled sources $\Omega_{y,s}$. 
+% In addition to this unsupervised training, the classifier $C$ is also trained on the labelled data using the standard cross-entropy loss.  
+% %We train the classifier $C$ on the training data using a standard cross-entropy loss and the labelled sources $\Omega_{y,s}$. 
 % %
 % This way, the data points in the deployment set that are similar to the known demographics are assigned to the associated clusters, while the dissimilar data points form the new clusters corresponding to the invisible groups. 
 
 % The method of rank statistics \citep{YagStrRosLin11,DeaRuzSegShletal13,HanRebEhrVedetal20} avoids comparing the vectors $z_i$ and $z_j$ directly, and instead ranks the values in $z_i$ and in $z_j$ by their magnitudes, and compares the top-$U$ rankings (we found $U = 5$ to perform well in our experiments).
 % %
-% If the rankings obtained for two unlabeled data points $z_i$ and $z_j$ are the same, they are assigned to the same class, $s_{ij}=1$. 
+% If the rankings obtained for two unlabelled data points $z_i$ and $z_j$ are the same, they are assigned to the same class, $s_{ij}=1$. 
 % %
 As a result of clustering, the data points in the deployment set $\gD_\mathit{dep}$ are labelled with cluster assignments 
 $\gD_\mathit{dep}=\{(x_i, c_i)\}$, $c_i = C(z_i)$.
@@ -860,7 +861,7 @@ Furthermore, the literature on clustering can potentially provide further insigh
 % Acknowledgements should only appear in the accepted version.
 %\section*{Acknowledgements}
 
-\input{appendix.tex}
+\input{paper3/appendix.tex}
 
 % In the unusual situation where you want a paper to appear in the
 % references without citing it in the main text, use \nocite

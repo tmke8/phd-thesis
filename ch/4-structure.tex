@@ -1,3 +1,4 @@
+\chapter{Summary of contributions}\label{ch:content}
 The main contributions of this thesis are as follows.
 All presented approaches rely on some form of side information with allows us to overcome the dataset bias.
 This side information is always significantly easier to obtain than unbiased data.
@@ -11,7 +12,7 @@ This falls under the area of \emph{fair classifiers} discussed in \secref{fair-c
 
 We can interpret the contributions of this chapter in two ways.
 The first corresponds to the definition-centric view of dataset bias,
-and the second to the groundtruth-centric view.
+and the second to the ground-truth-centric view.
 \begin{enumerate}
   \item
     We can say that the classifier should satisfy demographic parity in its predictions,
@@ -52,7 +53,7 @@ Say, we initially have a very diverse and balanced training set,
 but then, from the set of smiling faces, we remove nearly all samples where the person does not have red hair,
 and from the set of non-smiling faces, we remove nearly all samples with non-black hair.
 The result is that even though the labels are still correct, they do not point reliably to the right target anymore.
-As hair colour is easier to recognize with a \ac{CNN}, the labels have effectively been turned into hair colour labels.
+As hair colour is easier to recognise with a \ac{CNN}, the labels have effectively been turned into hair colour labels.
 In other words, hair colour has become a \emph{spurious attribute}.
 In the following, we denote the spurious attribute with \(s\),
 as it takes a role that is very similar to that of the sensitive attribute that was also denoted by \(s\).

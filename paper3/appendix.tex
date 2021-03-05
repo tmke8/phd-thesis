@@ -85,12 +85,12 @@
 %\appendix
 
 % \subsection{Why not use a fair clustering method?}
-% Current fair clustering methods \citep{chierichetti2017fair, backurs2019scalable, huang2019coresets} cluster based on the protected attribute and thus are not applicable to our setting in which the deployment set is unlabeled and the training set is incomplete with respect to $s$.
+% Current fair clustering methods \citep{chierichetti2017fair, backurs2019scalable, huang2019coresets} cluster based on the protected attribute and thus are not applicable to our setting in which the deployment set is unlabelled and the training set is incomplete with respect to $s$.
 
 % \begin{figure*}[t]
 % \centering
-% \includegraphics[width=0.6\textwidth,page=2]{figures/ideal.pdf}
-% \caption{Overview of the zero-shot stratification problem. Training dataset (pairs of input data $x$ and class label $y$) will only contain data points that are labeled ``yes'' by the decision policy. This systematic bias might result in a subgroup(s) to have zero labeled data (in the example above, ``married'' subgroup has zero labeled data). The subgrouping information $s$ is unavailable/unlabeled at deployment time, and is only partially labeled at train time.}
+% \includegraphics[width=0.6\textwidth,page=2]{paper3/figures/ideal.pdf}
+% \caption{Overview of the zero-shot stratification problem. Training dataset (pairs of input data $x$ and class label $y$) will only contain data points that are labelled ``yes'' by the decision policy. This systematic bias might result in a subgroup(s) to have zero labelled data (in the example above, ``married'' subgroup has zero labelled data). The subgrouping information $s$ is unavailable/unlabelled at deployment time, and is only partially labelled at train time.}
 % \label{fig:censoring}
 % \end{figure*}
 
@@ -98,10 +98,10 @@
 \subsection{Results for Adult Income}\label{sec:adult-results}
 \begin{figure*}[p]
     \centering
-    \includegraphics[width=\columnwidth]{figures/adult_partial_acc.pdf}
-    \includegraphics[width=\columnwidth]{figures/adult_partial_prr.pdf}
-    \includegraphics[width=\columnwidth]{figures/adult_partial_tprr.pdf}
-    \includegraphics[width=\columnwidth]{figures/adult_partial_tnrr.pdf}
+    \includegraphics[width=\columnwidth]{paper3/figures/adult_partial_acc.pdf}
+    \includegraphics[width=\columnwidth]{paper3/figures/adult_partial_prr.pdf}
+    \includegraphics[width=\columnwidth]{paper3/figures/adult_partial_tprr.pdf}
+    \includegraphics[width=\columnwidth]{paper3/figures/adult_partial_tnrr.pdf}
     \caption{%
     Results for the Adult Income dataset with \emph{subgroup bias},
     for the binary classification task of predicting whether an individual earns $>$\$50,000 with a binary subgrouping based on \emph{gender}.
@@ -118,10 +118,10 @@
 \end{figure*}
 \begin{figure*}[p]
     \centering
-    \includegraphics[width=\columnwidth]{figures/adult_miss_s_acc.pdf}
-    \includegraphics[width=\columnwidth]{figures/adult_miss_s_prr.pdf}
-    \includegraphics[width=\columnwidth]{figures/adult_miss_s_tprr.pdf}
-    \includegraphics[width=\columnwidth]{figures/adult_miss_s_tnrr.pdf}
+    \includegraphics[width=\columnwidth]{paper3/figures/adult_miss_s_acc.pdf}
+    \includegraphics[width=\columnwidth]{paper3/figures/adult_miss_s_prr.pdf}
+    \includegraphics[width=\columnwidth]{paper3/figures/adult_miss_s_tprr.pdf}
+    \includegraphics[width=\columnwidth]{paper3/figures/adult_miss_s_tnrr.pdf}
     \caption{%
     Results for the Adult Income dataset with a \emph{missing subgroup},
     for the binary classification task of predicting whether an individual earns $>$\$50,000 with a binary subgrouping based on \emph{gender}.
@@ -298,14 +298,14 @@ For details, see the captions.
 \begin{figure*}[tb]
   \centering
     % \begin{subfigure}[b]{0.49\textwidth}
-    \includegraphics[width=0.9\textwidth]{figures/celeba_attn_map.png}
+    \includegraphics[width=0.9\textwidth]{paper3/figures/celeba_attn_map.png}
     % \end{subfigure}
     % \hfill
     % \begin{subfigure}[b]{0.49\textwidth}
-    \includegraphics[width=0.9\textwidth]{figures/cmnist_attn_map.png}
+    \includegraphics[width=0.9\textwidth]{paper3/figures/cmnist_attn_map.png}
     % \end{subfigure}
   \caption{
-    Example sample-wise attention maps for bags of CelebA (left) and Coloured MNIST (right) images sampled from a balanced deployment set. The training set is biased according to the SB setting where for CelebA ``smiling females'' constitute the missing source and for Colored MNIST {\color{purple}purple} fours constitute the missing source. The attention weights are used during the discriminator's aggregation step to compute a weighted sum over the bag. The attention-weight assigned to each sample is proportional to the lightness of its frame, with black signifying a weight of 0, white a weight of 1. Those samples belonging to the missing subgroup are assigned the highest weight as they signal from which dataset (training vs. deployment) the bag containing them was drawn from.
+    Example sample-wise attention maps for bags of CelebA (left) and Coloured MNIST (right) images sampled from a balanced deployment set. The training set is biased according to the SB setting where for CelebA ``smiling females'' constitute the missing source and for Coloured MNIST {\color{purple}purple} fours constitute the missing source. The attention weights are used during the discriminator's aggregation step to compute a weighted sum over the bag. The attention-weight assigned to each sample is proportional to the lightness of its frame, with black signifying a weight of 0, white a weight of 1. Those samples belonging to the missing subgroup are assigned the highest weight as they signal from which dataset (training vs. deployment) the bag containing them was drawn from.
   }%
   \label{fig:attn_maps}
 \end{figure*}
@@ -315,7 +315,7 @@ For details, see the captions.
   \centering
   \begin{subfigure}[b]{0.39\textwidth}
     \centering
-    \includegraphics[width=\textwidth]{example_images/fresh-dawn-2179_train_reconstructions_9900.png}
+    \includegraphics[width=\textwidth]{paper3/example_images/fresh-dawn-2179_train_reconstructions_9900.png}
     \caption{
     Different reconstructions on the training set.
     Corresponding to: original, full reconstruction, reconstruction of $z_y$, reconstruction of $z_s$.
@@ -326,7 +326,7 @@ For details, see the captions.
   \quad
   \begin{subfigure}[b]{0.39\textwidth}
     \centering
-    \includegraphics[width=\textwidth]{example_images/fresh-dawn-2179_context_reconstructions_9900.png}
+    \includegraphics[width=\textwidth]{paper3/example_images/fresh-dawn-2179_context_reconstructions_9900.png}
     \caption{
     Different reconstructions on the deployment set.
     Corresponding to: original, full reconstruction, reconstruction of $z_y$, reconstruction of $z_s$.
@@ -345,9 +345,9 @@ For details, see the captions.
 \end{figure*}
 % Given a learned invariant representation, we can generate a reconstruction to visualise the information contained in it.
 % An example of this can be seen in \figref{fig:3dig-examples}.
-% This is from our experiment with 3 digits in Colored MNIST.
-% We can clearly see that the reconstructed invariant representation has lost all color information;
-% instead all digits are magenta-colored, which was the majority color in the training set.
+% This is from our experiment with 3 digits in Coloured MNIST.
+% We can clearly see that the reconstructed invariant representation has lost all colour information;
+% instead all digits are magenta-coloured, which was the majority colour in the training set.
 
 \subsection{Code}
 The code will be published at the following URL: \url{https://github.com/predictive-analytics-lab/fair-dist-matching}.
@@ -363,14 +363,14 @@ We report the minimum (i.e. farthest away from 1) of the pairwise ratios (PR/TPR
 Additionally, we compute the Hirschfeld-Gebelein-R\'enyi (HGR) maximal correlation \citep{renyi1959measures} between $S$ and $Y$, serving as a measure of dependence defined between two variables with arbitrary support.
 \begin{figure*}[htp]
   \centering
-%   \includegraphics[width=\columnwidth]{figures/cmnist_2v4_partial_acc.pdf}
-%   \includegraphics[width=\columnwidth]{figures/cmnist_2v4_partial_pr.pdf}
-%   \includegraphics[width=\columnwidth]{figures/cmnist_2v4_partial_tpr.pdf}
-%   \includegraphics[width=\columnwidth]{figures/cmnist_2v4_partial_tnr.pdf}
-  \includegraphics[width=0.8\columnwidth]{figures/cmnist_2v4_partial_overcluster_acc.pdf}
-  \includegraphics[width=0.8\columnwidth]{figures/cmnist_2v4_partial_overcluster_prr.pdf}
-  \includegraphics[width=0.8\columnwidth]{figures/cmnist_2v4_partial_overcluster_tprr.pdf}
-  \includegraphics[width=0.8\columnwidth]{figures/cmnist_2v4_partial_overcluster_tnrr.pdf}
+%   \includegraphics[width=\columnwidth]{paper3/figures/cmnist_2v4_partial_acc.pdf}
+%   \includegraphics[width=\columnwidth]{paper3/figures/cmnist_2v4_partial_pr.pdf}
+%   \includegraphics[width=\columnwidth]{paper3/figures/cmnist_2v4_partial_tpr.pdf}
+%   \includegraphics[width=\columnwidth]{paper3/figures/cmnist_2v4_partial_tnr.pdf}
+  \includegraphics[width=0.8\columnwidth]{paper3/figures/cmnist_2v4_partial_overcluster_acc.pdf}
+  \includegraphics[width=0.8\columnwidth]{paper3/figures/cmnist_2v4_partial_overcluster_prr.pdf}
+  \includegraphics[width=0.8\columnwidth]{paper3/figures/cmnist_2v4_partial_overcluster_tprr.pdf}
+  \includegraphics[width=0.8\columnwidth]{paper3/figures/cmnist_2v4_partial_overcluster_tnrr.pdf}
   \caption{
     Results from 30 repeats for the Coloured MNIST dataset with two digits, 2 and 4, with \emph{subgroup bias} for the colour `{\color{purple}purple}': for {\color{purple}purple}, only the digit class `2' is present.
     \textsc{Top left}: Accuracy.
@@ -385,14 +385,14 @@ Additionally, we compute the Hirschfeld-Gebelein-R\'enyi (HGR) maximal correlati
 \end{figure*}
 \begin{figure*}[htp]
   \centering
-%   \includegraphics[width=\columnwidth]{figures/cmnist_2v4_miss_s_alt_acc.pdf}
-%   \includegraphics[width=\columnwidth]{figures/cmnist_2v4_miss_s_alt_pr.pdf}
-%   \includegraphics[width=\columnwidth]{figures/cmnist_2v4_miss_s_alt_tpr.pdf}
-%   \includegraphics[width=\columnwidth]{figures/cmnist_2v4_miss_s_alt_tnr.pdf}
-  \includegraphics[width=0.8\columnwidth]{figures/cmnist_2v4_miss_s_overcluster_acc.pdf}
-  \includegraphics[width=0.8\columnwidth]{figures/cmnist_2v4_miss_s_overcluster_prr.pdf}
-  \includegraphics[width=0.8\columnwidth]{figures/cmnist_2v4_miss_s_overcluster_tprr.pdf}
-  \includegraphics[width=0.8\columnwidth]{figures/cmnist_2v4_miss_s_overcluster_tnrr.pdf}
+%   \includegraphics[width=\columnwidth]{paper3/figures/cmnist_2v4_miss_s_alt_acc.pdf}
+%   \includegraphics[width=\columnwidth]{paper3/figures/cmnist_2v4_miss_s_alt_pr.pdf}
+%   \includegraphics[width=\columnwidth]{paper3/figures/cmnist_2v4_miss_s_alt_tpr.pdf}
+%   \includegraphics[width=\columnwidth]{paper3/figures/cmnist_2v4_miss_s_alt_tnr.pdf}
+  \includegraphics[width=0.8\columnwidth]{paper3/figures/cmnist_2v4_miss_s_overcluster_acc.pdf}
+  \includegraphics[width=0.8\columnwidth]{paper3/figures/cmnist_2v4_miss_s_overcluster_prr.pdf}
+  \includegraphics[width=0.8\columnwidth]{paper3/figures/cmnist_2v4_miss_s_overcluster_tprr.pdf}
+  \includegraphics[width=0.8\columnwidth]{paper3/figures/cmnist_2v4_miss_s_overcluster_tnrr.pdf}
   \caption{
     Results from 30 repeats for the Coloured MNIST dataset with two digits, 2 and 4, with a \emph{missing subgroup}: the training dataset only has {\color{green}green} digits.
     \textsc{Top left}: Accuracy.
@@ -407,13 +407,13 @@ Additionally, we compute the Hirschfeld-Gebelein-R\'enyi (HGR) maximal correlati
 \end{figure*}
 \begin{figure*}[htp]
   \centering
-%   \includegraphics[width=\columnwidth]{figures/cmnist_3dig_4miss_hgr.pdf}\\
-  \includegraphics[width=0.8\columnwidth]{figures/cmnist_3dig_4miss_prr-min.pdf}
-  \includegraphics[width=0.8\columnwidth]{figures/cmnist_3dig_4miss_prd-max.pdf}
-  \includegraphics[width=0.8\columnwidth]{figures/cmnist_3dig_4miss_tprr-min.pdf}
-  \includegraphics[width=0.8\columnwidth]{figures/cmnist_3dig_4miss_tprd-max.pdf}
-  \includegraphics[width=0.8\columnwidth]{figures/cmnist_3dig_4miss_tnrr-min.pdf}
-  \includegraphics[width=0.8\columnwidth]{figures/cmnist_3dig_4miss_tnrd-max.pdf}
+%   \includegraphics[width=\columnwidth]{paper3/figures/cmnist_3dig_4miss_hgr.pdf}\\
+  \includegraphics[width=0.8\columnwidth]{paper3/figures/cmnist_3dig_4miss_prr-min.pdf}
+  \includegraphics[width=0.8\columnwidth]{paper3/figures/cmnist_3dig_4miss_prd-max.pdf}
+  \includegraphics[width=0.8\columnwidth]{paper3/figures/cmnist_3dig_4miss_tprr-min.pdf}
+  \includegraphics[width=0.8\columnwidth]{paper3/figures/cmnist_3dig_4miss_tprd-max.pdf}
+  \includegraphics[width=0.8\columnwidth]{paper3/figures/cmnist_3dig_4miss_tnrr-min.pdf}
+  \includegraphics[width=0.8\columnwidth]{paper3/figures/cmnist_3dig_4miss_tnrd-max.pdf}
   \caption{
     Results from 30 repeats for the Coloured MNIST dataset with three digits: `2', `4' and `6'.
     Four combinations of digit and colour are missing: {\color{green}green} 2's, {\color{blue}blue} 2's, {\color{blue}blue} 4's and {\color{green}green} 6's.
@@ -429,10 +429,10 @@ Additionally, we compute the Hirschfeld-Gebelein-R\'enyi (HGR) maximal correlati
 \end{figure*}
 \begin{figure*}[htp]
   \centering
-%   \includegraphics[width=\columnwidth]{figures/celeba_gender_smiling_acc.pdf}
-%   \includegraphics[width=\columnwidth]{figures/celeba_gender_smiling_pr.pdf}
-  \includegraphics[width=\columnwidth]{figures/celeba_gender_smiling_tprr.pdf}
-  \includegraphics[width=\columnwidth]{figures/celeba_gender_smiling_tnrr.pdf}
+%   \includegraphics[width=\columnwidth]{paper3/figures/celeba_gender_smiling_acc.pdf}
+%   \includegraphics[width=\columnwidth]{paper3/figures/celeba_gender_smiling_pr.pdf}
+  \includegraphics[width=\columnwidth]{paper3/figures/celeba_gender_smiling_tprr.pdf}
+  \includegraphics[width=\columnwidth]{paper3/figures/celeba_gender_smiling_tnrr.pdf}
   \caption{
     Results from 10 repeats for the CelebA dataset with the \emph{subgroup bias} setting.
     The task is to predict ``smiling'' vs ``non-smiling'' and the subgroups are based on gender.

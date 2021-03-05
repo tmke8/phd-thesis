@@ -1,3 +1,4 @@
+\chapter{Paper 1: Tuning Fairness by Balancing Target Labels}\label{ch:paper1}
 % \documentclass{article}
 % \usepackage{style}
 % \usepackage{times}
@@ -802,7 +803,7 @@ Every method is evaluated over 10 repeats that each have different splits of the
 \subsection{Results for Demographic Parity on Adult dataset}\label{sssec:demparresults}
 \begin{figure}[t]
   \begin{center}
-    \centerline{\includegraphics[width=0.98\columnwidth]{./figures/adult_tar_choice.eps}}
+    \centerline{\includegraphics[width=0.98\columnwidth]{paper1/figures/adult_tar_choice.eps}}
     \caption{Accuracy and fairness (demographic parity) for various target choices.
       (a): Adult dataset using race as the sensitive attribute;
       (b): Adult dataset using gender.
@@ -843,7 +844,7 @@ $\mathit{PR}_t^{avg}$ performs best in term of the trade-off.%equal (for \emph{r
 %\emph{ZafarAccuracy} can achieve good fairness results at the cost of accuracy.
 \begin{figure}[t]
   \centering
-  \includegraphics[width=0.98\textwidth]{./figures/adult_parity_scatter_pr_pr.eps}
+  \includegraphics[width=0.98\textwidth]{paper1/figures/adult_parity_scatter_pr_pr.eps}
   \caption{
     Predictions with different target acceptance rates (demographic parity) for 10 repeats.
     (a): $\mathit{PR}_{s=0}$ vs $\mathit{PR}_{s=1}$ using race as the sensitive attribute;
@@ -853,7 +854,7 @@ $\mathit{PR}_t^{avg}$ performs best in term of the trade-off.%equal (for \emph{r
 \end{figure}%
 \begin{figure}[t]
   \centering
-  \includegraphics[width=0.98\textwidth]{./figures/adult_parity_scatter_acc.eps}
+  \includegraphics[width=0.98\textwidth]{paper1/figures/adult_parity_scatter_acc.eps}
   \caption{
     Predictions with different target acceptance rates (demographic parity) for 10 repeats.
     (a): disparate impact vs accuracy on Adult dataset using race as the sensitive attribute;
@@ -901,7 +902,7 @@ The measure is then given by $\mathit{TPR}_{s=0} / \mathit{TPR}_{s=1}$.
 A perfectly fair algorithm would achieve $1.0$ on the measure.%
 \begin{figure*}[t]
   \centering
-  \includegraphics[width=0.98\textwidth]{./figures/propublica_opp_box_with_agarwal.eps}
+  \includegraphics[width=0.98\textwidth]{paper1/figures/propublica_opp_box_with_agarwal.eps}
 %   \includegraphics[width=0.45\textwidth]{propublica-recidivism_race_opp_box.eps}
 %   \includegraphics[width=0.45\textwidth]{propublica-recidivism_sex_opp_box.eps}
   \caption{Accuracy and fairness (with respect to \emph{equality of opportunity}) for various methods on ProPublica dataset.
@@ -915,7 +916,7 @@ A perfectly fair algorithm would achieve $1.0$ on the measure.%
 \end{figure*}%
 \begin{figure*}[!ht]
   \centering
-  \includegraphics[width=0.98\textwidth]{./figures/propublica_opp_scatter_tpr.eps}
+  \includegraphics[width=0.98\textwidth]{paper1/figures/propublica_opp_scatter_tpr.eps}
   \caption{%
     Fairness measure $\mathit{TPR}_{s=0}$ vs $\mathit{TPR}_{s=1}$ (\emph{equality of opportunity}) for different target PRs ($\mathit{PR}_t$).
     (a): on dataset ProPublica recidivism using race as the sensitive attribute;
@@ -1040,7 +1041,7 @@ We thank Chao Chen and Songzhu Zheng for their inspiration of our main proof.
 % \end{figure*}
 % \begin{figure*}[!ht]
 % \centering
-% \includegraphics[width=0.85\textwidth]{./figures/adult_parity_box.pdf}
+% \includegraphics[width=0.85\textwidth]{paper1/figures/adult_parity_box.pdf}
 % %   \includegraphics[width=0.495\textwidth]{adult_race_demo_box.eps}
 % %   \includegraphics[width=0.495\textwidth]{adult_sex_demo_box.eps}
 %   \caption{
@@ -1054,7 +1055,7 @@ We thank Chao Chen and Songzhu Zheng for their inspiration of our main proof.
 % \end{figure*}
 
 % \begin{figure*}[t]
-%   \includegraphics[width=0.98\textwidth]{./figures/adult_parity_scatter.pdf}
+%   \includegraphics[width=0.98\textwidth]{paper1/figures/adult_parity_scatter.pdf}
 %   \caption{%
 %     Predictions with different target acceptance rates (demographic parity) on Adult dataset.
 %     \textbf{(a)} and \textbf{(b)}: $\mathit{PR}_{s=0}$ vs $\mathit{PR}_{s=1}$.
@@ -1067,7 +1068,7 @@ We thank Chao Chen and Songzhu Zheng for their inspiration of our main proof.
 %   \label{fig:adult_parity_scatter}
 % \end{figure*}
 % \begin{figure*}[t]
-%   \includegraphics[width=0.98\textwidth]{./figures/eo_together.pdf}
+%   \includegraphics[width=0.98\textwidth]{paper1/figures/eo_together.pdf}
 %   \caption{%
 %     Predictions with different target true positive rates ($\mathit{TPR}_t$; equality of opportunity) on ProPublica dataset.
 %     Our results were obtained with the Logistic Regression model.
@@ -1108,7 +1109,7 @@ We thank Chao Chen and Songzhu Zheng for their inspiration of our main proof.
 % instead of being estimated from training and evaluating on the pre-validation and pre-training set.
 % \begin{figure*}[!ht]
 %   \centering
-%   \includegraphics[width=0.98\textwidth]{./figures/propublica_opp_scatter_tnr.pdf}
+%   \includegraphics[width=0.98\textwidth]{paper1/figures/propublica_opp_scatter_tnr.pdf}
 %   \caption{%
 %     $\mathit{TPR}$ vs $\mathit{TNR}$ for different target TPRs ($\mathit{TPR}_t$).
 %     (a): on dataset ProPublica recidivism using race as the sensitive attribute;
@@ -1164,7 +1165,7 @@ Let $y$ denote the \emph{hard} labels for $\eta$: $y=\mathbb{I}\left[\eta>\tfrac
     \text{if}~d_s>\tfrac{1}{2}\text{:}\quad\frac{1}{2}>\eta(x,s)>\frac{1-2b_s}{2m_s} \\
     \text{if}~d_s<\tfrac{1}{2}\text{:}\quad\frac{1}{2}<\eta(x,s)<\frac{1-2b_s}{2m_s}
   \end{align}
-  This can be summarized as
+  This can be summarised as
   \begin{align}
     \left|\eta(x,s)-\frac{1}{2}\right|<\left|\frac{1}{2}-\frac{1-2b_s}{2m_s}\right|~.
   \end{align}
@@ -1189,7 +1190,7 @@ We express $t_s$ in terms of $\mathit{PR}_b^s$ and $\mathit{PR}_t$.
 \end{align}
 Without loss of generality, we assume $\mathit{PR}_b^0<\mathit{PR}_b^1$.
 As mentioned in the main text, 
-$\mathit{PR}_t$ should be between $\mathit{PR}_b^0$ and $\mathit{PR}_b^1$ to minimize both $t_s$.
+$\mathit{PR}_t$ should be between $\mathit{PR}_b^0$ and $\mathit{PR}_b^1$ to minimise both $t_s$.
 If that is the case, then we get
 \begin{align}
   t_{s=0} &= \frac{1}{2}\frac{\mathit{PR}_t - \mathit{PR}_b^0}{1 - \mathit{PR}_t}\\
@@ -1307,7 +1308,7 @@ From the definition it is clear that $0\leq\mathit{acc} \leq 1$.
 \end{corollary}
 \begin{figure}[t]
   \centering
-  \includegraphics[width=0.6\textwidth]{./figures/plot.pdf}
+  \includegraphics[width=0.6\textwidth]{paper1/figures/plot.pdf}
   \caption{Achievable accuracy for different target values.}%
   \label{fig:accvstarget}
 \end{figure}
@@ -1328,7 +1329,7 @@ From the definition it is clear that $0\leq\mathit{acc} \leq 1$.
 \subsection{Illustration of restrictions on PR}
 \begin{figure}[t]
   \centering
-  \includegraphics[width=0.6\textwidth]{figures/label_shift.pdf}
+  \includegraphics[width=0.6\textwidth]{paper1/figures/label_shift.pdf}
   \caption{%
     Illustration of demographic parity with target labels.
     In the situation in the upper part, $P(\bar{y}=1|y=1)$ cannot be set to 1,
@@ -1355,12 +1356,12 @@ Plugging this in, we are left with
   r_t &= P(\bar{y}=1|y=0,s=1) \cdot (1-r_b^1) +P(\bar{y}=1|y=1,s=1) \cdot r_b^1~.
 \end{align}
 This is a system of linear equations with two equations and four free variables.
-There is thus still considerable freedom in how we want our constraint to be realized.
+There is thus still considerable freedom in how we want our constraint to be realised.
 The freedom that we have here concerns how strongly the accuracy will be affected.
 
 If we set $P(\bar{y}=1|y=1,s)$ to 0.5,
 then we express the fact that a train label of 1 only implies a target label of 1 in 50\% of the cases.
-In order to minimize the effect on accuracy,
+In order to minimise the effect on accuracy,
 we make $P(\bar{y}=1|y=1,s)$ as high as possible and $P(\bar{y}=1|y=0,s)$ as low as possible.
 
 We solve for $P(\bar{y}=1|y=0,s=j)$:

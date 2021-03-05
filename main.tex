@@ -35,7 +35,6 @@ titlepage,numbers=noenddot,%1headlines,
 
 % this solves a warning about bullet points
 \usepackage{textcomp}
-\usepackage{import}
 % \usepackage{titling}
 
 % ****************************************************************************************************
@@ -447,6 +446,7 @@ titlepage,numbers=noenddot,%1headlines,
 
 \AtBeginDocument{\renewcommand{\thepart}{\Roman{part}}}
 
+\includeonly{ch/2-related-work}
 % ********************************************************************
 % GO!GO!GO! MOVE IT!
 %*******************************************************
@@ -492,10 +492,8 @@ titlepage,numbers=noenddot,%1headlines,
 }
 \part{Preliminaries}\label{pt:intro}
 \include{ch/1-introduction}
-\chapter{Related work}\label{ch:related-work}
 \include{ch/2-related-work}
 % \include{ch/3-0-common-notation}
-\chapter{Summary of contributions}\label{ch:content}
 \include{ch/4-structure}
 
 \cleardoublepage
@@ -504,12 +502,9 @@ titlepage,numbers=noenddot,%1headlines,
   They are reproduced here with minimal changes.
 }
 \part{Publications}\label{pt:main}
-\chapter{Paper 1: Tuning Fairness by Balancing Target Labels}\label{ch:paper1}
-\import{paper1/}{paper1.tex}
-\chapter{Paper 2: Null-sampling for Interpretable and Fair Representations}\label{ch:paper2}
-\import{paper2/}{paper2.tex}
-\chapter{Paper 3: Learning with Perfect Bags: Addressing Hidden Stratification with Zero Labelled Data}\label{ch:paper3}
-\import{paper3/}{paper3.tex}
+\include{paper1/paper1}
+\include{paper2/paper2}
+\include{paper3/paper3}
 
 \cleardoublepage
 \part{Conclusion}\label{pt:end}

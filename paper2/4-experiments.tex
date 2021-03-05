@@ -21,7 +21,7 @@ Detailed information regarding model architectures can be found in Appendix~\ref
 %   \label{fig:celeba_chart}
 %   }%
 %   %\hfill
-%   \subfloat[UCI Adult]{\scalebox{0.495}{\includegraphics[width=\textwidth]{./Figures/nosinn_celeba_multiplot_all_landscape_Smiling.pdf}}
+%   \subfloat[UCI Adult]{\scalebox{0.495}{\includegraphics[width=\textwidth]{paper2/Figures/nosinn_celeba_multiplot_all_landscape_Smiling.pdf}}
 %   \label{fig:adult_chart}
 %   }%
 %   \caption{
@@ -32,7 +32,7 @@ Detailed information regarding model architectures can be found in Appendix~\ref
 % \end{figure*}
 \begin{figure}[tb]
     \centering
-    \includegraphics[width=0.7\textwidth]{./Figures/nosinn_celeba.pdf}
+    \includegraphics[width=0.7\textwidth]{paper2/Figures/nosinn_celeba.pdf}
     \caption{
         Performance of our model for different targets (mixing factor $\eta=0$).
         Left: \emph{Smiling} as target, right: \emph{high cheekbones}.
@@ -44,7 +44,7 @@ Detailed information regarding model architectures can be found in Appendix~\ref
 
 \begin{figure}[tb]
     \centering
-    \includegraphics[width=0.85\textwidth]{./Figures/nosinn_celeba_multiplot_all_landscape_Smiling.pdf}
+    \includegraphics[width=0.85\textwidth]{paper2/Figures/nosinn_celeba_multiplot_all_landscape_Smiling.pdf}
     \caption{
         Performance of our model for the target ``smiling'' for different mixing factors $\eta$.
         \emph{DP diff} measures fairness with respect to demographic parity.
@@ -88,8 +88,8 @@ For binary $s$/$y$ we quantify the fairness of a classifier's predictions using 
 \begin{figure}[tb]
     \centering
     % \includegraphics[width=0.9\textwidth]{./results/cmnist/cmnist_results.pdf}
-    % \includegraphics[width=0.9\textwidth]{./Figures/cmnist_new.pdf}
-    \includegraphics[width=0.7\textwidth]{./Figures/cmnist_new_no_hgr.pdf}
+    % \includegraphics[width=0.9\textwidth]{paper2/Figures/cmnist_new.pdf}
+    \includegraphics[width=0.7\textwidth]{paper2/Figures/cmnist_new_no_hgr.pdf}
     \caption{
         % Accuracy and correlation (HGR) of predictions $\hat{y}$ and $s$ of our approach in comparison with other baseline models on the cMNIST dataset, for different standard deviations ($\sigma$) for the colour sampling.
         Accuracy of our approach in comparison with other baseline models on the cMNIST dataset, for different standard deviations ($\sigma$) for the colour sampling.
@@ -113,7 +113,7 @@ In the training set, the colours have a one-to-one correspondence with the digit
 In the test set (and the representative set), colours are assigned randomly.
 The colours are drawn from Gaussians with 10 different means.
 We follow the colourisation procedure outlined by~\citet{kim2019learning}, with the mean colour values selected so as to be maximally dispersed.
-The full list of such values can be found in Appendix~\ref{sec:color-details}.
+The full list of such values can be found in section~\ref{sec:color-details}.
 We produce multiple variants of the cMNIST dataset corresponding to different standard deviations $\sigma$ for the colour sampling:
 $\sigma \in \{0.00, 0.01, ..., 0.05 \}$.
 % The images are symmetrically zero-padded to a size of $32 \times 32$ to allow for an additional downsampling stage in the cFlow model.
@@ -141,7 +141,7 @@ cFlow, on the other hand, is consistent across $\sigma$ values.
 
 \paragraph{CelebA.}
 To evaluate the effectiveness of our framework on real-world image data we use the CelebA dataset~\citep{liu2015faceattributes}, consisting of 202,599 celebrity images.
-These images are annotated with various binary physical  attributes, including ``gender'', ``hair color'', ``young'', etc, from which we  select our sensitive and target attributes.
+These images are annotated with various binary physical  attributes, including ``gender'', ``hair colour'', ``young'', etc, from which we  select our sensitive and target attributes.
 The images are centre cropped and resized to $64\times64$, as is standard practice.
 For our experiments, we designate ``gender'' as the sensitive attribute,
 and ``smiling'' and ``high cheekbones'' as target attributes.
@@ -162,7 +162,7 @@ For these experiments, the model is trained once on the representative set and i
 The results show that for the intermediate values of $\eta$, our model incurs a small penalty in terms of accuracy,
 but at the same time makes the results \emph{fairer} (corresponding to an accuracy-fairness trade-off). Qualitative results can be found in fig.~\ref{fig:celeba_cflow} (images from cVAE can be found in section~\ref{sec:qual-results-celeba}).
 
-To show that our method can handle multinomial, as well as binary, sensitive attributes, we also conduct experiments with $s=\textrm{hair color}$ as a ternary attribute (``Blonde'', ``Black'', ``Brown''), excluding ``Red'' because of the paucity of samples and the noisiness of their labels. The results for these experiments can be found in section~\ref{sec:additional-results}.
+To show that our method can handle multinomial, as well as binary, sensitive attributes, we also conduct experiments with $s=\textrm{hair colour}$ as a ternary attribute (``Blonde'', ``Black'', ``Brown''), excluding ``Red'' because of the paucity of samples and the noisiness of their labels. The results for these experiments can be found in section~\ref{sec:additional-results}.
 % Looking at the produced invariant representations,
 % The failure of the cVAE to model complex interactions between $x_u$ and $s$ is brought to bear here.
 % Due to the balancing between the adversarial and reconstruction losses,
@@ -179,7 +179,7 @@ To show that our method can handle multinomial, as well as binary, sensitive att
 % \begin{wrapfigure}{l}{0.6\linewidth}
 \begin{figure}[tb]
   \centering
-  \includegraphics[width=0.6\textwidth]{./Figures/nosinn_adult_multiplot_mini_diff.pdf}
+  \includegraphics[width=0.6\textwidth]{paper2/Figures/nosinn_adult_multiplot_mini_diff.pdf}
   \caption{
       Results for the \textsc{Adult} dataset.
       The $x$-axis corresponds to the difference in positive rates.
@@ -206,7 +206,7 @@ We also did experiments to show that the encoder transfers to other tasks. These
 
 % \begin{figure}
 %   \centering
-%   \includegraphics[width=0.7\textwidth]{./Figures/nosinn_adult_multiplot_mini_diff.pdf}
+%   \includegraphics[width=0.7\textwidth]{paper2/Figures/nosinn_adult_multiplot_mini_diff.pdf}
 %   \caption{
     %   Results for the \textsc{Adult} dataset.
     %   The $x$-axis corresponds to the difference in positive rates.
