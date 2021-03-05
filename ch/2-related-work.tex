@@ -56,21 +56,21 @@ Meanwhile, the test remains unbiased and is the basis for evaluating our models.
 On the other hand, there is the ``definition-centric'' view that,
 given some training data and not necessarily knowing anything about the deployment setting,
 we define \emph{fairness criteria} which a fair classifier should satisfy.
-Here, the goal is not primarily to correct for the deviation of the training data from the true distribution,
+Here, the primary goal is not to correct for the deviation of the training data from the true distribution,
 but simply to ensure that the classifier is fair in some specific sense.
 By default, a classifier would \emph{not} be fair in that specific way.
 It is left open whether this unfairness originates in the training data or in the algorithm itself.
-Evaluation is typically performed on test set that has all the same biases as the training set,
+Evaluation is typically performed on a test set that has all the same biases as the training set,
 and thus a fairness-accuracy trade-off arises.
 
-The first works in the field are almost exclusively took the definition-centric view,
-most of them using \acf{DP} \citep{dwork2012fairness} as the fairness criterion.
+The first works in the field almost exclusively took the definition-centric view,
+most of them using \acl{DP} \citep{dwork2012fairness} as the fairness criterion.
 
-The difference between these views is not completely clear-cut.
+The boundary between these views is not completely clear-cut.
 Consider the case where a biased training set is available,
 and an unbiased test set is assumed to exist, but we do not have access to it \citep{jiang2020identifying}.
-Then we might at least know that the unbiased test set satisfies demographic parity.
-In this case, testing the classifier for demographic parity is an indication
+Then we might at least know that the unbiased test set satisfies \acf{DP}.
+In this case, testing the classifier for \ac{DP} is an indication
 for how it would fare on the unbiased test set.
 
 Furthermore, there is significant overlap in the solutions employed for the two views:
@@ -83,14 +83,12 @@ Towards the end, I discuss more works with the other viewpoint.
 The first published work to address the problem of biases in machine learning
 was arguably the work by \citet{pedreshi2008discrimination}
 with the main focus being data mining.
-The first fundamental conclusion of the authors
-is that it is not enough to remove the discriminatory features
-(referred to as \emph{sensitive attributes} in other works) from the data.
+Their first fundamental conclusion
+is that it is not sufficient to remove the protected attribute
+(which should not be used as a basis for prediction) from the data.
 That is, if the information about, for example, race
 is removed from the data,
 there is usually enough background information to reconstruct that attribute.
-The experiments were done on the ``German credit dataset''
-where the task is to classify people as a good or a bad credit risk.
 In their context of data mining,
 they distinguish between direct and indirect discrimination:
 the former explicitly uses discriminatory features in the premise of the rule,
@@ -105,9 +103,11 @@ but disproportionally affects people with a specific characteristic.}.
 \section{Modification of labels for Fairness enforcement}\label{modification-of-labels-for-fairness-enforcement}
 Independently of \citet{pedreshi2008discrimination}, but with a similar intention,
 \citet{kamiran2009classifying} considered discrimination in classification.
-As opposed to \citet{pedreshi2008discrimination}, their goal was not to identify discriminatory rules in the dataset,
-but to modify the dataset so that any classifier trained on it will be fair.
-The same dataset (German credit dataset) is used in both papers.
+Their goal is to modify the dataset so that any classifier trained on it will be ``fair'',
+which is measured with a fairness metric on the test set predictions.
+The test set is drawn from the same distribution as the training set.
+To demonstrate their method, they use the ``German credit dataset''
+where the task is to classify people as a good or a bad credit risk.
 
 The authors formulate the problem as it was later done in other works on fairness as well:
 there is a set of features, a binary class label
@@ -127,38 +127,36 @@ The authors then define a concrete measure of discrimination (where $\hat{y}$ re
 % (The paper uses a different notation.
 % The notation here reflects the notation in later papers.)
 It is zero when the individuals in both groups have the same chance to get a positive prediction.
-Thus, it measures the violation of \ac{DP} (where the rate of positive predictions would the same for all groups).
+Thus, it measures the violation of \ac{DP}, where $Dics=0$ corresponds to satisfying \ac{DP}.
 
-Their algorithm for de-biasing the dataset works as follows:
-first, a well-calibrated classifier (Na\"ive Bayes in the paper) is trained on the data
+Their algorithm for de-biasing the dataset comprises two steps.
+First, a well-calibrated classifier (Na\"ive Bayes in the paper) is trained on the data
 \emph{without} the sensitive attribute.
-This classifier gives a ranking for how likely a positive label is for a given individual.
+This classifier is then used to determine a ranking for how likely a positive label is for a given individual.
 The highest ranked individuals that have label \(y=0\)
 and are potentially discriminated against \(s=0\) get ``promoted'' to \(y=1\)
 and the lowest ranked individuals with label \(y=1\) and \(s=1\) get ``demoted'' to \(y=0\)
 until the dataset is fair according to the \(Disc\) measure.
-According to the authors, the ranking ensures that the changes in the dataset
-happen to the most appropriate candidates (close to the decision boundary),
+The idea being that the ranking ensures that the changes in the dataset
+happen to the most appropriate candidates (close to the decision boundary);
 the main goal being a prevention of a big drop in accuracy of the final classifier
-with respect to the original dataset.
+on the test set whose distribution matches the training set.
 
-The paper concludes with results on the German credit data,
-using Na\"ive Bayes for ranking and also for the final classifier.
-Using \emph{Age} as the sensitive attribute,
-the dataset itself shows a \(Disc\) of about 15\% (depending on the train-test split).
-As a baseline, a Na\"ive Bayes classifier was trained with the sensitive attribute
-resulting in \(Disc = 25\%\).
-Without the sensitive attribute it leads to \(Disc = 10\%\).
-The scheme that the authors propose reaches \(Disc = 5\%\).
-The exact numbers depend on the split and the choice of sensitive attribute.
-Generally, higher discrimination in the dataset itself
-leads to bigger differences in discrimination between the fair classifier and the baseline.
+% The paper concludes with results on the German credit data,
+% using Na\"ive Bayes for ranking and also for the final classifier.
+% Using \emph{Age} as the sensitive attribute,
+% the dataset itself shows a \(Disc\) of about 15\% (depending on the train-test split).
+% As a baseline, a Na\"ive Bayes classifier was trained with the sensitive attribute
+% resulting in \(Disc = 25\%\).
+% Without the sensitive attribute it leads to \(Disc = 10\%\).
+% The scheme that the authors propose reaches \(Disc = 5\%\).
+% The exact numbers depend on the split and the choice of sensitive attribute.
+% Generally, higher discrimination in the dataset itself
+% leads to bigger differences in discrimination between the fair classifier and the baseline.
 
 This work was extended in \citet{calders2009building},
-where the same discrimination criterion is used as before,
-but called \emph{dependency} between \(s\) and \(y\).
-They again present the same dataset changing technique
-and a different technique based on giving training examples different weights
+where the same discrimination criterion is used as before.
+They present a different technique based on giving training examples different weights
 instead of re-labelling them.
 Examples with \(y=1\) and \(s=0\) get higher weight than those with \(y=0\) and \(s=0\).
 For \(s=1\), those with \(y=0\) get higher weight than those with \(y=1\).
@@ -172,7 +170,7 @@ two classifiers based on nearest neighbours and a decision tree classifier are u
 The comparison shows that changing the labels leads to lower dependency (discrimination)
 than reweighting the examples.
 However, reweighting the examples leads to lower dependency than the baseline.
-The difference in accuracy is minor.
+% The difference in accuracy is minor.
 
 \section{Fair classifiers}\label{fair-classifiers}
 Another common approach is to put fairness \emph{constraints} on the classifier
@@ -180,7 +178,7 @@ instead of manipulating the dataset.
 \citet{calders2010three} proposes three such approaches,
 which potentially give more control over the prediction bias than changing the datasets.
 All three approaches are based on Na\"ive Bayes
-and again aim to enforce Demographic Parity in the predictions as defined before.
+and again aim to enforce \ac{DP} in the predictions as defined before.
 The first approach shifts the predicted probabilities in a post-processing step
 after training the classifier normally.
 To this end, the sensitive attribute is treated differently
@@ -229,28 +227,28 @@ The search is restricted by enforcing that \(L\) must be equal to \(y\) except
 when \(s=0\) and \(y=0\) or when \(s=1\) and \(y=1\)
 because these are the two cases where we expect discrimination.
 There is other prior knowledge that can be incorporated into the search.
-This method seems to have been the most sophisticated at that point in time.
+% This method seems to have been the most sophisticated at that point in time.
 
 \citet{calders2010three} present experimental results for the three methods on an artificial dataset
 and the Adult/Census Income data that \citet{calders2009building} used before.
 The artificial data has biased and also unbiased class labels
 which are generally not available for real-world datasets
 and conforms to the assumptions made for the third model.
-Artificial datasets generally have the advantage that the bias can be controlled very precisely,
-but there is always the danger of tailoring the dataset too closely to the proposed algorithm.
+% Artificial datasets generally have the advantage that the bias can be controlled very precisely,
+% but there is always the danger of tailoring the dataset too closely to the proposed algorithm.
 To the authors surprise, on both datasets the two simpler methods outperformed the third method
-that was based on fair latent class labels.
-The two first methods perform approximately equally well.
-The authors mention the possibility of a better fairness measure.
+that was based on fair latent class labels;
+the two first methods perform approximately equally well.
+% The authors mention the possibility of a better fairness measure.
 
 \citet{kamishima2012fairness} take a closer look
-at the underlying causes for unfair predictors and condense it to three main causes:
+at the ways in which training data can be biased (or more generally of poor quality) and condense it to three main causes:
 \emph{prejudice}, \emph{underestimation} and \emph{negative legacy}.
 (Let \(x\) be the non-sensitive features.)
 
 \begin{enumerate}
 \item
-  Prejudice:
+  \emph{Prejudice}:
   a statistical dependency between the sensitive attribute
   and the class label or the (non-sensitive) input features.
   If the dependency is with the class label, then the paper calls it \emph{indirect prejudice}.
@@ -262,7 +260,7 @@ at the underlying causes for unfair predictors and condense it to three main cau
   \citet{kamishima2012fairness} do not consider latent prejudice to be immediately harmful,
   but it can be a problem with respect to the protection of personal data and compliance with laws.
 \item
-  Underestimation:
+  \emph{Underestimation}:
   non-convergence of machine learning algorithm due to limited amount of data.
   This magnitude of this problem can be estimated
   by considering the difference between the actual training sample distribution
@@ -270,7 +268,7 @@ at the underlying causes for unfair predictors and condense it to three main cau
   This is the underlying cause of models that make predictions
   that are even more unfair than the dataset.
 \item
-  Negative Legacy:
+  \emph{Negative Legacy}:
   sampling bias and wrong labels in the dataset.
   In contrast to the problem of \emph{prejudice},
   \emph{negative legacy} might not be detectable by analysing the dataset.
@@ -289,29 +287,31 @@ Instead of manipulating the dataset or using explicit algorithm to make a classi
 A term is added to the objective function
 that estimates the mutual information between \(y\) and \(s\)
 and gets minimised together with the other parts of the objective function.
-This strategy leaves most of the work to the optimization that would need to be run anyway.
+% This strategy leaves most of the work to the optimization that would need to be run anyway.
 A factor in front of the regularization term determines how much to value fairness over accuracy.
 
-In a comparison between \citet{kamishima2012fairness}'s algorithm
-and the Na\"ive Bayes method with two different models for the sensitive attributes from \citet{calders2010three},
-the latter performed better on the Adult/Census Income dataset
-(higher accuracy and lower discrimination score).
-However, the former has the advantage
-that the sensitive attribute does not necessarily have to be known for making predictions
-and the trade-off between accuracy and fairness can be easily controlled
-with the factor for the regularization term.
+% In a comparison between \citet{kamishima2012fairness}'s algorithm
+% and the Na\"ive Bayes method with two different models for the sensitive attributes from \citet{calders2010three},
+% the latter performed better on the Adult/Census Income dataset
+% (higher accuracy and lower discrimination score).
+% However, the former has the advantage
+% that the sensitive attribute does not necessarily have to be known for making predictions
+% and the trade-off between accuracy and fairness can be easily controlled
+% with the factor for the regularization term.
 
 \subsection{Fairness based on similarity}%
 \label{fairness-based-on-similarity}
 Nearly all previously discussed papers express some dissatisfaction
-with the \emph{Demographic Parity} metric for measuring discrimination.
+with the \acf{DP} fairness definition.
 \citet{luong2011k} use a very different fairness metric
 based on the idea that similar people should be treated similarly.
-They first define a distance metric which defines a neighbourhood
-and is basically the Manhattan distance on the z-scores of the attributes.
+The setup is still that the training set is biased,
+only a different fairness definition is used to judge classifiers.
+The authors first define a distance metric which defines a neighbourhood,
+based on the Manhattan distance on the z-scores of the attributes.
 The distance metric is supposed to be only make use of legally admissible attributes.
 An individual is then considered to be unfairly treated
-if it is treated differently than its neighbours.
+if it is classified differently than its neighbours.
 More concretely, for any data point we can check
 how many of the \(k\) nearest neighbours have the same class label as that data point.
 If the percentage is under a certain threshold
@@ -325,34 +325,40 @@ The experiments in the paper show that this method is successful in reducing the
 for a range of classifiers on the Adult/Census Income dataset.
 
 \citet{dwork2012fairness} give a more in-depth analysis
-of the idea of distance-based fairness and Demographic Parity.
-They present explicit detailed criticism of the Demographic Parity metric,
-mainly in the form of three scenarios in which Demographic Parity is maintained,
+of the idea of distance-based fairness and \ac{DP}.
+They present explicit detailed criticism of the \ac{DP} metric,
+mainly in the form of several scenarios in which \ac{DP} is maintained,
 but the system treats a lot of individuals very unfairly.
-In the first scenario, the sensitive attribute carries important information
-and removing it, makes everyone worse off.
-In the second scenario, a malicious actor achieves Demographic Parity
-by promoting the weakest members of the disadvantaged group to receive a positive label
-and then argues that fairness is not a worthwhile goal
-because these individuals will not be able to succeed.
-The goal of the actor here is to undermine the whole goal of avoiding discrimination.
-Scenario three considers the case of subset targeting,
+In one scenario, the sensitive attribute carries important information
+and removing it makes everyone worse off.
+% In the second scenario, a malicious actor achieves \ac{DP}
+% by promoting the weakest members of the disadvantaged group to receive a positive label
+% and then argues that fairness is not a worthwhile goal
+% because these individuals will not be able to succeed.
+% The goal of the actor here is to undermine the whole goal of avoiding discrimination.
+Another scenario considers the case of subset targeting,
 where there is discrimination against subgroups
 which are not covered by the Demographic Parity metric
 that only considers the major demographic groups.
 Defining fairness via group membership will always leave open the possibility
 to discriminate against ever smaller subgroups down to individuals.
 
-For these reasons, \citet{dwork2012fairness} try to do better with a metric
-that is centred around a measure of similarity between \emph{individuals}.
-The goal with this is to achieve \emph{individual fairness} instead of just \emph{group fairness}.
-Just like \citet{luong2011k}, they want to treat similar people similarly.
-However, the authors do not give a general recipe to construct the necessary similarity measure.
-This is left to be decided on a case-by-case basis.
-In order for the results to be meaningful,
-the similarity measure has to be as close to the ground truth as possible.
+Based on these considerations, \citet{dwork2012fairness} then argue for
+\emph{individual fairness} instead of \emph{group fairness}.
+They propose a method based on a similarity metric,
+but do not give a general recipe to construct such a metric;
+instead stating it has to be constructed on a case-by-case basis.
 
-The proposed idea is then as follows: a classifier is fair
+% For these reasons, \citet{dwork2012fairness} try to do better with a metric
+% that is centred around a measure of similarity between \emph{individuals}.
+% The goal with this is to achieve \emph{individual fairness} instead of just \emph{group fairness}.
+% Just like \citet{luong2011k}, they want to treat similar people similarly.
+% However, the authors do not give a general recipe to construct the necessary similarity measure.
+% This is left to be decided on a case-by-case basis.
+% In order for the results to be meaningful,
+% the similarity measure has to be as close to the ground truth as possible.
+
+The proposed method is then as follows: a classifier is fair
 if and only if the predictive distributions for any two data points
 are at least as similar as the two points themselves,
 according to a given similarity measure for distributions
@@ -362,46 +368,52 @@ The authors propose two practical similarity measures for distributions
 that are well-known in the respective literature.
 In order to train a fair classifier,
 the Lipschitz condition is then used as a constraint for the optimization.
-This is similar to how \citet{kamishima2012fairness} used the fairness criterion as a regulariser.
-However, \citet{dwork2012fairness} intend to realise it as a strict constraint.
-Furthermore, they show that their criterion is compatible with Demographic Parity
-but does not guarantee it in general.
-When the two demographic groups are similar according to the individual similarity measure,
-then the Lipschitz condition will lead to a good approximation of Demographic Parity.
-If the demographic groups are very different,
-then the Lipschitz criterion is essentially incompatible with Demographic Parity.
+% This is similar to how \citet{kamishima2012fairness} used the fairness criterion as a regulariser.
+% However, \citet{dwork2012fairness} intend to realise it as a strict constraint.
+% Furthermore, they show that their criterion is compatible with Demographic Parity
+% but does not guarantee it in general.
+% When the two demographic groups are similar according to the individual similarity measure,
+% then the Lipschitz condition will lead to a good approximation of Demographic Parity.
+% If the demographic groups are very different,
+% then the Lipschitz criterion is essentially incompatible with Demographic Parity.
 
-As an alternative framework,
-the authors also discuss a relaxation of the Lipschitz condition with an added constraint for Demographic Parity.
-This is intended for cases in which the groups are very different
-but we nevertheless want to enforce Demographic Parity, i.e.~affirmative action.
-In this case, the (relaxed) Lipschitz condition ensures
-that there is still some individual fairness despite the affirmative action.
-However, the paper does not provide an implementation or experiments for the idea,
-so it is difficult to know if the Lipschitz condition is practical.
+% As an alternative framework,
+% the authors also discuss a relaxation of the Lipschitz condition with an added constraint for Demographic Parity.
+% This is intended for cases in which the groups are very different
+% but we nevertheless want to enforce \ac{DP}, i.e.~affirmative action.
+% In this case, the (relaxed) Lipschitz condition ensures
+% that there is still some individual fairness despite the affirmative action.
+% However, the paper does not provide an implementation or experiments for the idea,
+% so it is difficult to know if the Lipschitz condition is practical.
 
-Finally, \citet{dwork2012fairness} discuss the problem of removing sensitive information
-from data that someone wants to sell.
-The hope would be that the sold data has no information in it
-that would allow a malicious actor to discriminate.
-The authors argue that enforcing Demographic Parity would not be enough
-to make the data unsuitable for discrimination.
-They speculate that the Lipschitz condition would work better,
-but ultimately do not provide a real solution to the problem.
+% Finally, \citet{dwork2012fairness} discuss the problem of removing sensitive information
+% from data that someone wants to sell.
+% The hope would be that the sold data has no information in it
+% that would allow a malicious actor to discriminate.
+% The authors argue that enforcing Demographic Parity would not be enough
+% to make the data unsuitable for discrimination.
+% They speculate that the Lipschitz condition would work better,
+% but ultimately do not provide a real solution to the problem.
 
-\section{Fair representation}\label{sec:fair-representation}
-\citet{zemel2013learning} expand on the idea of creating a \emph{fair representation}.
-That is, the features of the data points are transformed such that all bias is removed
-but still carry the information necessary for predicting the class label.
-This is different from \citet{kamiran2009classifying} where the dataset was manipulated as well,
-but the change was restricted to the \emph{labels}.
-In this work, the \emph{inputs} are transformed.
-This is the first of many works with such a goal.
+\section{Fair representations}\label{sec:fair-representation}
+\citet{zemel2013learning} approach the problem of biased training data more directly
+by seeking to transform the features such that all traces of the sensitive attribute are removed,
+but so that they still carry the information necessary for predicting the class label.
+% \citet{zemel2013learning} expand on the idea of creating a \emph{fair representation}.
+% That is, the features of the data points are transformed such that all bias is removed
+This is different from \citet{kamiran2009classifying} where the dataset was transformed as well,
+but there, the change was to the \emph{labels}.
+The idea of transforming the features assumes that the main problem with the data
+are unwanted dependencies between $s$ and the other features (called \emph{latent prejudice} in \citet{kamishima2012fairness}),
+and that the training labels are mostly unproblematic.
+The intended result is then that classifiers trained on the transformed data will make $s$-invariant predictions `by default',
+because they do not know about $s$.
+
 More specifically, the stated goal of \citet{zemel2013learning} is
 to achieve both \emph{group fairness} (in the sense of Demographic Parity)
 and \emph{individual fairness} (in the sense of treating similar people similarly),
 as \citet{dwork2012fairness} did before.
-The learned fair representation is denoted by \(z\).
+Let \(z\) denote the learned fair representation.
 The condition for fairness is then
 \begin{align}
   \label{eq:fair-representation}
@@ -413,7 +425,7 @@ must be the same for inputs with \(s=0\) and for \(s=1\).
 Based on a given distance function (or similarity measure),
 inputs are more likely to be assigned to prototypes that are close-by.
 The classification task is then based entirely on the prototypes (the fair representation \(z\)).
-In the paper, a linear model is used to map the prototypes to the outcomes \(y\).
+In their work, a linear model is used to map the prototypes to the outcomes \(y\).
 Aside from the distance function, the whole model has therefore only two kinds of parameters:
 the locations of the prototypes and the weights in the linear model.
 These parameters are all optimised together.
@@ -421,29 +433,29 @@ The objective function consists of three terms:
 the first enforcing Demographic Parity via the prototype locations,
 the second ensuring that the prototypes are close to the inputs
 and the third targeting a good accuracy by adapting the weights of the classifier.
-
+%
 The experiments are done on the German credit dataset, the Adult / Census Income dataset
 and a dataset based on the Heritage Health Prize milestone 1 challenge
 where the goal is to predict how many days a given person will spend in the hospital in a year.
-The proposed methods performs better in these experiments
-than the methods from \citet{kamiran2009classifying} and the method from \citet{kamishima2012fairness}.
-However, they do not compare against \citet{calders2010three},
-presumably because those methods rely on the sensitive attribute for making predictions,
-which can be considered an unfair advantage.
+% The proposed methods performs better in these experiments
+% than the methods from \citet{kamiran2009classifying} and the method from \citet{kamishima2012fairness}.
+% However, they do not compare against \citet{calders2010three},
+% presumably because those methods rely on the sensitive attribute for making predictions,
+% which can be considered an unfair advantage.
 
-A major flaw in \citet{zemel2013learning}'s fair representation learning is
-that the representation only enforces fairness
-with respect to the one classifier that it was trained with.
-This is shown in the paper when they try to predict \(s\) from \(z\) with a newly trained classifier
-and get results that are significantly better than chance.
-This shows that the proposed approach does not produce a representation
-that could be sold to potentially malicious actors.
-The other question is
-whether the fair representation \(z\) still contains enough information about \(x\),
-so that other classifiers can achieve high accuracy.
-Here, the proposed system performs well:
-a different classifier only shows a small reduction in accuracy
-compared to the one that was trained together with the representation.
+% A major flaw in \citet{zemel2013learning}'s fair representation learning is
+% that the representation only enforces fairness
+% with respect to the one classifier that it was trained with.
+% This is shown in the paper when they try to predict \(s\) from \(z\) with a newly trained classifier
+% and get results that are significantly better than chance.
+% This shows that the proposed approach does not produce a representation
+% that could be sold to potentially malicious actors.
+% The other question is
+% whether the fair representation \(z\) still contains enough information about \(x\),
+% so that other classifiers can achieve high accuracy.
+% Here, the proposed system performs well:
+% a different classifier only shows a small reduction in accuracy
+% compared to the one that was trained together with the representation.
 
 \citet{feldman2015certifying} try to improve upon the work by \citet{zemel2013learning},
 focusing on fair representation as well.
@@ -453,7 +465,7 @@ They define \emph{Disparate Impact} (DI) as
   \label{eq:disparate-impace}
   DI = \frac{P(y=1|s=0)}{P(y=1|s=1)} ~.
 \end{align}
-With a target of \(DI = 1\), this would simply enforce Demographic Parity.
+With a target of \(DI = 1\), this would simply enforce \ac{DP}.
 However, based on some rulings and recommendations of the U.S.\ legal system,
 they advocate the 80\% Rule, which states that \(DI\) should not be below 80\% (or above 125\%).
 This means that the acceptance rate of a disadvantaged demographic group
@@ -485,7 +497,7 @@ and shifts the values such that the distributions \(P(z=z'|s=0)\) and \(P(z=z'|s
 This shift retains the ordering of the data points with regard to that feature.
 This is to ensure that \(z\) can still be used to predict \(y\).
 The method only works on numerical features.
-The paper contains two other algorithms for removing unfairness which are not as drastic,
+The paper contains two other algorithms for removing unfairness which are not as invasive,
 meaning some amount of unfairness remains, but the ability to predict is improved.
 They are referred to as \emph{Partial Repair} algorithms, as opposed to full repair.
 This is the fairness-accuracy trade-off that basically all works in this area consider.
@@ -493,24 +505,24 @@ Both of the other methods try to preserve the ranking of the data points
 with respect to the individual features
 while minimizing the distance of the distributions for the different groups.
 
-In the experiments, the authors first investigate the theoretically predicted relationship
-between \(\varepsilon\)-fairness and the \(DI\) measure.
-All experiments were done with either of the two Partial Repair algorithms
-which give very similar results.
-Three datasets are used:
-the German Credit dataset, the Adult/Census Income dataset
-and the Ricci dataset from the \emph{Ricci vs DeStefano} court case.
-The goal for the Ricci dataset is to predict which firefighters to promote based on test scores.
-The sensitive attribute is \emph{race}.
-The experimental results support the theoretical predictions to a reasonable extent.
-To compare the method with previous work,
-several classifiers are trained on the fair representation:
-logistic regression, SVM and Na\"ive Bayes.
-Of these, the Na\"ive Bayes classifier seems to outperform the algorithms from previous works
-\citep{kamiran2009classifying,kamishima2012fairness,zemel2013learning}
-in both achieved fairness and accuracy.
+% In the experiments, the authors first investigate the theoretically predicted relationship
+% between \(\varepsilon\)-fairness and the \(DI\) measure.
+% All experiments were done with either of the two Partial Repair algorithms
+% which give very similar results.
+% Three datasets are used:
+% the German Credit dataset, the Adult/Census Income dataset
+% and the Ricci dataset from the \emph{Ricci vs DeStefano} court case.
+% The goal for the Ricci dataset is to predict which firefighters to promote based on test scores.
+% The sensitive attribute is \emph{race}.
+% The experimental results support the theoretical predictions to a reasonable extent.
+% To compare the method with previous work,
+% several classifiers are trained on the fair representation:
+% logistic regression, SVM and Na\"ive Bayes.
+% Of these, the Na\"ive Bayes classifier seems to outperform the algorithms from previous works
+% \citep{kamiran2009classifying,kamishima2012fairness,zemel2013learning}
+% in both achieved fairness and accuracy.
 
-This work by \citet{feldman2015certifying} is a major improvement over the work by \citet{zemel2013learning}
+This work by \citet{feldman2015certifying} is a step up from the work by \citet{zemel2013learning}
 because the representation (ideally) is fair with regards to any machine learning algorithm, not just one particular.
 Furthermore, theoretical bounds were proved for the expected bias of a classifier.
 However, the work does not take into account individual fairness in any way.
@@ -556,7 +568,7 @@ as it simply re-uses a widely used technique, variational autoencoders.
 \label{improved-definitions-of-fairness}
 The early literature on fairness in machine learning used only \ac{DP}
 and si\-mi\-la\-ri\-ty-based fairness to judge the fairness of a classifier.
-\citet{kleinberg2016inherent} formalised three different fairness conditions.
+\citet{kleinberg2016inherent} formalised three different group fairness conditions.
 The authors consider a scenario where the data points \(x\) are sorted into bins \(b\)
 and each bin is associated with a prediction score \(f = P(\hat{y}=1|b)\)
 where \(\hat{y}\) is the predicted class label and \(x\) the (non-sensitive) features.
