@@ -72,22 +72,21 @@ Instead, sampling depends on $s$ and $y$;
 \eg, there might be almost no samples of $s=0$ and $y=1$ in the training set.
 The effect is that \ac{ML} models are tempted to take shortcuts and use $s$ as a shorthand for $y$.
 
-When evaluating models in these setup,
-the problem is often that we do not have access to the underlying true unbiased dataset.
-In this case, we cannot just rely on metrics like accuracy to compare models:
-the model is not being evaluated on the right dataset, so accuracy is not that informative.
-For these cases, where we do not have access to a truly unbiased test set,
-we use \emph{fairness metrics}, which do not rely on access to an unbiased set.
-These fairness metrics, which are based on different fairness definitions,
-are then used alongside metrics like accuracy to evaluate how well a model has corrected for the training set bias.
-Note however, that evaluation on a truly unbiased dataset is still preferred:
-fairness metrics make assumptions about what it means to be unbiased that might not fit the actual use case.
+The overall goal in all cases is to make the classifier invariant to $s$.
+We can measure the invariance to $s$ directly by using \emph{fairness metrics}
+on the predictions of the classifier.
+In contrast to the accuracy metric,
+these fairness metrics give a more complete picture of how invariant the classifier is.
+This is especially true if evaluation is done on an imbalanced set
+-- for example because a truly unbiased test set is not available.
+In this case, accuracy can be highly misleading,
+because a good performance in the majority class can hide a poor performance in a minority class.
+Fairness metrics do not suffer from this problem,
+because they specifically look at the results in the different subgroups.
+However, we typically try to evaluate our models on a test set that is as unbiased as possible,
+in order to have a meaningful accuracy.
 
-While fairness metrics are primarily useful when no truly unbiased test sets are provided,
-even when they are provided,
-these metrics can be useful in identifying where models retained some of the bias from the training set.
-
-The fairness definition that best fits the described setup of label bias and sampling bias is \acf{DP},
+The fairness definition with the clearest interpretation in the described setup of label bias and sampling bias is \acf{DP},
 also called statistical parity or independence.
 It demands that the predictions $\hat{y}$ be independent of the sensitive attribute \(s\).
 So, for binary $s$ and $y$:

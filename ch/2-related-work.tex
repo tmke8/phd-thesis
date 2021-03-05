@@ -1,4 +1,3 @@
-\chapter{Related work}\label{ch:related-work}
 %
 % =========================
 %      old introduction
@@ -115,13 +114,13 @@ It is further assumed that one of the class labels is generally desirable;
 for example, it might correspond to being accepted for a credit or being given bail.
 This class label is being referred to as the positive label: \(y = 1\).
 
-After the general setup, the authors define a concrete measure of discrimination:
+The authors then define a concrete measure of discrimination:
 \begin{align}
   \label{eq:disc}
   Disc := P(y=1|s =1) - P(y=1|s = 0)
 \end{align}
-(The paper uses a different notation.
-The notation here reflects the notation in later papers.)
+% (The paper uses a different notation.
+% The notation here reflects the notation in later papers.)
 
 This fairness metric corresponds to what is commonly referred to as \emph{demographic parity}.
 It is zero when the individuals in both groups have the same chance to get a positive prediction.
