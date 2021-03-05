@@ -119,7 +119,7 @@
 Thomas Kehrenberg$^1$, Viktoriia Sharmanska$^1$, Myles Bartlett$^1$, and Novi Quadrianto$^1$ \\
 \textsc{Affiliations}:\\
 $^1$ Predictive Analytics Lab (PAL), University of Sussex, Brighton, UK\\
-\textsc{Conference}:\;\; Submitted to \textit{Internation Conference on Machine Learning} (ICML), 2021 \\
+\textsc{Conference}:\;\; Submitted to \textit{International Conference on Machine Learning} (ICML), 2021 \\
 % \textsc{DOI}:\;\;10.3389/frai.2020.00033
 \textsc{Note}:\;\; The appendix has been included as section~\ref{sec:zsf-appendix}.
 
@@ -162,14 +162,14 @@ Algorithms such as classifiers, however, are trained from large amount of labell
 % \begin{figure*}[t]
 % \centering
 % \includegraphics[width=0.6\textwidth,page=2]{figures/ideal.pdf}
-% \caption{Overview of the zero-shot stratification problem. Training dataset (pairs of input data $x$ and class label $y$) will only contain data points that are labeled ``yes'' by the decision policy. This systematic bias might result in a subgroup(s) to have zero labeled data (in the example above, ``married'' subgroup has zero labeled data). The subgrouping information $s$ is unavailable/unlabeled at deployment time, and is only partially labeled at train time.}
+% \caption{Overview of the zero-shot stratification problem. Training dataset (pairs of input data $x$ and class label $y$) will only contain data points that are labelled ``yes'' by the decision policy. This systematic bias might result in a subgroup(s) to have zero labelled data (in the example above, ``married'' subgroup has zero labelled data). The subgrouping information $s$ is unavailable/unlabelled at deployment time, and is only partially labelled at train time.}
 % \vspace{-0.5cm}
 % \label{fig:censoring}
 % \end{figure*}
 In many real-world classification tasks, each labelled class consists of multiple semantically distinct subclasses, or subgroups.
 For example, the ``dog'' class label can have finer-grained intra-class variations, such as ``dog indoor'' and ``dog outdoor''.
 %
-This finer-grained subgrouping information is typically unavailable/unlabeled (e.g. \citep{SohDunAngGuetal20,nam2020learning}).
+This finer-grained subgrouping information is typically unavailable/unlabelled (e.g. \citep{SohDunAngGuetal20,nam2020learning}).
 %
 The standard training process brings about two inter-connected challenges: a) classifiers often under-perform on important hidden subgroups (\emph{hidden stratification}) \citep{RayDunCarRe20,SohDunAngGuetal20};
 and b) \emph{systematic bias}~\citep{kallus2018residual} affects whether or not entire collections of data points appear in the training dataset,
@@ -192,7 +192,7 @@ Individuals can be thought of as belonging to a specific subgroup such as ``marr
 %
 %A past decision policy of \emph{not} requiring histopathology (biopsy \& pathologist referral) specifies whether an individual will be included in the training dataset.
 %
-%This systematic bias might lead to the no-patch subgroup to have thin or non-existent labeled data.
+%This systematic bias might lead to the no-patch subgroup to have thin or non-existent labelled data.
 %
 We formalise this stratification problem as a data setting where a decision policy can lead to one or more subgroups having no labelled data.
 
@@ -538,9 +538,9 @@ Additionally, $z_s$ can be discretised with a straight-through estimator of the 
 %
 Under \citet{ShuCheKumErmetal20}'s framework, our disentanglement supervision corresponds to \emph{match pairing}:
 We observe samples from a pair of distributions (deployment set and training set).
-As an example, we consider colored MNIST with two classes (digits 2 and 4) and two subgroups (colors purple and green), where the training set is lacking the combination of digit 4 and color purple.
+As an example, we consider coloured MNIST with two classes (digits 2 and 4) and two subgroups (colours purple and green), where the training set is lacking the combination of digit 4 and colour purple.
 Sample pairs from the two distributions have a shared underlying factor: 2's can be purple and green.
-The pairs also have a factor that differs: in the training set, a 4 can only be green; in the deployment set, it can have both colors.
+The pairs also have a factor that differs: in the training set, a 4 can only be green; in the deployment set, it can have both colours.
 Theorem 1 in \citep{ShuCheKumErmetal20} guarantees then that a (sufficiently powerful) disentangling encoder will produce a disentangling that is \emph{consistent} with respect to the shared factor and \emph{restricted} with respect to the changing factor.
 In our case, $z_y$ will capture the shared factor and $z_s$ the changing factor.
 For the invariant representation, we drop $z_s$, which can be seen as setting this value to 0; as $z_s$ has guaranteed \emph{restrictiveness}, the effect of changing $z_s$ is restricted to changing the corresponding factor,
@@ -598,7 +598,7 @@ which in the example refers to whether or not 4's can be purple.
 %   \includegraphics[width=\columnwidth]{figures/cmnist_2v4_partial_tpr.pdf}
 %   \includegraphics[width=\columnwidth]{figures/cmnist_2v4_partial_tnr.pdf}
   \caption{
-    Results from 30 repeats for the Colored MNIST dataset with two digits, 2 and 4, with \emph{subgroup bias} for the color `{\color{purple}purple}': for {\color{purple}purple}, only the digit class `2' is present.
+    Results from 30 repeats for the Coloured MNIST dataset with two digits, 2 and 4, with \emph{subgroup bias} for the colour `{\color{purple}purple}': for {\color{purple}purple}, only the digit class `2' is present.
     \textsc{Left}: Accuracy.
     \textsc{Right}: Positive rate ratio.
     % \textbf{Bottom left}: True positive rate ratio.
@@ -615,7 +615,7 @@ which in the example refers to whether or not 4's can be purple.
 %   \includegraphics[width=\columnwidth]{figures/cmnist_2v4_miss_s_alt_tpr.pdf}
 %   \includegraphics[width=\columnwidth]{figures/cmnist_2v4_miss_s_alt_tnr.pdf}
   \caption{
-    Results from 30 repeats for the Colored MNIST dataset with two digits, 2 and 4, with a \emph{missing subgroup}: the training dataset only has {\color{green}green} digits.
+    Results from 30 repeats for the Coloured MNIST dataset with two digits, 2 and 4, with a \emph{missing subgroup}: the training dataset only has {\color{green}green} digits.
     \textsc{Left}: Accuracy.
     \textsc{Right}: Positive rate ratio.
     % \textbf{Bottom left}: True positive rate ratio.
@@ -633,8 +633,8 @@ which in the example refers to whether or not 4's can be purple.
 %   \includegraphics[width=\columnwidth]{figures/cmnist_3dig_4miss_tpr.pdf}
 %   \includegraphics[width=\columnwidth]{figures/cmnist_3dig_4miss_tnr.pdf}
   \caption{
-    Results from 30 repeats for the Colored MNIST dataset with three digits: `2', `4' and `6'.
-    Four combinations of digit and color are missing: {\color{green}green} 2's, {\color{blue}blue} 2's, {\color{blue}blue} 4's and {\color{green}green} 6's.
+    Results from 30 repeats for the Coloured MNIST dataset with three digits: `2', `4' and `6'.
+    Four combinations of digit and colour are missing: {\color{green}green} 2's, {\color{blue}blue} 2's, {\color{blue}blue} 4's and {\color{green}green} 6's.
     \textsc{Left}: Accuracy.
     \textsc{Right}: Hirschfeld-Gebelein-R\'enyi maximal correlation \citep{renyi1959measures} between $S$ and $Y$.
     % \textbf{Right}: Positive rate ratio.
@@ -663,7 +663,7 @@ which in the example refers to whether or not 4's can be purple.
 
 \subsection{Implementation}
 \label{sec:implementation}
-Our proposed framework, demonstrated in fig.\,\ref{fig:architecture}, entails two steps: 1) sample perfect bags from an unlabeled deployment set, and 2) produce disentangled representations using perfect bags for adversarial distribution-matching.
+Our proposed framework, demonstrated in fig.\,\ref{fig:architecture}, entails two steps: 1) sample perfect bags from an unlabelled deployment set, and 2) produce disentangled representations using perfect bags for adversarial distribution-matching.
 
 \paragraph{Constructing approximately perfect bags via clustering.}
 We cluster the data points from the deployment set into $K=\textrm{dim}(\mathcal{Y})\cdot \textrm{dim}(\mathcal{S})$ number of clusters, i.e. the number of data sources $\Omega_{y,s}$. 
@@ -683,7 +683,7 @@ The cluster assignments can then be used to evenly stratify the deployment set i
 % %
 % Here, $N^2$ is the amount of sample pairs,  $s_{ij}$ are binary labels capturing that similar data points belong to the same group, $s_{ij}=1$, while dissimilar ones do not, $s_{ij}=0$. 
 % %
-% Since the deployment set is unlabeled, $s_{ij}$ are unknown. 
+% Since the deployment set is unlabelled, $s_{ij}$ are unknown. 
 % %
 % We estimate $s_{ij}$ with the robust rank statistics approach (described below) and use the estimates as pseudo-labels in \eqref{eq:clustering}. 
 % %
@@ -700,7 +700,7 @@ The cluster assignments can then be used to evenly stratify the deployment set i
 % %
 % If the rankings obtained for two unlabeled data points $z_i$ and $z_j$ are the same, they are assigned to the same class, $s_{ij}=1$. 
 % %
-As a result of clustering, the data points in the deployment set $\gD_\mathit{dep}$ are labeled with cluster assignments 
+As a result of clustering, the data points in the deployment set $\gD_\mathit{dep}$ are labelled with cluster assignments 
 $\gD_\mathit{dep}=\{(x_i, c_i)\}$, $c_i = C(z_i)$.
 %
 We balance $\gD_\mathit{dep}$ so that all clusters have equal size to form a perfect bag
@@ -731,15 +731,15 @@ Instead, \citet{SohDunAngGuetal20} showed that the error in their quantity of in
 Our primary goal is to ensure good construction of perfect bags.
 We can adapt the analysis of \citet{SohDunAngGuetal20} to bound the error of our quantity of interest, \emph{aggregate statistics} of the approximated perfect bag for each subgroup.
 %
-We can subsequently apply the union bound to take into account that we have a fully-unlabeled setting.
+We can subsequently apply the union bound to take into account that we have a fully-unlabelled setting.
 
 
 \subsection{Limitation and intended use}
 \label{sec:limitations}
 % First, dataset consumers should take extra care about the cost-benefit analysis of selecting particular datasets for their machine learning tasks. 
 %
-Although having zero labeled examples for some subgroups is not uncommon due to the effects of systematic bias,
-we should make a value-judgment on the efficacy of the dataset with respect to a task.
+Although having zero labelled examples for some subgroups is not uncommon due to the effects of systematic bias,
+we should make a value-judgement on the efficacy of the dataset with respect to a task.
 %
 % {\color{red}Corrective action such as the one described in this paper or inaction should be recorded.}
 We can then decide whether or not to take corrective action as described in this paper.
@@ -758,10 +758,10 @@ The cluster formed by an underrepresented subgroup can be easily overlooked by a
 % (for example \citet{RayDunCarRe20,GanVanGeoProetal20,SohDunAngGuetal20,HanRebEhrVedetal20}), but how useful these annotations are in practice is still up for question.
 
 % In this paper, we aim to highlight the problem of zero-label stratification that can result from systematic bias, and to make a case for it as something to be seriously considered (even if to be dismissed) when planning, building, evaluating and regulating machine learning systems.
-%Clearly, the use of algorithmic approaches still requires human review in a manner that is similar to error auditing, but is less dependent on the specific human auditor to initially identify the stratifica- tion. While algorithmic approaches to measurement can reduce burden on human analysts and take advantage of learned encodings to identify subclasses, their efficacy is limited by the difficulty of separating important subclasses in the feature space analyzed.
+%Clearly, the use of algorithmic approaches still requires human review in a manner that is similar to error auditing, but is less dependent on the specific human auditor to initially identify the stratifica- tion. While algorithmic approaches to measurement can reduce burden on human analysts and take advantage of learned encodings to identify subclasses, their efficacy is limited by the difficulty of separating important subclasses in the feature space analysed.
 
 \section{Experiments}
-We perform experiments using image and tabular datasets: Colored MNIST \citep{kim2019learning}, CelebA \citep{liu2015faceattributes} and Adult Income\footnote{{Results for Adult Income dataset and discussion can be found in the supplementary material.}} \citep{Dua:2017} that are publicly available. 
+We perform experiments using image and tabular datasets: Coloured MNIST \citep{kim2019learning}, CelebA \citep{liu2015faceattributes} and Adult Income\footnote{{Results for Adult Income dataset and discussion can be found in the supplementary material.}} \citep{Dua:2017} that are publicly available. 
 %arjovsky2019invariant, KehBarThoQua20
 %
 To validate the first step of creating the perfect bags, we compare the performance of our disentangling model when paired with each of four different balancing methods:
@@ -782,12 +782,12 @@ Third, we have the \texttt{LfF} model proposed by \citet{nam2020learning} that w
 %%%%%OR
 %During training, the {\color{green}green} color group is observed in both digits (sources $\Omega_{y=\text{'two' }s=\color{green}green}$ and $\Omega_{y=\text{'four' }s=\color{green}green}$), but for the {\color{purple}purple} color group, we only observe the one-sided outcome ($\Omega_{y=\text{'two'}s=\color{purple}purple}$), so the source $\Omega_{y=\text{'four'}s=\color{green}green}$ defines invisible demographic.  
 %
-\subsection{Colored MNIST}
-The MNIST dataset \citep{lecun1998gradient} consists of 70,000 (60,000 designated for training, 10,000 for testing) images of gray-scale hand-written digits. We color the digits following a similar procedure to that outlined by \citep{kim2019learning}, randomly assigning each sample one of ten distinct RGB colors. Each source is then a combination of digit-class (class label) and color (subgroup label). We use no data-augmentation aside from symmetrically zero-padding the images to be of size 32x32.
+\subsection{Coloured MNIST}
+The MNIST dataset \citep{lecun1998gradient} consists of 70,000 (60,000 designated for training, 10,000 for testing) images of grey-scale hand-written digits. We colour the digits following a similar procedure to that outlined by \citep{kim2019learning}, randomly assigning each sample one of ten distinct RGB colours. Each source is then a combination of digit-class (class label) and colour (subgroup label). We use no data-augmentation aside from symmetrically zero-padding the images to be of size 32x32.
 We create imbalance in both $D_{dep}$ and $D_{tr}$ by sub-sampling the remaining sources;
 we do this to render a more realistic setting in which the deployment set is not innately balanced and demands preliminary clustering to construct approximately perfect bags. The sub-sampling proportions used for each set of experiments can be found in the appendix.
 
-We begin by considering a binary, 2-digit, 2-color, variant of the dataset with $Y = \{2, 4\}$ and $S = \{\text{\color{green}green}, \text{\color{purple}purple}\}$.
+We begin by considering a binary, 2-digit, 2-colour, variant of the dataset with $Y = \{2, 4\}$ and $S = \{\text{\color{green}green}, \text{\color{purple}purple}\}$.
 For this variant we explore both the SB (subgroup bias) and MS (missing subgroup) settings.
 To simulate the SB setting, we set  $\Omega_{y=4,s=\text{\color{purple}{purple}}}$ to be the missing source.
 To simulate the MS setting, where we have training data for only a single subgroup, we set both $\Omega_{y=\text{'two'},s=\color{purple}purple}$ and $\Omega_{y=\text{'four'},s=\color{purple}purple}$ to be the missing sources (i.e. $D_{tr}$ consists of only $\text{\color{green}{green}}$ digits).
@@ -802,7 +802,7 @@ The optimal value is 1.
 Fig.~\ref{fig:cmnist-2v4-miss-s} shows that the problem of \emph{missing subgroups} is harder to solve.
 Again we see that poor clustering (in the case of \texttt{K-means}) is detrimental to the disentangling procedure, though for all balancing strategies the IQR is significantly higher than observed in the MS setting, along with there being a number of extreme outliers. The median, however, remains high, which is reflective of the ``hit-or-miss'' performance of the method under these conditions, but where the number of hits far outweighs the number of misses. Visualization of the reconstructions with $z_y$ zeroed-out suggest that misses often mostly occurred due to the semantic information being concentrated in $z_s$ while $z_y$ is left to contain only residual information, even when $z_s$ was set to be one-dimensional and binarised. We leave it to future work to explore how to better offset such degeneracies.
 
-To investigate how an increase in the number of classes affects disentangling of classes and groups, we look to a 3-digit, 3-color variant of the dataset in the SB setting where four sources are missing from $D_{tr}$.
+To investigate how an increase in the number of classes affects disentangling of classes and groups, we look to a 3-digit, 3-colour variant of the dataset in the SB setting where four sources are missing from $D_{tr}$.
 Results for this configuration are shown in fig.~\ref{fig:cmnist-3dig-4miss}.
 We see that the performance of \texttt{No bal.} is quite close to that of \texttt{Perfect}, we suspect this is because balancing is less critical with the increased number of subgroups strengthening the training signal.
 As the PR ratio is not a suitable metric for non-binary $S$,
@@ -816,7 +816,7 @@ The dataset comes with per-image annotations of attributes related to visual app
 We predict the smiling attribute as the class label and use the binary attribute, gender, as the subgroup label.
 Here, we consider an SB setting, where ``smiling females'', $\Omega_{s=0, y=1}$, constitutes a missing source.
 %
-Since the dataset exhibits natural imbalance in $S \times Y$, we perform no additional sub-sampling of either the training set or the deployment set, as we did for Colored MNIST.
+Since the dataset exhibits natural imbalance in $S \times Y$, we perform no additional sub-sampling of either the training set or the deployment set, as we did for Coloured MNIST.
 %
 Fig.~\ref{fig:celeba-gender-smiling} shows the model trained with a perfectly balanced deployment set \texttt{Perfect} outperforms \texttt{No bal.}, indicating that this natural imbalance is sufficiently strong to somewhat disrupt the disentangling procedure and is something to be potentially remedied through clustering.
 %
@@ -848,12 +848,12 @@ Nonetheless, our method, with or without the artificial balancing, yields much b
 % We optimise the proposed model using a scheduled update scheme where we freeze the weights of the autoencoder and predictor modules when we update the weights of the discriminator, and vice versa.
 %
 \section{Conclusion}
-We have highlighted the problem that systematic bias can result in one or more subgroups having zero labeled data, and by doing so hope to have stimulated serious consideration for it (even if to be dismissed) when planning, building, evaluating and regulating machine learning systems.
+We have highlighted the problem that systematic bias can result in one or more subgroups having zero labelled data, and by doing so hope to have stimulated serious consideration for it (even if to be dismissed) when planning, building, evaluating and regulating machine learning systems.
 We propose a two-step approach for addressing the resulting zero-label stratification problem.
-First, we construct perfect bags from an unlabeled deployment set via  clustering. 
+First, we construct perfect bags from an unlabelled deployment set via  clustering. 
 Second, we learn a disentangled representations using the perfect bags for adversarial distribution-matching. 
-We empirically validate our framework on the Colored MNIST, CelebA and Adult Income datasets, and find evidence that it is possible to maintain high performance on the subgroups with zero training data. 
-We analyze our approach using the disentanglement calculus of \citet{ShuCheKumErmetal20} that relies on the notions of restrictiveness and consistency, and show that we can derive some guarantees.
+We empirically validate our framework on the Coloured MNIST, CelebA and Adult Income datasets, and find evidence that it is possible to maintain high performance on the subgroups with zero training data. 
+We analyse our approach using the disentanglement calculus of \citet{ShuCheKumErmetal20} that relies on the notions of restrictiveness and consistency, and show that we can derive some guarantees.
 Future work includes further restricting the amount of information that can be encoded in the bias factor, and the limitations that we mentioned in sec.~\ref{sec:limitations}.
 Furthermore, the literature on clustering can potentially provide further insights on theoretical guarantees for clustering. This was not a focus in this paper as the disentangling aspect is more crucial to the approach.
 

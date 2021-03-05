@@ -774,7 +774,7 @@ There are no experiments in the paper.
 
 Another approach that aims to define a better proxy for the fairness criteria is \citet{quadrianto2017recycling}.
 In that paper, \emph{distribution matching} is used to evaluate fairness.
-More specifically, like \citet{louizos2016variational}, Maximum Mean Discrepancy (MMD) is used to check
+More specifically, like \citet{louizos2016variational}, \acf{MMD} is used to check
 if the distributions \(P(\hat{y}|s=0)\) and \(P(\hat{y}|s=1)\) are close, to ensure Demographic Parity.
 This can also be done for Equality of Opportunity and Equalized Odds with the appropriate distributions.
 \citet{quadrianto2017recycling} show that the approach by \citet{zafar2017fairnessconstraints} is a special case of this.
@@ -788,7 +788,7 @@ This is usually used in the context where some features are costly or impractica
 An example is using (only during training) thermal images in addition to normal images for face recognition.
 The additional information is intended to enable the classifier to learn the desired task quicker or better.
 
-Combining privileged learning and the MMD fairness criterion,
+Combining privileged learning and the \ac{MMD} fairness criterion,
 the task becomes a multi-objective optimization for an SVM.
 The MMD criterion is generally non-convex but there are several ways to deal with this.
 The authors find the best algorithm (low discrimination, high accuracy)
@@ -1063,7 +1063,7 @@ but in the training set there is a one-to-one correspondence between digit class
 A na\"ive classifier will learn to predict colour instead of digit class.
 The proposed method is very similar to \citet{ganin2016domain} and \citet{edwards2016censoring},
 if we think of the colours as forming different domains
-(\ie, the \emph{red} domain contains all red digits, etc).
+(\ie, the \emph{red} domain contains all red digits, etc.).
 The goal is then to learn a domain-independent representation.
 The main difference to previous work is an additional entropy loss term in the adversarial loss.
 
