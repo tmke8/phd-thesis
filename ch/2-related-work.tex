@@ -530,8 +530,8 @@ However, the work does not take into account individual fairness in any way.
 While the algorithms by \citet{feldman2015certifying} are manually constructed and explicit,
 \citet{louizos2016variational} use an approach
 that falls more in the area of end-to-end learning where fewer hand-crafted algorithms are used.
-The method is based on deep variational autoencoders (VAE).
-There is an encoder and a decoder that are both modelled as deep neural networks.
+The method is based on deep variational autoencoders (VAE),
+with an encoder and a decoder that are both modelled as deep neural networks.
 The encoder produces the distribution of the latent (fair) representation \(z\)
 from the original features \(x\) and the sensitive attribute \(s\).
 The decoder recovers the distribution of \(x\) from \(z\) and \(s\).
@@ -552,22 +552,22 @@ To overcome this, an additional penalty term is introduced that forces \(P(z|s=0
 and \(P(z|s=1)\) to be as close as possible.
 This is realised with a measure of distance between distributions called \acf{MMD}.
 
-The experiments were done on the Adult/Census Income dataset,
-the German Credit dataset and the Heritage Health dataset.
+% The experiments were done on the Adult/Census Income dataset,
+% the German Credit dataset and the Heritage Health dataset.
 To test whether \(s\) can be recovered from \(z\),
 a Random Forest model and a Logistic Regression model were trained to predict \(s\) from \(z\).
-This is compared to \citet{zemel2013learning}.
-The proposed model can outperform \citet{zemel2013learning} on some tasks, but many results seem inconclusive.
+% This is compared to \citet{zemel2013learning}.
+% The proposed model can outperform \citet{zemel2013learning} on some tasks, but many results seem inconclusive.
 Using \ac{MMD} for an additional unfairness penalty, seems to improve fairness.
 When training a classifier on \(z\) to predict \(y\), there is a small drop in accuracy.
-In general, it is not clear whether this method gives better performance than \citet{feldman2015certifying}.
-However, the algorithm by \citet{louizos2016variational} seems more general and more widely applicable
-as it simply re-uses a widely used technique, variational autoencoders.
+% In general, it is not clear whether this method gives better performance than \citet{feldman2015certifying}.
+% However, the algorithm by \citet{louizos2016variational} seems more general and more widely applicable
+% as it simply re-uses a widely used technique, variational autoencoders.
 
 \section{Other fairness criteria}%
 \label{improved-definitions-of-fairness}
 The early literature on fairness in machine learning used only \ac{DP}
-and si\-mi\-la\-ri\-ty-based fairness to judge the fairness of a classifier.
+and si\-mi\-la\-ri\-ty-based fairness to measure the bias in predictions.
 \citet{kleinberg2016inherent} formalised three different group fairness conditions.
 The authors consider a scenario where the data points \(x\) are sorted into bins \(b\)
 and each bin is associated with a prediction score \(f = P(\hat{y}=1|b)\)
@@ -587,7 +587,7 @@ where \(\hat{y}\) is the predicted class label and \(x\) the (non-sensitive) fea
   Balance for the positive class:
   The true positive rate should be the same for both groups: \(P(\hat{y}=1|y=1,s=0) = P(\hat{y}=1|y=1,s=1)\).
 \end{enumerate}
-These are formalizations of things that have been proposed as definitions of fairness.
+% These are formalizations of things that have been proposed as definitions of fairness.
 The first criterion essentially ensures that the predictor works correctly for both groups.
 This prevents a classifier from predicting one group correctly
 but always returning a negative answer for the other group.
@@ -598,22 +598,23 @@ In other words, members of the different groups have the same chance
 to get a correct classification if they should receive a negative classification.
 The same holds for criterion 3 and positive classifications (\(y=1\)).
 
-The next question is whether we can achieve all of these criteria simultaneously.
+A plausible question is whether it is possible achieve all of these criteria simultaneously.
 The authors show that a perfect predictor,
 which gives a score of \(P(\hat{y}=1|x) = 1\) to data points with \(y=1\)
 and \(P(\hat{y}=0|x) = 1\) to those with \(y=0\),
 automatically satisfies all three criteria.
-As we saw before, this is not true of Demographic Parity.
+(The same is in general not true for \ac{DP}:
+if the test set labels exhibit a statistical dependency to $s$, then a perfect predictor does the same.)
 Furthermore, the authors show that if the dataset is fair in the sense that it satisfies \(P(y=1|s=0) = P(y=1|s=1)\),
 \ie, the base acceptance rate is the same for both classes,
 then a ``random'' classifier which assigns that base rate as the prediction score to all data points indiscriminately
 also satisfies all three criteria.
-For this case, even Demographic Parity is fulfilled.
+For this case, \ac{DP} is satisfied as well.
 The paper provides a proof
 that those two cases are the only ones that achieve the three presented guarantees simultaneously.
 Demographic Parity can only be achieved simultaneously with these in the second scenario.
 The general case sits between those extremes:
-the predictor is not perfect and the dataset is not fair,
+the predictor is not perfect and the test set is not unbiased,
 and therefore, these definitions of fairness are not compatible.
 Note, however, that criterion 2 and 3 \emph{are} compatible with one another.
 
@@ -625,24 +626,24 @@ that it is remains difficult to choose the appropriate definition of fairness to
 \citet{hardt2016equality} expand on criterion 3 in \citet{kleinberg2016inherent}
 and develop a method to enforce it via post-processing.
 Furthermore, an alternative criterion is introduced that is the combination of criterion 2 and 3.
-This is also the work that gave criterion 3 the name \emph{Equality of Opportunity}
-and that popularised the name \emph{Demographic Parity}.
+This is also the work that gave criterion 3 the name \acl{EOpp}
+and that popularised the name \acl{DP}.
 The treatment of fairness by the authors is explicitly ``oblivious'',
 which here means that only the general statistics are known
 about the features \(x\), the sensitive attributes and the class labels \(y\).
 In particular, there is not enough information available to develop a similarity measure
 which could be used to target \emph{individual fairness}.
 
-\citet{hardt2016equality} define the criteria via statistical independence:
-\emph{Equalised Odds} refers to the case where \(\hat{y}\) and \(s\) are independent conditional on \(y\).
+\citet{hardt2016equality} define the criteria in terms of statistical independence:
+\acf{EOdds} refers to the case where \(\hat{y}\) and \(s\) are independent conditional on \(y\).
 This is equivalent to the true positive rate and the false positive rate being the same for all groups.
-\emph{Equality of Opportunity} is, as mentioned above,
+\ac{EOpp} is, as mentioned above,
 the case where just the true positive rate is the same for all groups.
 This means that \(\hat{y}\) and \(s\) are independent conditional on \(y=1\).
-One main advantage that these definitions have over Demographic Parity is that a perfect predictor satisfies them.
-Demographic Parity is at odds with achieving perfect accuracy.
-Furthermore, for Demographic Parity a classifier might be forced to give a positive prediction to a lot of individuals
-where it is really not appropriate.
+One main advantage that these definitions have over \ac{DP} is that a perfect predictor satisfies them on any evaluation set.
+% Demographic Parity is at odds with achieving perfect accuracy.
+% Furthermore, for Demographic Parity a classifier might be forced to give a positive prediction to a lot of individuals
+% where it is really not appropriate.
 
 In order to construct a fair classifier out of a \emph{binary predictor}
 (giving only binary predictions) via post-processing,
@@ -662,7 +663,7 @@ In addition to the fairness condition, we also want to enforce accuracy.
 To that end, we introduce a loss function \(\ell (\tilde{y}, y)\)
 that quantifies the cost of predicting the wrong class label.
 The final optimization problem for the 4 free parameters is then to minimise \(\ell\)
-under the constraint of Equality of Opportunity or Equalised Odds
+under the constraint of \ac{EOpp} or \ac{EOdds}
 and the constraint that the parameters must be valid probabilities.
 
 For a predictor that outputs a \emph{score function},
@@ -678,19 +679,21 @@ This method -- as well as the one before --
 requires the sensitive attribute for all predictions as it has to choose the right threshold.
 
 The authors prove that with this post-processing,
-the Bayes optimal (but unfair) classifier becomes the Bayes optimal fair classifier.
-Additionally, they investigate the limitations of the ``oblivious'' approach
-where the only available information about the data is the joint distribution over \((y, s, \hat{y})\).
-With just this information, it is impossible to uncover the underlying dependency structure that produced the bias.
-The authors present two very different scenarios that are indistinguishable with just the joint distribution.
-Demographic Parity is also affected by this as it only uses the information from the distribution over \((s, \hat{y})\).
-Another shortcoming of Equality of Opportunity and Equalised Odds is
-that they carry the assumption that the labels are correct.
-Demographic Parity does not rely on this assumption so much.
-All-in-all, the fairness definition still has to be chosen by the user based on the situation and the goals.
+the Bayes optimal (but biased) classifier becomes the Bayes optimal unbiased classifier.
+
+% Additionally, they investigate the limitations of the ``oblivious'' approach
+% where the only available information about the data is the joint distribution over \((y, s, \hat{y})\).
+% With just this information, it is impossible to uncover the underlying dependency structure that produced the bias.
+% The authors present two very different scenarios that are indistinguishable with just the joint distribution.
+% Demographic Parity is also affected by this as it only uses the information from the distribution over \((s, \hat{y})\).
+% Another shortcoming of Equality of Opportunity and Equalised Odds is
+% that they carry the assumption that the labels are correct.
+% Demographic Parity does not rely on this assumption so much.
+% All-in-all, the fairness definition still has to be chosen by the user based on the situation and the goals.
 
 \section{Refinement of previous ideas}%
 \label{sec:refinement-on-previous-ideas-for-fair-classification-and-fair-representations}
+\subsection{Fair classifiers continued}
 Following the initial publications,
 several works refined the ideas that had been presented there.
 In a very influential work by \citet{zafar2017fairnessconstraints}
@@ -706,7 +709,7 @@ Thus, \citet{zafar2017fairnessconstraints} set themselves the goal of achieving 
 as little as possible, i.e.~avoiding Disparate Treatment.
 
 In order to train a fair classifier, \citet{zafar2017fairnessconstraints} use a proxy of the definition of
-Demographic Parity that is easier to optimise during training, namely the covariance
+\ac{DP} that is easier to optimise during training, namely the covariance
 between the sensitive attribute and the predicted score \(f\):
 \begin{align}
   \label{eq:zafar-constraint}
@@ -728,9 +731,9 @@ The proposed algorithm performs similarly to the best previous algorithms (simil
 notably without making use of the sensitive attribute for predictions.
 % This is an impressive achievement.
 
-In a follow up work, \citet{zafar2017fairnesstreatment} adapt their work to enforce Equalised Odds,
+In a follow up work, \citet{zafar2017fairnesstreatment} adapt their work to enforce \acf{EOdds},
 as defined in \citet{hardt2016equality}.
-(However, it is here referred to as ``Disparate Mistreatment'' instead of Equalised Odds.)
+(However, it is here referred to as ``Disparate Mistreatment'' instead of ``equalised odds''.)
 As in the previous work, they define a tractable proxy for this measure.
 To this end, they first define a function \(g\) that measures
 how well the class label \(y \in \{0, 1\}\) and the predicted score for a data point \(0 \leq f(x) \leq 1\) agree:
@@ -739,31 +742,31 @@ how well the class label \(y \in \{0, 1\}\) and the predicted score for a data p
   g(y, x) = \min \left(0, \left(y - \tfrac{1}{2}\right) \cdot \left(f(x) - \tfrac{1}{2}\right)\right)
 \end{align}
 Subtracting \(\tfrac{1}{2}\) is necessary to centre the values around \(0\).
-The proxy for Equalised Odds is then the covariance between the sensitive attribute and \(g\).
+The proxy for \ac{EOdds} is then the covariance between the sensitive attribute and \(g\).
 \(g\) can also be modified to only take into account cases with \(y=1\) which corresponds to Equality of Opportunity.
 The paper contains experiments on the ProPublica/COMPAS dataset.
 The task for this dataset is to predict
 whether a criminal offender committed another misconduct or felony within two years,
 based on personal information that includes age, gender, race and past criminal history.
-The authors compare the proposed method to an implementation of the algorithm from \citet{hardt2016equality}.
-In the Equality of Opportunity task, the approach by \citet{hardt2016equality} performs better
-(lower discrimination, similar accuracy).
-The better performance is likely at least partially explained
-by \citet{hardt2016equality} using the sensitive attribute for predictions.
+% The authors compare the proposed method to an implementation of the algorithm from \citet{hardt2016equality}.
+% In the Equality of Opportunity task, the approach by \citet{hardt2016equality} performs better
+% (lower discrimination, similar accuracy).
+% The better performance is likely at least partially explained
+% by \citet{hardt2016equality} using the sensitive attribute for predictions.
 % The evaluation metric is
 % the difference in FPR (false positive rate) and the difference in FNR (false negative rate) between the two groups.
 % Hardt et al.~achieve an FPR difference of 0.02 at 66\% accuracy while Zafar et al.~achieve an FPR difference of
 % 0.06 at the same 66\% accuracy.
-For Equalised Odds,
-the proposed approach achieves higher accuracy but also higher discrimination than in \citet{hardt2016equality}.
-One limiting factor that the authors identify is the size of the dataset:
-the degree of discrimination cannot be accurately estimated by the algorithm if the dataset is small.
+% For Equalised Odds,
+% the proposed approach achieves higher accuracy but also higher discrimination than in \citet{hardt2016equality}.
+% One limiting factor that the authors identify is the size of the dataset:
+% the degree of discrimination cannot be accurately estimated by the algorithm if the dataset is small.
 
-\citet{woodworth2017learning} also consider Equalised Odds as a fairness definition
+\citet{woodworth2017learning} also consider \ac{EOdds} as a fairness definition
 but give strong criticism for the post-processing approach from \citet{hardt2016equality}.
 They present examples where finding the optimal (but discriminatory) predictor in a particular hypothesis class
 and then correcting it post-hoc performs poorly.
-The proofs are based on the PAC learning framework.
+% The proofs are based on the PAC learning framework.
 Certain training distributions allow the training of good fair classifiers from scratch
 but when doing post-processing on a Bayes-optimal predictor for this distribution,
 the result can be a very bad predictor that gives essentially random predictions.
@@ -771,54 +774,60 @@ The authors explicitly construct one such distribution:
 it corresponds to the case where the sensitive attribute \(s\) is more predictive of the class label \(y\)
 than the features \(x\), which is arguably an unusual case.
 
-The proposed method is then as follows.
-First, a classifier is trained that minimises a loss function with Equalised Odds as a constraint.
-The constraint specifies that the absolute differences in true positive rate and false positive rate
-between the two groups are below a certain threshold \(\alpha\).
-In a second step, post-processing similar to \citet{hardt2016equality} is performed with a holdout training set.
-This ensures that the predictor does not have the same weaknesses
-as the proposal from \citet{hardt2016equality} in the given example situations.
-However, this more thorough approach is computationally unfeasible.
-For a feasible approximation, \citet{woodworth2017learning} refer to the idea from \citet{zafar2017fairnesstreatment}
-of using the covariance as a proxy for statistical dependency.
-They refer to this criterion as \emph{Equalised Correlations}.
-Based on this, they investigate linear predictors and find that for these,
-post-processing can achieve Equalised Correlations as well as training a fair predictor from scratch.
-Therefore, their criticism is valid only for non-linear predictors
-or linear predictors that try to enforce the actual Equalised Odds.
-There are no experiments in the paper.
+% The proposed method is then as follows.
+% First, a classifier is trained that minimises a loss function with Equalised Odds as a constraint.
+% The constraint specifies that the absolute differences in true positive rate and false positive rate
+% between the two groups are below a certain threshold \(\alpha\).
+% In a second step, post-processing similar to \citet{hardt2016equality} is performed with a holdout training set.
+% This ensures that the predictor does not have the same weaknesses
+% as the proposal from \citet{hardt2016equality} in the given example situations.
+% However, this more thorough approach is computationally unfeasible.
+% For a feasible approximation, \citet{woodworth2017learning} refer to the idea from \citet{zafar2017fairnesstreatment}
+% of using the covariance as a proxy for statistical dependency.
+% They refer to this criterion as \emph{Equalised Correlations}.
+% Based on this, they investigate linear predictors and find that for these,
+% post-processing can achieve Equalised Correlations as well as training a fair predictor from scratch.
+% Therefore, their criticism is valid only for non-linear predictors
+% or linear predictors that try to enforce the actual Equalised Odds.
+% There are no experiments in the paper.
 
-Another approach that aims to define a better proxy for the fairness criteria is \citet{quadrianto2017recycling}.
-In that paper, \emph{distribution matching} is used to evaluate fairness.
-More specifically, like \citet{louizos2016variational}, \acf{MMD} is used to check
-if the distributions \(P(\hat{y}|s=0)\) and \(P(\hat{y}|s=1)\) are close, to ensure Demographic Parity.
-This can also be done for Equality of Opportunity and Equalised Odds with the appropriate distributions.
-\citet{quadrianto2017recycling} show that the approach by \citet{zafar2017fairnessconstraints} is a special case of this.
-Furthermore, in contrast to that approach,
-the sensitive attribute is explicitly made available to the classifier during training,
-but not during decision time (after training is finished).
-This is done via \emph{privileged learning}.
-Privileged learning is a variant of \acp{SVM}
-where certain features are only available during training but not during decision time.
-This is usually used in the context where some features are costly or impractical to gather.
-An example is using (only during training) thermal images in addition to normal images for face recognition.
-The additional information is intended to enable the classifier to learn the desired task quicker or better.
+% Another approach that aims to define a better proxy for the fairness criteria is \citet{quadrianto2017recycling}.
+% In that paper, \emph{distribution matching} is used to evaluate fairness.
+% More specifically, like \citet{louizos2016variational}, \acf{MMD} is used to check
+% if the distributions \(P(\hat{y}|s=0)\) and \(P(\hat{y}|s=1)\) are close, to ensure Demographic Parity.
+% This can also be done for Equality of Opportunity and Equalised Odds with the appropriate distributions.
+% \citet{quadrianto2017recycling} show that the approach by \citet{zafar2017fairnessconstraints} is a special case of this.
+% Furthermore, in contrast to that approach,
+% the sensitive attribute is explicitly made available to the classifier during training,
+% but not during decision time (after training is finished).
+% This is done via \emph{privileged learning}.
+% Privileged learning is a variant of \acp{SVM}
+% where certain features are only available during training but not during decision time.
+% This is usually used in the context where some features are costly or impractical to gather.
+% An example is using (only during training) thermal images in addition to normal images for face recognition.
+% The additional information is intended to enable the classifier to learn the desired task quicker or better.
 
-Combining privileged learning and the \ac{MMD} fairness criterion,
-the task becomes a multi-objective optimization for an SVM.
-The MMD criterion is generally non-convex but there are several ways to deal with this.
-The authors find the best algorithm (low discrimination, high accuracy)
-with an evolutionary multi-objective optimization.
-The evolutionary algorithm produces a number of variants of the classifier
-with different trade-offs between classification error and discrimination.
-As in \citet{zafar2017fairnesstreatment} before,
-the Adult/Census Income dataset is used to test Demographic Parity
-and the ProPublica/COMPAS dataset is used for Equality of Opportunity and Equalised Odds.
-\citet{zafar2017fairnesstreatment} was used as a baseline
-but the implementation failed on the Adult/Census Income dataset.
-On the ProPublica/COMPAS dataset,
-the proposed algorithm performed within error just as well as the fair baseline algorithm.
+% Combining privileged learning and the \ac{MMD} fairness criterion,
+% the task becomes a multi-objective optimization for an SVM.
+% The MMD criterion is generally non-convex but there are several ways to deal with this.
+% The authors find the best algorithm (low discrimination, high accuracy)
+% with an evolutionary multi-objective optimization.
+% The evolutionary algorithm produces a number of variants of the classifier
+% with different trade-offs between classification error and discrimination.
+% As in \citet{zafar2017fairnesstreatment} before,
+% the Adult/Census Income dataset is used to test Demographic Parity
+% and the ProPublica/COMPAS dataset is used for Equality of Opportunity and Equalised Odds.
+% \citet{zafar2017fairnesstreatment} was used as a baseline
+% but the implementation failed on the Adult/Census Income dataset.
+% On the ProPublica/COMPAS dataset,
+% the proposed algorithm performed within error just as well as the fair baseline algorithm.
 
+This topic has since received more contributions than I can explain here,
+so I will just point to them.
+In the direction of \citet{zafar2017fairnessconstraints}, there is \citet{quadrianto2017recycling}.
+In the direction of \citet{kamiran2012data}, there is \citet{AgaBeyDudLanetal18,roh2021fairbatch}.
+
+\subsection{Fair representations continued}
 With the emergence of adversarial neural networks, interest was renewed in creating fair representations.
 \citet{ganin2016domain} can be seen as a direct precursor:
 they propose adversarial learning for domain adaptation.
@@ -923,7 +932,7 @@ So, for a given proxy \(p\) (\(p \in \{0, 1\}\)),
 predictions \(\hat{y}\) exhibit no \emph{proxy discrimination} if
 \begin{align}
   \label{eq:proxy-discrimination}
-  P(\hat{y}|do(p=0)) = P(\hat{y}|do(p=1))~.
+  P(\hat{y} | \text{do}(p=0)) = P(\hat{y}|\text{do}(p=1))~.
 \end{align}
 If this is fulfilled, there is no influence from \(s\) that is mediated through \(p\).
 There might still be direct influence of \(s\) on \(\hat{y}\).

@@ -29,12 +29,12 @@ that labour-intensive labelling is not needed and so vast amounts of existing, u
 One could ask the question whether bias-correcting methods are still needed, with access to so much data.
 It could be that, while the data is certainly not perfect,
 there is so much of it that the biased parts ``cancel each other out''.
-However, recent investigations of the GPT models do not seem to bear this out.
+However, recent investigations of the GPT models do not seem to bear this out \citep{khalifa2021distributional}.
 One reason for this might be the way these models are trained at the moment:
 they maximise the probability assigned to the next token.
 Thus, such a model has to account for the wide array of human opinions and assign a non-zero probability to all of them.
-So, when asked to summarise a text, GPT does not give the \emph{best} summary;
-it will give a summary that an average person might have written.
+So, when asked to summarise a text \citep{stiennon2020learning}, GPT does not give the \emph{best} summary;
+it gives a summary that an average person might have written.
 However, with the help of a very high quality labelled dataset (that was expensive to create),
 GPT could be finetuned to actually produce very good summaries.
 I suspect this pattern of learning the basics in an unsupervised fashion
