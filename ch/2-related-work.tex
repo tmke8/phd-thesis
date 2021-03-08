@@ -1093,7 +1093,7 @@ The goal is then to learn a domain-independent representation.
 The main difference to previous work is an additional entropy loss term in the adversarial loss.
 
 \citet{arjovsky2019invariant} tackle a similar problem, but take a very different approach,
-which they term ``Invariant Risk Minimization'', in contrast to the default method Empirical Risk Minimization.
+which they term ``Invariant Risk Minimisation'', in contrast to the default method \acf{ERM}.
 As with \citet{kim2019learning},
 the goal is to ignore spurious correlations that only appear in the very imperfect training set,
 but not in the test set;
@@ -1108,7 +1108,7 @@ which they approximate with a tractable regularised optimization.
 \citet{creager2020environment} build directly on \citet{arjovsky2019invariant}.
 They aim to address the limitation that the environments -- that one wants to be invariant to -- have to be pre-defined.
 Their contribution is to infer these environments instead,
-based on identifying which environment splits would most negatively affect an ERM classifier.
+based on identifying which environment splits would most negatively affect an \ac{ERM} classifier.
 Their experiments show that this can even approve upon hand-crafted environments;
 experiments are performed on a synthetic dataset and Coloured MNIST.
 In contrast to \citet{kim2019learning} and \citet{arjovsky2019invariant},

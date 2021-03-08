@@ -41,7 +41,7 @@ Given a sensitive attribute $s$ (for example, gender or race) and inputs $\bm{x}
 a fair representation $\bm{z}$ of $\bm{x}$ is then one for which $\bm{z} \perp s$ holds,
 while ideally also being predictive of the class label $y$.
 \citet{zemel2013learning} was the first to propose the learning of fair representations which allow for transfer to new classification tasks.
-More recent methods are often based on variational autoencoders (VAEs)~\citep{kingma2013auto,louizos2016variational,edwards2016censoring,beutel2017data}.
+More recent methods are often based on \acfp{VAE}~\citep{kingma2013auto,louizos2016variational,edwards2016censoring,beutel2017data}.
 The achieved fairness of the representation can be measured with various fairness metrics.
 These measure, however, usually how fair the predictions of a classifier are
 and not how fair a representation is.
@@ -52,7 +52,7 @@ The appropriate measure of fairness for a given task is domain-specific \citep{l
 and there is often not a universally accepted measure.
 However, \emph{Demographic Parity} is the most widely used~\citep{louizos2016variational,edwards2016censoring,beutel2017data}.
 Demographic Parity demands $\hat{y} \perp s$ where $\hat{y}$ refers to the predictions of the classifier.
-In the context of fair representations, we measure the Demographic Parity of a downstream classifier, $f(\cdot )$, which is trained on the representation $z$ i.e.  $f: Z \to \hat{Y}$.
+In the context of fair representations, we measure the Demographic Parity of a downstream classifier, $f(\cdot )$, which is trained on the representation $z$, i.e.\  $f: Z \to \hat{Y}$.
 
 A core principle of all fairness methods is the \emph{accuracy-fairness trade-off}.
 As previously stated, the fair representation should be invariant to $s$ ($\to$ fairness) but still be predictive of $y$ ($\to$ accuracy).

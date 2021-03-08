@@ -9,18 +9,18 @@
     \centering
     \hfill
     \subfloat[cFlow model.]{%
-        \scalebox{0.33}{\includegraphics[width=\textwidth]{paper2/Figures/inn_diagram_u.pdf}}%
+        \scalebox{0.4}{\includegraphics[width=\textwidth]{paper2/Figures/inn_diagram_u.pdf}}%
         \label{fig:inn_diagram}
     }
     \hfill
     \subfloat[cVAE model.]{%
-        \scalebox{0.4}{\includegraphics[width=\textwidth]{paper2/Figures/cvae_diagram_u.pdf}}%
+        \scalebox{0.5}{\includegraphics[width=\textwidth]{paper2/Figures/cvae_diagram_u.pdf}}%
         \label{fig:cvae_diagram}
     }
     \hfill
     \caption{
         Training procedure for our models. $x$: input, $s$: sensitive attribute, $z_u$: de-biased representation, $x_u$: de-biased version of the input in the data domain.
-        The red bar indicates a gradient reversal layer, and $\stackrel{\rightarrow}{0}$ the null-sampling operation.
+        The red bar indicates a gradient reversal layer, and $\vzero$ the null-sampling operation.
     }%
     \label{fig:model-diagrams}
 \end{figure*}
@@ -29,7 +29,7 @@
 \noindent We assume we are given inputs $\bm{x} \in \mathcal{X}$ and corresponding labels $y \in \mathcal{Y}$.
 Furthermore, there is some spurious variable $s \in \mathcal{S}$ associated with each input $\bm{x}$ which we do \emph{not} want to predict. 
 Let $X$, $S$ and $Y$ be random variables that take on the values $\bm{x}$, $s$ and $y$, respectively.
-The fact that both $y$ and $s$ are predictive of $\bm{x}$ implies that $\mathcal{I}(X;Y), \mathcal{I}(X;S) > 0$, where $\mathcal{I}(\cdot ;\cdot)$ is the mutual information.
+The fact that both $y$ and $s$ are predictive of $\bm{x}$ implies that $I(X;Y), I(X;S) > 0$, where $I(\cdot ;\cdot)$ is the mutual information.
 Note, however, that the conditional entropy is non-zero: $H(S|X) \neq 0$, i.e., $S$ is not completely determined by $X$.
 
 %The difficulty emerges in the construction of the fully-supervised training dataset in which correspondence between $S$ and $Y$ is exaggerated compared to the test set.
@@ -45,7 +45,7 @@ training a model with such a dataset would limit generalisability.
 Let $(X^\mathit{tr}, S^\mathit{tr}, Y^\mathit{tr})$ then be the random variables sampled for the training set
 and $(X^\mathit{te}, S^\mathit{te}, Y^\mathit{te})$ be the random variables for the test set.
 The training and test sets thus induce the following inequality for their mutual information:
-$\mathcal{I}(S^\mathit{tr}; Y^\mathit{tr}) \gg \mathcal{I}(S^\mathit{te}; Y^\mathit{te}) \approx 0$.
+$I(S^\mathit{tr}; Y^\mathit{tr}) \gg I(S^\mathit{te}; Y^\mathit{te}) \approx 0$.
 
 % \subsection{In an Ideal World} % HEADING IS JUST TO HELP ORGANIZE THOUGHTS, WILL BE DELETED LATER
 Our goal is to learn a representation $\bm{z}_u$ that is independent of $s$ and transferable between downstream tasks.
@@ -96,7 +96,7 @@ as, while properly annotated data is scarce, unlabelled data can be obtained in 
 Previous work has also considered treated ``unlabelled data'' as still having $s$ labels~\citep{wick2019unlocking}.
 We are restricted only in the sense that the spurious correlations we want to sever are indicated in the features.
 We call this the \emph{representative set}, consisting of $X^\mathit{rep}$ and $S^\mathit{rep}$.
-It fulfils $\mathcal{I}(S^\mathit{rep}; Y^\mathit{rep}) \approx 0$
+It fulfils $I(S^\mathit{rep}; Y^\mathit{rep}) \approx 0$
 (or rather, it would, if the class labels $Y^\mathit{rep}$ were available).
 %{\color{red} justify the existence of such a dataset}
 
@@ -105,7 +105,7 @@ First, the encoder network $f$ is trained on ($X^\mathit{rep}, S^\mathit{rep}$),
 The trained network is then used to encode the training set,
 taking in $\bm{x}$ and producing the representation, $\bm{z}_u$, decorrelated from the spurious variable.
 The encoded dataset can then be used to train any off-the-shelf classifier safely, with information about the spurious variable having been absorbed by some auxiliary component $\mathcal{B}$.
-In the case of the conditional VAE (cVAE) model,
+In the case of the \acf{cVAE} model,
 $\mathcal{B}$ takes the form of the decoder subnetwork, which reconstructs the data conditional on a one-hot encoding of $s$,
 while for the invertible network $\mathcal{B}$ is realised as a partition of the feature map $\bm{z}$
 (such that $\bm{z} = [\bm{z}_u, \bm{z}_b]$), given the bijective constraint.
@@ -127,7 +127,7 @@ We use $\theta_{enc}, \theta_{dec} \in \theta$ to denote the parameters of the e
 Concretely, the encoder component performs the mapping $x \rightarrow{\bm{z}_u}$, while $\mathcal{B}$ is instantiated as the decoder,
 $\mathcal{B} \coloneqq p_{\theta_{dec}}(x|z_u, s)$, which takes in a concatenation of the learned non-spurious latent vector $\bm{z}_u$ and a one-hot encoding of the spurious label $s$ to produce a reconstruction of the input $\hat{x}$.
 Conditioning on a one-hot encoding of $s$, rather than a single value, as done in \citet{madras2018learning} is the key to visualising invariant representations in the data domain.
-If $\mathcal{I}(z_u; s)$ is properly minimised, the decoder can only derive its information about $s$ from the label, thereby freeing up $\bm{z}_u$ from encoding the unwanted information while still allowing for reconstruction of the input.
+If $I(z_u; s)$ is properly minimised, the decoder can only derive its information about $s$ from the label, thereby freeing up $\bm{z}_u$ from encoding the unwanted information while still allowing for reconstruction of the input.
 Thus, by feeding a zero-vector to the decoder we achieve $\hat{x} \perp s$.
 The full learning objective for the cVAE is given as
 \begin{align}
@@ -146,7 +146,9 @@ Since information about $s$ is only available to the decoder as a binary encodin
 if the relationship between $s$ and $x$ is highly non-linear and cannot be summarised by a simple on/off mechanism, as is the case if $s$ is an attribute such as gender,
 off-loading information to the decoder by conditioning is no longer possible. As a result, $\bm{z}_u$ is forced to carry information about $s$ in order to minimise the reconstruction error. 
 
-The obvious solution to this is to allow the encoder to store information about $s$ in a partition of the latent space as in  \citet{creager2019flexibly}.  However, we question whether an autoencoder is the best choice for this setup, with the view that an invertible model is the better tool for the task. Using an invertible model has several guarantees, namely complete information-preservation and freedom from a reconstruction loss, the importance of which we elaborate on below.
+The obvious solution to this is to allow the encoder to store information about $s$ in a partition of the latent space as in  \citet{creager2019flexibly}.
+However, we question whether an \ac{AE} is the best choice for this setup, with the view that an invertible model is the better tool for the task.
+Using an invertible model has several guarantees, namely complete information-preservation and freedom from a reconstruction loss, the importance of which we elaborate on below.
 
 \subsection{Conditional Flow}\label{cflow}
 \paragraph{Invertible Neural Networks.}
@@ -183,8 +185,8 @@ However, since we are not interested in sampling from the model's distribution, 
 Critically, this forces the mean of each latent dimension to zero enabling null-sampling. 
 The invertible property of the network guarantees the preservation of all information relevant to $y$ which is independent of $s$, regardless of how it is allocated in the output space.
 Secondly, we conjecture that the encodings are more robust to out-of-distribution data.
-Whereas an autoencoder could map a previously seen input and a previously unseen input to the same representation,
-an invertible network sidesteps this due to the network's bijective property, ensuring all relevant information is stored somewhere. This opens up the possibility of transfer learning between datasets with a similar manifestation of $s$, as we demonstrate in the Appendix~\ref{sec:transfer-learning}.
+Whereas an \acf{AE} could map a previously seen input and a previously unseen input to the same representation,
+an invertible network sidesteps this due to the network's bijective property, ensuring all relevant information is stored somewhere. This opens up the possibility of transfer learning between datasets with a similar manifestation of $s$, as we demonstrate in section~\ref{sec:transfer-learning}.
 
 Under our framework, the invertible network $f$ maps the inputs $\bm{x}$ to a representation $\bm{z}_u$:
 $f(\bm{x}) = \bm{z}$.
@@ -195,7 +197,7 @@ As $f$ is invertible, $\bm{x}$ can be recovered like so:
   \bm{x} = f^{-1}([\bm{z}_u, \bm{z}_b])
   \label{eq:zreconstruct}
 \end{align}
-where $\bm{z}_b$ is required for equality of the output dimension and input dimension to satisfy the bijectivity of the network -- we cannot output $\bm{z}_u$ alone, but have to output $\bm{z}_b$ as well. In order to generate the pre-image of $\bm{z}_u$, we perform null-sampling with respect to $\bm{z}_b$ by zeroing-out the elements of $\bm{z}_b$ (such that $\bm{x}_{u} = f^{-1}([\bm{z}_{u}, \stackrel{\rightarrow}{0}])$), i.e. setting them to the mean of the prior density, $\mathcal{N}(z;0, I)$.
+where $\bm{z}_b$ is required for equality of the output dimension and input dimension to satisfy the bijectivity of the network -- we cannot output $\bm{z}_u$ alone, but have to output $\bm{z}_b$ as well. In order to generate the pre-image of $\bm{z}_u$, we perform null-sampling with respect to $\bm{z}_b$ by zeroing-out the elements of $\bm{z}_b$ (such that $\bm{x}_{u} = f^{-1}([\bm{z}_{u}, \vzero])$), i.e. setting them to the mean of the prior density, $\mathcal{N}(z;0, I)$.
 
 How can we be sure that $\bm{z}_u$ contains enough information about $y$?
 The importance of the invertible architecture bears out from this consideration. %, as the bijectivity of the network guarantees preservation of all information about the input. %

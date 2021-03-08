@@ -4,13 +4,13 @@ All presented approaches rely on some form of side information with allows us to
 This side information is always significantly easier to obtain than unbiased data.
 
 \section{Using target labels to mitigate label bias}\label{sec:target-labels}
-\Chapref{ch:paper1} is predominantly concerned with label bias.
+\citet{kehrenberg2020tuning} (\chapref{ch:paper1}) is predominantly concerned with label bias.
 The main idea is that we make use of pseudo labels (or \emph{target labels})
 to implicitly learn from a \emph{balanced} dataset,
 in which \(y\perp s\) holds, and which thus satisfies \acf{DP}.
 This falls under the area of \emph{fair classifiers} discussed in \secref{fair-classifiers}
 
-We can interpret the contributions of this chapter in two ways.
+We can interpret the contributions of this publication in two ways.
 The first corresponds to the definition-centric view of dataset bias,
 and the second to the ground-truth-centric view.
 \begin{enumerate}
@@ -24,7 +24,7 @@ and the second to the ground-truth-centric view.
     However, we do not actually have access to the true dataset; we only know that it is balanced.
     In order to evaluate the trained model, we compute fairness metrics with respect to \ac{DP}.
 \end{enumerate}
-Within the chapter, we sometimes jump between these two views.
+Within the paper, we sometimes jump between these two views.
 
 While the main focus is on label bias,
 the experiments are performed on real-world fairness datasets,
@@ -42,11 +42,11 @@ such that maximizing the likelihood corresponds to improving the prediction of t
 instead of the given (biased) training labels.
 
 \section{Using a representative set to overcome severe sampling bias}\label{sec:nifr}
-In the setting from the previous chapter,
+In the setting from the previous paper \citep{kehrenberg2020tuning},
 labels were untrustworthy because they had been flipped;
 a phenomenon we referred to as \emph{label bias}.
 However, flipped labels is not the only way that labels can become untrustworthy.
-Another way is \emph{sampling bias}, which is the subject of \twochaprefs{ch:paper2}{ch:paper3}.
+Another way is \emph{sampling bias}, which is the subject of \citet{kehrenberg2020nullsampling} and \citet{kehrenberg2020zeroshot} (\twochaprefs{ch:paper2}{ch:paper3}).
 
 As an example, consider a dataset where the task is to distinguish smiling from non-smiling faces.
 Say, we initially have a very diverse and balanced training set,
@@ -58,7 +58,7 @@ In other words, hair colour has become a \emph{spurious attribute}.
 In the following, we denote the spurious attribute with \(s\),
 as it takes a role that is very similar to that of the sensitive attribute that was also denoted by \(s\).
 
-The method, proposed in the previous chapter,
+The method, proposed in the previous paper (\chapref{ch:paper1}),
 is not able to deal with such a dataset bias as we can easily see:
 Say, \emph{smiling} corresponds to \(y=1\) and \emph{not smiling} to \(y=0\);
 furthermore, let red hair correspond to \(s=1\), black hair to \(s=0\), and all other hair colours to \(s=2\).
@@ -66,7 +66,7 @@ Then, the problem with the described dataset is, that it mostly consists of samp
 and those with \(y=1\wedge s=1\).
 If we call \(P(y=1|s=s')\) the acceptance rate,
 then the problem can be described as one of very different acceptance rates in the hair colour groups given by \(s\).
-This is the problem tackled in the previous chapter,
+This is the problem tackled in the previous paper,
 and yet, if we were to equalize the acceptance rates with the method there,
 the result would be very incorrect.
 The issue is that we would treat the labels as incorrect, when in truth, they are correct.
@@ -86,11 +86,11 @@ a classifier can then be trained to accurately predict the class label \(y\).
 The invariant representation cannot be learned from the training set
 because there, due to the sampling bias, \(s\) and \(y\) are not distinguishable.
 
-A parallel to the previous chapter is that the method makes use of side information
+A parallel to the previous paper is that the method makes use of side information
 (in this case the representative set)
 in order to overcome the bias in the training set.
 
-The method presented in the chapter is based on the idea of \emph{null-sampling},
+The method presented in \citet{kehrenberg2020nullsampling} (\chapref{ch:paper2}) is based on the idea of \emph{null-sampling},
 which refers to zeroing out part of an encoding,
 and then reconstructing the modified encoding as if it were a normal encoding.
 Before we apply null-sampling, an encoding of the input \(x\) is learned that is split into two parts:
@@ -112,32 +112,32 @@ For additional experiments on the CelebA dataset and the UCI Adult Income datase
 we deliberately apply sampling bias to the training set and then apply our method.
 
 \section{Using an unlabelled deployment set to overcome sam\-p\-ling bias}\label{sec:zsf}
-A shortcoming of the approach from the previous chapter
+A shortcoming of the approach from the previous publication \citep{kehrenberg2020nullsampling}
 is its reliance on a representative set which has \(s\) labels.
 As discussed, it is necessary to make use of \emph{some} kind of side information,
 but perhaps we can relax some requirements.
 In particular, while it is already easier to collect data without \(y\) labels (but with \(s\) labels),
 it is \emph{even} easier to collect data without \emph{any} label.
 Thus, requiring only an unlabelled context set would improve the applicability of the method.
-This chapter presents an approach based on that idea.
+\citet{kehrenberg2020zeroshot} (\chapref{ch:paper3}) presents an approach based on that idea.
 
-The setting is very similar to the previous chapter:
+The setting is very similar to the previous publication \citep{kehrenberg2020nullsampling}:
 the training set suffers from severe sampling bias, but we have access to a (mostly) unbiased \emph{deployment set}.
 The idea is that the deployment set corresponds to the setting in which the model is meant to be deployed.
 The change is that this additional set may be completely unlabelled,
 but in exchange, we have some stronger requirements for the training set.
 Namely, the holes left by the sampling bias may not be so numerous
 as to make \(s\) and \(y\) completely indistinguishable.
-In the previous chapter, the example of Coloured MNIST had a training set
+In the previous paper, the example of Coloured MNIST had a training set
 where there was a strict one-to-one mapping of colour and digit;
-but this kind of blending of \(s\) and \(y\) into one is not the focus of this chapter.
+but this kind of blending of \(s\) and \(y\) into one is not the focus of this paper.
 The focus is instead on a setting where the training set lacks certain combinations of \(s\) and \(y\),
 which results in poor predictions for these combinations on the test set (or deployment setting)
 where those combinations do occur.
 We refer to these missing combinations as \emph{invisible demographics}.
 The value of \(s\) acts as a spurious attribute and should be ignored in order to make accurate predictions.
 
-As in the previous chapter, the first step is to train a neural network to produce an invariant representation.
+As in the previous paper, the first step is to train a neural network to produce an invariant representation.
 The second step is then to train a classifier on that.
 The invariant representation is trained by doing distribution matching between the training set and the deployment set.
 Finally, the training set is transformed into the invariant representation,
