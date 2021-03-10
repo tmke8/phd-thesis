@@ -1127,6 +1127,20 @@ However, they treat the true labels as completely unknown
 and evaluate their models w.r.t.\ the common fairness definitions on a test set
 that is just as biased as the training set.
 
+\citet{kallus2018residual} is another more conceptual work.
+They present an intuitive model for how sampling bias can enter a training set
+and how it can be very hard to correct for it.
+The paper refers to the process as \emph{systematic censoring},
+but this is not meant to necessarily imply that this censoring was a conscious decision by some authority;
+it can also be an unintended side effect of an enacted policy.
+Systematic censoring can arise any time a screening process prevents observing the outcome for the screened-out samples.
+For example, if, historically, a certain demographic group was screened out from receiving loans,
+then it was not possible to observe default rates for this group;
+and so any historical data on defaulting is useless for that demographic group.
+Even if a bank wants to change their policy,
+it is hard to correct for the bias in the training set because there is not good data to learn from.
+This is a prime example of a ground-truth-centric bias problem.
+
 Finally, as mentioned in the beginning,
 \citet{blum2020recovering} provide a formalization of a setting with label bias and sampling bias
 and an unbiased ground truth test set.
@@ -1149,6 +1163,16 @@ that the label bias only affects the \emph{underrepresented} demographic group,
 and that the label bias is the direction (\(y=1\) to \(y=0\)) that \ac{EOpp} is most sensitive to.
 Thus, even in the ground-truth-centric view of bias,
 fairness constraints can be very useful.
+
+\citet{maity2020notradeoff} provide a similar analysis to \citet{blum2020recovering},
+but consider more general dataset biases.
+Just like \citet{blum2020recovering}, they explicitly reject a fairness-accuracy trade-off,
+because they evaluate on a balanced test set.
+(In the paper this is formulated in terms of the optimal Bayes classifier satisfying their notions of fairness on the test set.)
+They show that the sampling bias (in the training set) that they consider,
+can be overcome by enforcing an appropriately chosen risk-based notion of algorithmic fairness;
+either a notion they term \emph{risk parity} (inspired by \ac{DP})
+or \emph{conditional risk parity} (inspired by \ac{EOdds}).
 
 % \section{Recent developments in Fairness}\label{recent-developments-in-fairness}
 % At this point, fairness in machine learning has come a long way.
