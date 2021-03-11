@@ -1,10 +1,12 @@
 \chapter{Summary of contributions}\label{ch:content}
-The main contributions of this thesis are as follows.
-All presented approaches rely on some form of side information with allows us to overcome the dataset bias.
+The following is a summary of the main contributions in this thesis.
+All presented approaches deal with dataset bias that is closely linked to a special attribute $s$.
+Furthermore, the approaches all rely on some form of side information with allows us to overcome dataset bias.
 This side information is always significantly easier to obtain than unbiased data.
 
 \section{Using target labels to mitigate label bias}\label{sec:target-labels}
 \citet{kehrenberg2020tuning} (\chapref{ch:paper1}) is predominantly concerned with label bias.
+More precisely, labels \(y\) are flipped with a probability and a direction that depends on a sensitive attribute \(s\).
 The main idea is that we make use of pseudo labels (or \emph{target labels})
 to implicitly learn from a \emph{balanced} dataset,
 in which \(y\perp s\) holds, and which thus satisfies \acf{DP}.

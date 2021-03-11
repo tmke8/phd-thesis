@@ -824,7 +824,7 @@ than the features \(x\), which is arguably an unusual case.
 
 This topic has since received more contributions than I can explain here,
 so I will just point to them.
-In the direction of \citet{zafar2017fairnessconstraints}, there is \citet{quadrianto2017recycling}.
+In the direction of \citet{zafar2017fairnessconstraints}, there is \citet{quadrianto2017recycling,lohaus2020too}.
 In the direction of \citet{kamiran2012data}, there is \citet{AgaBeyDudLanetal18,roh2021fairbatch}.
 
 \subsection{Fair representations continued}
@@ -1173,6 +1173,23 @@ They show that the sampling bias (in the training set) that they consider,
 can be overcome by enforcing an appropriately chosen risk-based notion of algorithmic fairness;
 either a notion they term \emph{risk parity} (inspired by \ac{DP})
 or \emph{conditional risk parity} (inspired by \ac{EOdds}).
+
+A perceived shortcoming of most methods in this area is that they rely on annotations for the subgroups.
+Two papers that tried to circumvent this problem are \citet{HasSriNamLia18,nam2020learning},
+both taking very different routes.
+The first one tries to be robust with respect to all possible subgroups down to a certain size.
+Essentially, the method tackles the worst-case scenario where the most egregiously misclassified samples form a subgroup.
+The second approach is based on the idea that subgroups are easier to predict than the actual prediction targets.
+After all, if this were not the case, then there would not really be a problem.
+Thus, a classifier is learned in such a way that it predominantly tries to make ``easy'' predictions,
+that is, samples where the model is very confident receive a higher weight.
+The assumption is that this model learns to predict the subgroup (or spurious attribute),
+for which no labels are available.
+A second model is then trained, for which those samples are downweighted for which the first model was very confident;
+the hope being that by learning the ``hard'' samples, the model learns the correct relationship.
+Both \citet{HasSriNamLia18,nam2020learning} frame their methods as improving accuracy on an unbiased test set
+and do not make references to fairness metrics,
+but there is nevertheless a strong connection to the fairness literature.
 
 % \section{Recent developments in Fairness}\label{recent-developments-in-fairness}
 % At this point, fairness in machine learning has come a long way.
