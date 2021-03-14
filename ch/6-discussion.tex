@@ -5,8 +5,17 @@ in both cases the bias is linked to a special attribute \(s\) of the data.
 %
 % mention again the main strengths of the presented methods
 %
-The first approach used knowledge of general statistics of the ``fair'' data distribution to offer a quite general method for correcting label bias,
-that is intuitive to tune.
+With the first approach, the user specifies target rates that can be used to tune the method to the desired outcome.
+The method is flexible and easy to integrate with existing algorithms.
+The second approach uses a partially-labelled representative set to learn an interpretable invariant representation.
+The user can directly observe in what way the data was changed to make it invariant
+to the spurious correlation that is present in the training data.
+The third approach in many ways builds upon the second one;
+a set similar to the representative set is needed but there is no requirement for labels nor for balance of subgroups.
+However, in the training set, the relationship between class label \(y\) and subgroups \(s\) may not be
+as close to a one-to-one mapping of \(y\) and \(s\) as in the second approach.
+From these simple starting points, an invariant representation is learned
+that can be used to train unbiased classifiers.
 
 While this by no means covers \emph{all} possible biases,
 it contributes to a growing literature that tries to tackle this problem.
@@ -14,6 +23,11 @@ One could ask if there is one method that is able to cover all possible dataset 
 but I think there is a strong argument to be made that no general method can exist,
 because it is, \eg, not possible to describe in general what is spurious information and what is relevant information.
 Nevertheless, finding methods that are more generally applicable is a worthy goal.
+
+Another potential extension of this work is to work with other modalities.
+The experiments were all performed on either tabular or image data
+--- the reason predominatly being ease of visualization ---
+so working with audio (especially speech) or text could present new interesting challenges.
 
 Furthermore, as it currently stands,
 the \ac{ML} practitioner has to know the bias in the data very well in order to choose a method to correct it.
