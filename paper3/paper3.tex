@@ -253,15 +253,15 @@ The unlabelled data, despite not containing the class label $y$, \emph{is} label
 Our setting is significantly harder because there is no label information about $y$ and $s$ in the perfect bag.
 
 \subsection{On disentangled representations learning.}
-\citet{LocAbbRaiBauetal19} suggested that disentanglement in representation learning may be a useful property to remove algorithmic bias when subgroup information is not observed.
+\citet{locatello2019fairness} suggested that disentanglement in representation learning may be a useful property to remove algorithmic bias when subgroup information is not observed.
 %
 In order for disentangled representations to reduce algorithmic bias without the knowledge of subgroup label $s$, they have to assume that the class label $y$ and the subgroup label $s$ are independent, i.e. $y\perp s$.
 %
 Though, in many real-world tasks, the variable $s$ is correlated with the variable $y$, and therefore unsupervised methods are not suitable  \citep{jaiswal2018unsupervised,JaiWuAbdNat19}. 
 %
-Indeed, experiments in \citet{LocAbbRaiBauetal19} were wholly done with procedurally generated synthetic datasets involving 2D and 3D shapes. 
+Indeed, experiments in \citet{locatello2019fairness} were wholly done with procedurally generated synthetic datasets involving 2D and 3D shapes. 
 %
-Without some supervision or inductive bias, disentangled representation methods would not solve the issue of algorithmic fairness with invisible demographics \citep{LacBauLucGeletal19}. 
+Without some supervision or inductive bias, disentangled representation methods would not solve the issue of algorithmic fairness with invisible demographics \citep{locatello2019challenging}. 
 
 %\begin{wrapfigure}{!t}{0.6\textwidth}
 \begin{figure}[t]

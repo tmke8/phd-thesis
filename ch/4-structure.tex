@@ -4,8 +4,9 @@ All presented approaches deal with dataset bias that is closely linked to a spec
 Furthermore, the approaches all rely on some form of side information with allows us to overcome dataset bias.
 This side information is always significantly easier to obtain than unbiased data.
 
-\section{Using target labels to mitigate label bias}\label{sec:target-labels}
-\citet{kehrenberg2020tuning} (\chapref{ch:paper1}) is predominantly concerned with label bias.
+\section{Mitigating label bias with target labels}\label{sec:target-labels}
+The first work is \citet{kehrenberg2020tuning} (\chapref{ch:paper1})
+which is predominantly concerned with label bias.
 More precisely, labels \(y\) are flipped with a probability and a direction that depends on a sensitive attribute \(s\).
 The main idea is that we make use of pseudo labels (or \emph{target labels})
 to implicitly learn from a \emph{balanced} dataset,
@@ -43,7 +44,7 @@ Via the sum rule of probabilities, it is possible to express the model likelihoo
 such that maximizing the likelihood corresponds to improving the prediction of the target labels
 instead of the given (biased) training labels.
 
-\section{Using a representative set to overcome severe sampling bias}\label{sec:nifr}
+\section{Overcoming severe sampling bias with a representative set}\label{sec:nifr}
 In the setting from the previous paper \citep{kehrenberg2020tuning},
 labels were untrustworthy because they had been flipped;
 a phenomenon we referred to as \emph{label bias}.
@@ -59,6 +60,10 @@ As hair colour is easier to recognise with a \ac{CNN}, the labels have effective
 In other words, hair colour has become a \emph{spurious attribute}.
 In the following, we denote the spurious attribute with \(s\),
 as it takes a role that is very similar to that of the sensitive attribute that was also denoted by \(s\).
+However, there is a difference in emphasis between a \emph{sensitive} and a \emph{spurious} attribute:
+the former indicates that the attribute should not be used for legal or ethical reasons,
+whereas the latter can be any attribute that is associated with the class label \(y\) in an undesired way
+that leads to lower quality predictions.
 
 The method, proposed in the previous paper (\chapref{ch:paper1}),
 is not able to deal with such a dataset bias as we can easily see:
@@ -113,18 +118,19 @@ As colour is ``easier'' to learn, a neural network will learn to predict \(s\) i
 For additional experiments on the CelebA dataset and the UCI Adult Income dataset,
 we deliberately apply sampling bias to the training set and then apply our method.
 
-\section{Using an unlabelled deployment set to overcome sam\-p\-ling bias}\label{sec:zsf}
+\section{Overcoming sampling bias with unlabelled deployment set}\label{sec:zsf}
 A shortcoming of the approach from the previous publication \citep{kehrenberg2020nullsampling}
-is its reliance on a representative set which has \(s\) labels.
+is its reliance on a representative set which has labels for the spurious attbiute \(s\).
 As discussed, it is necessary to make use of \emph{some} kind of side information,
 but perhaps we can relax some requirements.
 In particular, while it is already easier to collect data without \(y\) labels (but with \(s\) labels),
-it is \emph{even} easier to collect data without \emph{any} label.
+it is even easier to collect data without \emph{any} label.
 Thus, requiring only an unlabelled context set would improve the applicability of the method.
 \citet{kehrenberg2020zeroshot} (\chapref{ch:paper3}) presents an approach based on that idea.
 
 The setting is very similar to the previous publication \citep{kehrenberg2020nullsampling}:
-the training set suffers from severe sampling bias, but we have access to a (mostly) unbiased \emph{deployment set}.
+the training set suffers from severe sampling bias, but we have access to a (mostly) unbiased \emph{deployment set}
+(similar to but not quite identical with the previously discusses \emph{representative set}).
 The idea is that the deployment set corresponds to the setting in which the model is meant to be deployed.
 The change is that this additional set may be completely unlabelled,
 but in exchange, we have some stronger requirements for the training set.
@@ -135,13 +141,22 @@ where there was a strict one-to-one mapping of colour and digit;
 but this kind of blending of \(s\) and \(y\) into one is not the focus of this paper.
 The focus is instead on a setting where the training set lacks certain combinations of \(s\) and \(y\),
 which results in poor predictions for these combinations on the test set (or deployment setting)
-where those combinations do occur.
-We refer to these missing combinations as \emph{invisible demographics}.
-The value of \(s\) acts as a spurious attribute and should be ignored in order to make accurate predictions.
+where those combinations \emph{do} occur.
+We refer to these missing combinations as \emph{subgroup bias} or \emph{missing subgroups},
+depending on whether a given \(s\) value appears in the training set at all.
+The label \(s\) plays here a similar role to the spurious attribute in the previous publication,
+but as there is a change in emphasis, we refer to \(s\) as \emph{subgroup label}%
+\footnote{This terminology is inspired by the \emph{subclass} concept in \citet{SohDunAngGuetal20}.}
+instead.
+The difference between a spurious attribute and a subgroup label is that
+the former is mostly characterised via its confusion with the prediction target,
+whereas the latter refers to natural groups in the data
+which have differing levels of annotation quality which affects the classification performance on these subgroups.
+However, in both cases, the goal is to make the model output invariant to the \(s\) label.
 
 As in the previous paper, the first step is to train a neural network to produce an invariant representation.
 The second step is then to train a classifier on that.
-The invariant representation is trained by doing distribution matching between the training set and the deployment set.
+The invariant representation is trained by performing distribution matching between the training set and the deployment set.
 Finally, the training set is transformed into the invariant representation,
 to serve as training set for the classifier.
 

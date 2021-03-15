@@ -99,6 +99,7 @@
   \end{acronym}
 
   \vspace{8ex}
+  % \clearpage
 
   %*******************************************************
   % Nomenclature
@@ -107,10 +108,14 @@
   \markboth{\spacedlowsmallcaps{Nomenclature}}{\spacedlowsmallcaps{Nomenclature}}
   \begin{nomenclature}
     \entry{$P$}{Probability}
-    \entry{$s$}{Sensitive attribute}
-    \entry{$\vx$}{Input features (without sensitive attributes)}
+    \entry{$s$}{Sensitive attribute/spurious attribute/subgroup label}
+    \entry{$S$}{Random variable for the sensitive attribute/spurious attribute/subgroup label}
+    \entry{$\gS$}{Set of possible values for the sensitive attribute/spurious attribute/subgroup label}
+    \entry{$\vx$}{Input features (without the \(s\) attribute)}
     % \entry{$\hat{\vx}$}{Reconstructed input}
     \entry{$y$}{Class label (ground truth)}
+    \entry{$Y$}{Random variable for the class label}
+    \entry{$\gY$}{Set of possible values for the class label}
     \entry{$\hat{y}$}{Predicted label}
     \entry{$\bar{y}$}{Fair target label}
     \entry{$\vz$}{Encoding of $\vx$}
@@ -124,12 +129,14 @@
   \pdfbookmark[1]{Glossary}{glossary}
   \markboth{\spacedlowsmallcaps{Glossary}}{\spacedlowsmallcaps{Glossary}}
   \begin{glossaryenv}
-    \entry{sensitive attribute}{An attribute that, usually for legal or ethical reasons, should not be the basis for classification}
+    \entry{CelebA}{Face attributes dataset with more than 200K celebrity images}
+    \entry{MNIST}{Dataset of handwritten digits}
     \entry{demographic group}{Set induced by the sensitive attribute}
     \entry{fairness definition}{An aspirational (often legally inspired) specification of a fair classifier}
     \entry{fairness metric}{A metric which quantifies how well a fairness definition is satisfied}
-    \entry{MNIST}{dataset of handwritten digits}
-    \entry{CelebA}{face attributes dataset with more than 200K celebrity images}
+    \entry{sensitive attribute}{An attribute that, usually for legal or ethical reasons, should not be the basis for classification}
+    \entry{spurious attribute}{An attribute that is correlated with the prediction target in the training set but not in the deployment setting}
+    \entry{subgroup label}{A label indicating subgroups that should all be handled equally well by the classifier}
   \end{glossaryenv}
 
 
