@@ -744,7 +744,7 @@ how well the class label \(y \in \{0, 1\}\) and the predicted score for a data p
 Subtracting \(\tfrac{1}{2}\) is necessary to centre the values around \(0\).
 The proxy for \ac{EOdds} is then the covariance between the sensitive attribute and \(g\).
 \(g\) can also be modified to only take into account cases with \(y=1\) which corresponds to Equality of Opportunity.
-The paper contains experiments on the ProPublica/COMPAS dataset.
+The paper contains experiments on the ProPublica/COMPAS dataset~\citep{angwin2016machine}.
 The task for this dataset is to predict
 whether a criminal offender committed another misconduct or felony within two years,
 based on personal information that includes age, gender, race and past criminal history.
@@ -1068,7 +1068,7 @@ and it remains an active topic.
 The fairness-accuracy trade-off which results from fairness constraints like \ac{DP} and \ac{EOpp}
 has often been seen as a thorny issue.
 \citet{wick2019unlocking} were one of the first to argue for a change of perspective to solve this.
-For example, the labels of the ProPublica/COMPAS dataset had been treated as unbiased ground truth in previous work,
+For example, the labels of the ProPublica/COMPAS~\citep{angwin2016machine} dataset had been treated as unbiased ground truth in previous work,
 which the authors call into question.
 The simple change they do is evaluating fairness-enforcing models on actual \emph{unbiased} test data.
 In practice, they simulate datasets such that unbiased labels can be used for evaluation,
