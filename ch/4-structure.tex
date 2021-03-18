@@ -51,13 +51,27 @@ a phenomenon we referred to as \emph{label bias}.
 However, flipping labels is not the only way that labels can become untrustworthy.
 Another way is \emph{sampling bias}, which is the subject of \citet{kehrenberg2020nullsampling} and \citet{kehrenberg2020zeroshot} (\twochaprefs{ch:paper2}{ch:paper3}).
 
-As an example, consider a dataset where the task is to distinguish smiling from non-smiling faces.
-Say, we initially have a very diverse and balanced training set,
-but then, from the set of smiling faces, we remove nearly all samples where the person does not have red hair,
-and from the set of non-smiling faces, we remove nearly all samples with non-black hair.
-The result is that even though the labels are still correct, they do not point reliably to the right target anymore.
-As hair colour is easier to recognise with a \ac{CNN}, the labels have effectively been turned into hair colour labels.
-In other words, hair colour has become a \emph{spurious attribute}.
+As an example, consider the scenario where someone wants to create a classifier
+to distuinguish between sheep and cows, that is supposed to work anywhere on earth.
+However, they take a shortcut while creating the dataset
+and take all their sheep images from hot and dry countries
+and all their cow images from mild and rainy countries.
+In this case, the dataset is lacking cow images in dry landscapes,
+and is lacking sheep from green landscapes;
+the dataset exhibits a strong sampling bias.
+The result is that even though the labels correctly correspond to cows and sheep,
+they do not point reliably to the right target anymore.
+As background colour is easier to recognise with a \ac{CNN} than animal species,
+the labels have effectively been turned into landscape labels.
+In other words, landscape has become a \emph{spurious attribute}.
+%
+% As an example, consider a dataset where the task is to distinguish smiling from non-smiling faces.
+% Say, we initially have a very diverse and balanced training set,
+% but then, from the set of smiling faces, we remove nearly all samples where the person does not have red hair,
+% and from the set of non-smiling faces, we remove nearly all samples with non-black hair.
+% The result is that even though the labels are still correct, they do not point reliably to the right target anymore.
+% As hair colour is easier to recognise with a \ac{CNN}, the labels have effectively been turned into hair colour labels.
+% In other words, hair colour has become a \emph{spurious attribute}.
 In the following, we denote the spurious attribute with \(s\),
 as it takes a role that is very similar to that of the sensitive attribute that was also denoted by \(s\).
 However, there is a difference in emphasis between a \emph{sensitive} and a \emph{spurious} attribute:
