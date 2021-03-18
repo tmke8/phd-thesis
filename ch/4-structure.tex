@@ -48,7 +48,7 @@ instead of the given (biased) training labels.
 In the setting from the previous paper \citep{kehrenberg2020tuning},
 labels were untrustworthy because they had been flipped;
 a phenomenon we referred to as \emph{label bias}.
-However, flipped labels is not the only way that labels can become untrustworthy.
+However, flipping labels is not the only way that labels can become untrustworthy.
 Another way is \emph{sampling bias}, which is the subject of \citet{kehrenberg2020nullsampling} and \citet{kehrenberg2020zeroshot} (\twochaprefs{ch:paper2}{ch:paper3}).
 
 As an example, consider a dataset where the task is to distinguish smiling from non-smiling faces.
@@ -163,7 +163,7 @@ to serve as training set for the classifier.
 The distribution matching is realized with adversarial networks which compare batches of samples,
 in order to try to distinguish data drawn from the training set and the deployment set.
 This process requires balanced batches as an inductive bias,
-becaus the network will only learn the intended difference between training and deployment set,
+because the network will only learn the intended difference between training and deployment set,
 if the drawn batches exhibit this difference.
 For example, if batches drawn from Coloured MNIST differ not in colour but in digit class,
 then distribution matching will learn to change digit shapes.

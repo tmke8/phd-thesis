@@ -106,12 +106,12 @@ Independently of \citet{pedreshi2008discrimination}, but with a similar intentio
 Their goal is to modify the dataset so that any classifier trained on it will be ``fair'',
 which is measured with a fairness metric on the test set predictions.
 The test set is drawn from the same distribution as the training set.
-To demonstrate their method, they use the ``German credit dataset''
+To demonstrate their method, they use the ``German credit dataset''~\citep{Dua:2017}
 where the task is to classify people as a good or a bad credit risk.
 
 The authors formulate the problem as it was later done in other works on fairness as well:
-there is a set of features, a binary class label
-and a special \emph{sensitive attribute} which determines the demographic group.
+there is a set of features \(x\), a binary class label \(y\)
+and a special \emph{sensitive attribute} \(s\) which determines the demographic group.
 The sensitive attribute \(s\) is assumed to be binary in the derivation,
 but does not have to be.
 \(s=0\) refers to the group vulnerable to discrimination and \(s=1\) to all other individuals.
@@ -244,7 +244,6 @@ the two first methods perform approximately equally well.
 \citet{kamishima2012fairness} take a closer look
 at the ways in which training data can be biased (or more generally of poor quality) and condense it to three main causes:
 \emph{prejudice}, \emph{underestimation} and \emph{negative legacy}.
-(Let \(x\) be the non-sensitive features.)
 
 \begin{enumerate}
 \item
@@ -435,7 +434,7 @@ the second ensuring that the prototypes are close to the inputs
 and the third targeting a good accuracy by adapting the weights of the classifier.
 %
 The experiments are done on the German credit dataset, the Adult / Census Income dataset
-and a dataset based on the Heritage Health Prize milestone 1 challenge
+and a dataset based on the Heritage Health Prize milestone 1 challenge~\citep{heritagehealth}
 where the goal is to predict how many days a given person will spend in the hospital in a year.
 % The proposed methods performs better in these experiments
 % than the methods from \citet{kamiran2009classifying} and the method from \citet{kamishima2012fairness}.
@@ -698,13 +697,14 @@ Following the initial publications,
 several works refined the ideas that had been presented there.
 In a very influential work by \citet{zafar2017fairnessconstraints}
 present a more efficient way to train a fair classifier.
-At the beginning, the authors explicitly discuss the tension
+The authors explicitly discuss the tension
 between the two goals of making fair predictions and not making use of the sensitive attributes.
 Using sensitive attributes to make predictions
 is referred to as \emph{Disparate Treatment} by the authors.
 Algorithms like the one by \citet{calders2009building} use the sensitive
 attribute during prediction to achieve a very high degree of fairness, but this can have a
 lot of problems from a legal perspective and can also easily go wrong.
+(Making use of \(s\) comes close to \emph{direct discrimination} discussed above.)
 Thus, \citet{zafar2017fairnessconstraints} set themselves the goal of achieving fairness while making use of the sensitive attributes
 as little as possible, i.e.~avoiding Disparate Treatment.
 
@@ -716,14 +716,14 @@ between the sensitive attribute and the predicted score \(f\):
   Cov(s, f) = \mathbb{E}[(s - \bar{s})f] - \mathbb{E}[(s - \bar{s})]\bar{f} \approx 
   \frac{1}{N} \sum\limits_{i=1}^{N} (s_i - \bar{s}) \cdot f_i
 \end{align}
-We will call this the covariance criterion.
+The authors refer to this as the covariance criterion.
 The classifier can then be trained in two ways.
 The first way is to minimise the loss that enforces accuracy
 with the constraint that the covariance criterion is below a certain threshold.
 The other way is to minimise the covariance criterion
 with the constraint that the accuracy is above a certain threshold.
 The paper includes experiments with these techniques with SVM and Logistic Regression classifiers
-on the Adult/Census Income dataset and the Bank marketing dataset.
+on the Adult/Census Income dataset and the Bank marketing dataset~\citep{Dua:2017}.
 In the Bank marketing dataset, the task is to predict whether a client will respond to marketing for a term deposit,
 based on 20 attributes of the person.
 The sensitive attribute is \emph{age}.
@@ -731,9 +731,9 @@ The proposed algorithm performs similarly to the best previous algorithms (simil
 notably without making use of the sensitive attribute for predictions.
 % This is an impressive achievement.
 
-In a follow up work, \citet{zafar2017fairnesstreatment} adapt their work to enforce \acf{EOdds},
-as defined in \citet{hardt2016equality}.
-(However, it is here referred to as ``Disparate Mistreatment'' instead of ``equalised odds''.)
+In a follow up work, \citet{zafar2017fairnesstreatment} adapt their work to avoid ``disparate mistreatment''.
+Avoiding disparate mistreatment is equivalent to enforcing \acf{EOdds}
+as defined in the contemporary work by \citet{hardt2016equality}.
 As in the previous work, they define a tractable proxy for this measure.
 To this end, they first define a function \(g\) that measures
 how well the class label \(y \in \{0, 1\}\) and the predicted score for a data point \(0 \leq f(x) \leq 1\) agree:
@@ -941,17 +941,17 @@ The fact that \(do\)-interventions are used in the definition means
 that a causal model is required to evaluate this criterion; observational data does not suffice.
 
 The paper provides an algorithm that constructs a fair classifier (for the provided fairness definition)
-given a structural equation model (a form of causal model).
+given a structural causal model \citep{pearl2009causality}.
 The resulting classifier is fair \emph{by construction}.
 However, note that this procedure does not lead to true individual fairness,
 because the influence of \(p\) is only removed at the population level
 (except in the case where all descendants of \(p\) are completely removed).
 Individual decisions can still be unfair as long as it balances out overall.
 
-The authors provide a number of properties of their method with corresponding proofs.
+The authors show a number of properties of their method with corresponding proofs.
+(Though no experiments are included in the paper.)
 For example, if the influence of \(p\) on \(x\) is additive and linear,
 any predictor of the form \[g(x - \mathbb{E}[x|do(p=p')])\] has no proxy discrimination.
-Though no experiments are included in the paper.
 
 % The main weakness of the presented approach are
 % the need for a causal model that can not be inferred from just the training data
@@ -964,8 +964,10 @@ A contemporary paper by \citet{kusner2017counterfactual} approaches the problem 
 In this paper, a new fairness criterion which they call ``counterfactual fairness''
 is defined making use of causal reasoning.
 For the definition, they assume access to a causal model
-that can be used to compute \emph{counterfactuals} (for example a structural equation model).
+that can be used to compute \emph{counterfactuals} (for example a structural equation model \citep{kaplan2008structural}).
 This is in contrast to \citet{kilbertus2017avoiding} who relied on just \emph{interventions}.
+(According to Pearl's causal hierarchy \citep{pearl2019seven},
+counterfactuals require a deeper level of causal information than interventions.)
 The causal model depends on unobserved background variables \(U\),
 non-sensitive features \(x\) and a sensitive attribute \(s\).
 A predictor \(\hat{y}\) is then \emph{counterfactually fair}
@@ -1013,7 +1015,7 @@ The authors provide an algorithm to construct a classifier that satisfies counte
 However, constructing the causal model remains the major weakness of this approach,
 and is currently only really feasible for tabular data.
 % The authors point to existing literature on the topic and give some additional vague guidelines.
-As experiments, the algorithm is applied to the Law School Success dataset.
+As experiments, the algorithm is applied to the Law School Success dataset~\citep{wightman1998lsac}.
 The task is to predict the first year average grade (FYA) in law school
 given the GPA before law school and the score on the entrance exam (LSAT).
 Also known are race and sex, which are not supposed to be used to make predictions.
@@ -1026,8 +1028,8 @@ Also known are race and sex, which are not supposed to be used to make predictio
 % The second model is a fully deterministic model
 % where we have three background variables which play the role of additive error terms.
 % The three error terms may be correlated.
-If the underlying causal model is taken as true,
-the trained fair classifiers are automatically completely counterfactually fair.
+If the given causal model is taken as the true model,
+then it follows that the trained fair classifiers are fair by construction.
 % The second model achieves a slightly lower prediction error than the first model
 % (RMSE of 0.918 vs 0.929).
 Additionally, two (unfair) baseline models were trained:
@@ -1038,7 +1040,7 @@ The work by \citet{chiappa2019path} can be seen as a refinement of \citet{kilber
 Instead of disallowing influence of \emph{nodes}, this works disallows certain \emph{paths} to influence the outcome.
 The path pointing directly from the sensitive attribute to the outcome is not allowed,
 but paths via certain variables are allowed.
-An example for such a permissible variable comes from the Berkeley admissions dataset:
+An example for such a permissible variable comes from the Berkeley admissions dataset~\citep{bickel1975sex}:
 overall, the data shows that women were admitted at lower rates,
 but this turned out to be mediated by department choice.
 Women were applying to more competitive departments and thus had lower acceptance rates.
@@ -1083,8 +1085,9 @@ that enforcing fairness can in some situations improve the accuracy on the (unbi
 \citet{kim2019learning} also consider the problem of learning from biased data (and evaluating on unbiased data).
 While they do not formulate the problem as a fairness problem,
 it is equivalent to enforcing fairness in the presence of severe sampling bias.
-Their main motivating example is the Coloured MNIST dataset:
-in this dataset, digits are randomly coloured in the test set,
+Their main motivating example is the Coloured MNIST dataset;
+a dataset derived from the MNIST dataset~\citep{lecun1994mnist}.
+In this dataset, digits are randomly coloured in the test set,
 but in the training set there is a one-to-one correspondence between digit class and colour.
 A na\"ive classifier will learn to predict colour instead of digit class.
 The proposed method is very similar to \citet{ganin2016domain} and \citet{edwards2016censoring},
@@ -1105,6 +1108,19 @@ The idea is to train a predictor that is simultaneously optimal for all the envi
 with the expectation that this generalises to the test set.
 This idea is formulated as a (intractable) bi-level, constrained optimization problem,
 which they approximate with a tractable regularised optimization.
+
+As the authors point out,
+the goal of machine learning should be to identify natural, deep, robust structures in reality,
+instead of relying on superficial correlations.
+(This dichotomy is sometimes framed as \emph{correlation} vs \emph{causality},
+where ``causality'' takes on a very broad meaning that encompasses any kind of fundamental structure in reality.)
+Methods for invariance learning can be framed as trying to learn a more fundamental structure
+than the dataset at first seems to show.
+By aiming to be invariant to specific environments/subgroups/domains (denoted by the variable \(s\)),
+they can be seen as making the claim that \(s\) does not represent a natural structure,
+but is merely an artifact of the data generation process.
+Furthermore, the ground-centric view of dataset bias can be understood as
+aiming to identify the fundamental structures and aiming to be invariant to everything else.
 
 \citet{creager2020environment} build directly on \citet{arjovsky2019invariant}.
 They aim to address the limitation that the environments -- that one wants to be invariant to -- have to be pre-defined.
