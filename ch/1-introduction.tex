@@ -75,21 +75,21 @@ Instead, sampling depends on $s$ and $y$;
 The effect is that \ac{ML} models are tempted to take shortcuts and use $s$ as a shorthand for $y$.
 
 The overall goal in all cases is to make the classifier invariant to $s$.
-We can measure the invariance to $s$ directly by using \emph{fairness metrics}
-on the predictions of the classifier.
+We can measure the invariance to $s$ directly by computing \emph{fairness metrics}
+for the predictions of the classifier.
 In contrast to the accuracy metric,
 these fairness metrics give a more complete picture of how invariant the classifier is.
 This is especially true if evaluation is done on an imbalanced set
--- for example because a truly unbiased test set is not available.
-In this case, accuracy can be highly misleading,
-because a good performance in the majority class can hide a poor performance in a minority class.
-Fairness metrics do not suffer from this problem,
+-- for example in the event that a truly unbiased test set is unavailable.
+In such cases, accuracy can be highly misleading,
+because good performance on the majority class can hide poor performance on a minority class.
+Fairness metrics do not suffer from this problem
 because they specifically look at the results in the different subgroups.
 However, we typically try to evaluate our models on a test set that is as unbiased as possible,
-in order to have a meaningful accuracy.
+in order for accuracy to be meaningful.
 
-The fairness definition with the clearest interpretation in the described setup of label bias and sampling bias is \acf{DP},
-also called statistical parity or independence.
+The fairness definition with the clearest interpretation in the described setup of label bias and sampling bias is \acfi{DP},
+also called \emph{statistical parity} or \emph{independence}.
 It demands that the predictions $\hat{y}$ be independent of the sensitive attribute \(s\).
 So, for binary $s$ and $y$:
 \begin{align}
@@ -97,11 +97,11 @@ So, for binary $s$ and $y$:
   \label{eq:dp-def}
 \end{align}
 There are multiple \ac{DP} \emph{metrics} which track how close the predictions are to satisfying the equality,
-among them the difference and the ratio of the terms on the two sides of the equation.
+among them, the difference and the ratio of the terms on the two sides of the equation.
 
 When we previously talked about unbiased datasets,
 we did not specify exactly what this meant,
-and that is because this can differ from task to task,
+and that is because the definition thereof can differ from task to task,
 but one way to define it is as a \emph{balanced} dataset where all combinations of $s$ and $y$ occur at the same rate:
 \begin{align}
   \label{eq:balanced-dataset}
@@ -115,10 +115,10 @@ then they cannot be perfectly accurate with respect to that dataset's biased lab
 which makes sense because the goal is to be accurate to the \emph{unbiased} dataset.
 This leads to a fairness-accuracy trade-off on biased test sets.
 
-The other two fairness definitions which are commonly used are \ac{EOpp} and \ac{EOdds}.
+The other two fairness definitions which are commonly used are \acfi{EOpp} and \acfi{EOdds}.
 These do not require the prediction $\hat{y}$ to be independent of $s$,
 but they do require that the model makes equally high-quality predictions for all values of $s$.
-In particular, for \ac{EOpp}, the \acp{TPR} need to be the same for all demographic groups
+In particular, for \ac{EOpp}, the \acfip{TPR} need to be the same for all demographic groups
 (again for binary $s$ and $y$):
 \begin{align}
   \label{eq:eopp-def}
@@ -185,7 +185,10 @@ The first one is concerned with \emph{label bias} and the other two with \emph{s
 \label{sec:thesis-structure}
 In \chapref{ch:related-work}, I present related work,
 concentrating on the area of algorithmic fairness and dataset bias.
-\Rangechapref{ch:paper1}{ch:paper3} constitute the main contribution of this thesis.
-Each of these chapters starts with a brief section which positions the chapter in the context of the this document.
-This is followed by the contents of publications.
+\Chapref{ch:content} summarises the main contributions of this thesis
+and describes their relationship to one another.
+\Rangechapref{ch:paper1}{ch:paper3} reproduce the publications listed in the previous section.
+% constitute the main contribution of this thesis.
+% Each of these chapters starts with a brief section which positions the chapter in the context of the this document.
+% This is followed by the contents of publications.
 In the final chapter, \chapref{ch:conclusion}, I present conclusions from the main work and directions for future work.

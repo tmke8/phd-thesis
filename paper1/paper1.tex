@@ -781,12 +781,12 @@ using the Adam method~\citep{kingma2015adam} with the default parameters. %($\be
 We use the full covariance matrix for the Gaussian variational distribution.
 %
 The logistic regression is trained with RAdam~\citep{liu2019variance} and uses L2 regularisation.
-% The regularization coefficient differs between datasets but not between repeats.
+% The regularisation coefficient differs between datasets but not between repeats.
 For the regularisation coefficient, we conducted a hyper-parameter search over 10 folds of the data.
 For each fold, we picked the hyper-parameter which achieved the best fairness among those 5 with
 the best accuracy scores.
 We then averaged over the 10 hyper-parameter values chosen in this way and then used this average for all runs to obtain our final results.
-% For the Adult dataset, the regularization parameter is $0.0024$ for ProPublica and $0.00035$ for Adult.
+% For the Adult dataset, the regularisation parameter is $0.0024$ for ProPublica and $0.00035$ for Adult.
 
 In addition to the GP and LR baselines, we compare our proposed model with the following methods:
 Support Vector Machine (\emph{SVM}), \emph{Kamiran \& Calders}~\citep{kamiran2012data} (``reweighing'' method),
@@ -965,7 +965,7 @@ thus satisfying the two most popular notions of fairness \citep{verma2018fairnes
 (also known as \emph{avoiding disparate treatment}) and equality of opportunity (or \emph{avoiding disparate mistreatment}).
 Additionally, we indicate how to extend the framework to cover conditional demographic parity as well.
 The framework allows us to set a \emph{target rate} to control how the fairness constraint is realised.
-%set a \emph{target rate} for a variety of fairness notions, including demographic parity and equality of opportunity. %equalized odds, 
+%set a \emph{target rate} for a variety of fairness notions, including demographic parity and equality of opportunity. %equalised odds, 
 For example, we can set the target positive rate for demographic parity to be $0.6$ for different groups.
 Depending on the application, it can be important to specify
 whether non-discrimination ought to be achieved by more positive predictions or more negative predictions.

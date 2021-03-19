@@ -17,7 +17,7 @@
 %\usepackage{amssymb}
 %\usepackage{amsthm}
 %\usepackage{nicefrac}       % compact symbols for 1/2, etc.
-%\usepackage{xcolor}         %for coloring the text on colorMNIST
+%\usepackage{xcolor}         %for colouring the text on colourMNIST
 %\usepackage{comment}
 %\usepackage{enumitem}
 %\newtheorem{prop}{Proposition}
@@ -105,7 +105,7 @@
     \caption{%
     Results for the Adult Income dataset with \emph{subgroup bias},
     for the binary classification task of predicting whether an individual earns $>$\$50,000 with a binary subgrouping based on \emph{gender}.
-    \texttt{ERM (LD)} refers to a model based on ERM (empirical risk minimization),
+    \texttt{ERM (LD)} refers to a model based on ERM (empirical risk minimisation),
     trained on a \emph{l}abelled \emph{d}eployment set; thus not suffering from bias in the training set.
     \textsc{Top left}: Accuracy.
     \textsc{Top right}: Positive rate ratio.
@@ -125,7 +125,7 @@
     \caption{%
     Results for the Adult Income dataset with a \emph{missing subgroup},
     for the binary classification task of predicting whether an individual earns $>$\$50,000 with a binary subgrouping based on \emph{gender}.
-    \texttt{ERM (LD)} refers to a model based on ERM (empirical risk minimization),
+    \texttt{ERM (LD)} refers to a model based on ERM (empirical risk minimisation),
     trained on a \emph{l}abelled \emph{d}eployment set; thus not suffering from bias in the training set.
     \textsc{Top left}: Accuracy.
     \textsc{Top right}: Positive rate ratio.
@@ -150,7 +150,7 @@ We study the following two settings.
 2) \emph{missing subgroup}: we have training data for males with positive and negative outcomes, but do not have labelled data for females, i.e.both \ $\Omega_{y=1,s=0}$ and $\Omega_{y=0,s=0}$ are missing.
 
 As before, \texttt{Ranking}, \texttt{k-means}, \texttt{No bal.}\ and \texttt{Perfect} refer to our method with different procedures for constructing (approximately) perfect bags.
-As baseline methods, we have \texttt{ERM} (standard empirical risk minimization with balanced batches), \texttt{DRO} \citep{HasSriNamLia18}, \texttt{gDRO} \citep{sagawa2019distributionally}
+As baseline methods, we have \texttt{ERM} (standard empirical risk minimisation with balanced batches), \texttt{DRO} \citep{HasSriNamLia18}, \texttt{gDRO} \citep{sagawa2019distributionally}
 and \texttt{ERM (LD)} which is the same model as \texttt{ERM}, but trained on the labelled deployment set, in addition to the training set.
 
 In both settings, we observe the same order as for the other dataset in terms of accuracy: \texttt{Perfect} (with ground truth labels for balancing) achieves the highest performance, followed by \texttt{Ranking}, then \texttt{No bal.}, and finally \texttt{k-means}.
@@ -198,7 +198,7 @@ Combination   & \multicolumn{2}{c}{Proportion retained} \\ \cmidrule(lr){2-3}
 \end{table}
 
 \paragraph{Adult Income.}\label{ssec:dataset-construction-adult}
-For the Adult Income dataset, we do not need to apply any synthetic biasing as the dataset naturally contains some bias wrt $s$. Thus, we instantiate the deployment set as just a random subset of the original dataset. Explicit balancing of the test set is needed to yield meaningful evaluation, however, namely in the penalizing of biased classifiers, but need be taken in doing so. Balancing the test set such that
+For the Adult Income dataset, we do not need to apply any synthetic biasing as the dataset naturally contains some bias wrt $s$. Thus, we instantiate the deployment set as just a random subset of the original dataset. Explicit balancing of the test set is needed to yield meaningful evaluation, however, namely in the penalising of biased classifiers, but need be taken in doing so. Balancing the test set such that
 \begin{align}
     |\{x \in X |s=0, y=0\}| &= |\{x \in X |s=1, y=0\}|    \nonumber\\
     \text{and}~|\{x \in X |s=0, y=1\}| &= |\{x \in X |s=1, y=1\}|
@@ -215,7 +215,7 @@ This observation motivated us to devise an alternative scheme, where we balance 
 That is, all subsets of $\gS \times \gY$ are made to be equally sized. Under this new scheme the accuracy of the the majority classifier is 50\% for the binary-classification task.
 
 
-\subsection{Optimization}
+\subsection{Optimisation}
 \begin{table*}[p]
  \centering
  \caption{Selected hyperparameters for experiments with Coloured MNIST, Adult and CelebA datasets.}
@@ -283,17 +283,17 @@ For the Adult Income dataset, we use an MLP made up of a single hidden layer 35 
 All baselines and downstream classifiers alike were trained for $60$ epochs with a learning rate of $1 \times 10^{-3}$ and a batch size of $256$.
 
 Since, by design, we do not have labels for all subgroups the model will be tested on, and bias against these missing subgroups is what we aim to avoid, properly validating, and thus conducting hyperparameter selection for models generally, is not straightforward.
-We can use estimates of the mutual information between the learned-representation and $s$ and $y$ (which we wish to minimise w.r.t.\ to the former, maximise w.r.t.\ the latter) to guide the process, though optimizing the model w.r.t.\ to these metrics obtained from only the training set does not guarantee generalization to the missing subgroups.
+We can use estimates of the mutual information between the learned-representation and $s$ and $y$ (which we wish to minimise w.r.t.\ to the former, maximise w.r.t.\ the latter) to guide the process, though optimising the model w.r.t.\ to these metrics obtained from only the training set does not guarantee generalisation to the missing subgroups.
 We can, however, additionally measure the entropy of the predictions on the encoded test set and seek to maximise it across all samples, or alternatively train a discriminator of the same kind used for distribution matching as a measure the shift in the latent space between datasets.
 We use the latter approach (considering, the learned distance between subspace distributions, accuracy, and reconstruction loss) to inform an extensive grid-search over the hyperparameter space of our model.
 
 For the \texttt{DRO} baseline, we allowed access to the labels of the test set for the purpose of hyperparameters selection, performing a grid-search over multiple splits to avoid overfitting to any particular instantiation.
 Specifically, the threshold ($\eta$) parameter for \texttt{DRO} was determined by a grid-search over the space $\{0.01, 0.1, 0.3, 1.0\}$. The same procedure was carried out for selecting the model capacity constant ($C$) of the related \texttt{gDRO} baseline.
 
-In addition to the losses stated in the distribution matching objective, $\mathcal{L}$, in the main text, we also regularise the encoder by the $\ell^2$ norm of its embedding, multiplied by a small pre-factor, finding this to work better than more complex regularization methods, such as spectral normalization \citep{miyato2018spectral}, for stabilizing training.
+In addition to the losses stated in the distribution matching objective, $\mathcal{L}$, in the main text, we also regularise the encoder by the $\ell^2$ norm of its embedding, multiplied by a small pre-factor, finding this to work better than more complex regularisation methods, such as spectral normalisation \citep{miyato2018spectral}, for stabilising training.
 
-\subsection{Visualizations of results}\label{sec:qual-results}
-Figures~\ref{fig:attn_maps} and \ref{fig:cmnist-recon} show some additional visualizations for our results.
+\subsection{Visualisations of results}\label{sec:qual-results}
+Figures~\ref{fig:attn_maps} and \ref{fig:cmnist-recon} show some additional visualisations for our results.
 For details, see the captions.
 \begin{figure*}[tb]
   \centering
@@ -334,7 +334,7 @@ For details, see the captions.
     \label{fig:cmnist-recon-deployment}
   \end{subfigure}
   \caption{
-   Visualization of our method's solutions for the Coloured MNIST dataset, with {\color{purple}purple} as the missing subgroup.
+   Visualisation of our method's solutions for the Coloured MNIST dataset, with {\color{purple}purple} as the missing subgroup.
    In each of the subfigures \ref{fig:cmnist-recon-training} and \ref{fig:cmnist-recon-deployment}:
    Column 1 shows the original images from $x$ from the respective set.
    Column 2 shows plain reconstructions generated from $x_\textit{recon}=g(f_y(x), f_s(x))$.
@@ -469,7 +469,7 @@ and the encoder cannot properly learn to produce an invariant encoding.
 % \begin{table*}[tp]
 %   \centering
 %   \caption{
-%     Results on Colored MNIST dataset for a 3-digits-3-colors task, i.e. classification of the digits \emph{two} versus \emph{four} vs \emph{six} with a protected attribute that can take three values ({\color{purple}purple}, {\color{green}green}, {\color{blue}blue}).
+%     Results on Coloured MNIST dataset for a 3-digits-3-colours task, i.e. classification of the digits \emph{two} versus \emph{four} vs \emph{six} with a protected attribute that can take three values ({\color{purple}purple}, {\color{green}green}, {\color{blue}blue}).
 %     We consider the scenarios of learning with subgroup bias with four sources missing (30 repeats). 
 %   }
 %   \label{tab:colormnist3_sup}

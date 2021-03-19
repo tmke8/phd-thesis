@@ -37,7 +37,7 @@
 % Several different approaches to and definition of Fairness are presented.
 % The focus is on identifying the major trends in the field from the beginning.
 \section{Two views of the dataset bias problem}\label{two-views-of-the-dataset-bias-problem}
-As hinted to in the introduction,
+As alluded to in the introduction,
 there is a divide in the relevant literature in how the problem of dataset bias is approached.
 On the one hand, there is the ``ground-truth-centric'' view -- expressed through most of the introduction --
 that the training set is biased but the deployment setting is not.
@@ -59,9 +59,9 @@ we define \emph{fairness criteria} which a fair classifier should satisfy.
 Here, the primary goal is not to correct for the deviation of the training data from the true distribution,
 but simply to ensure that the classifier is fair in some specific sense.
 By default, a classifier would \emph{not} be fair in that specific way.
-It is left open whether this unfairness originates in the training data or in the algorithm itself.
+It is left open as to whether this unfairness originates from the training data or from the algorithm itself.
 Evaluation is typically performed on a test set that has all the same biases as the training set,
-and thus a fairness-accuracy trade-off arises.
+and thus gives rise to a fairness-accuracy trade-off.
 
 The first works in the field almost exclusively took the definition-centric view,
 most of them using \acl{DP} \citep{dwork2012fairness} as the fairness criterion.
@@ -86,7 +86,7 @@ More recent publications are discussed in \secref{sec:refinement-on-previous-ide
 \subsection{Precursors}\label{precursor}
 The first published work to address the problem of biases in machine learning
 was arguably the work by \citet{pedreshi2008discrimination}
-with the main focus being data mining.
+with the main focus being data-mining.
 Their first fundamental conclusion
 is that it is not sufficient to remove the protected attribute
 (which should not be used as a basis for prediction) from the data.
@@ -107,9 +107,9 @@ but disproportionally affects people with a specific characteristic.}.
 \subsection{Modification of labels for fairness enforcement}%
 \label{modification-of-labels-for-fairness-enforcement}
 Independently of \citet{pedreshi2008discrimination}, but with a similar intention,
-\citet{kamiran2009classifying} considered discrimination in classification.
-Their goal is to modify the dataset so that any classifier trained on it will be ``fair'',
-which is measured with a fairness metric on the test set predictions.
+\citet{kamiran2009classifying} considered discrimination in classification tasks.
+Their goal is to modify the dataset so that any classifier trained on it will be ``fair'';
+a condition which is measured with a fairness metric on the test set predictions.
 The test set is drawn from the same distribution as the training set.
 To demonstrate their method, they use the ``German credit dataset''~\citep{Dua:2017}
 where the task is to classify people as a good or a bad credit risk.
@@ -121,7 +121,7 @@ The sensitive attribute \(s\) is assumed to be binary in the derivation,
 but does not have to be.
 \(s=0\) refers to the group vulnerable to discrimination and \(s=1\) to all other individuals.
 It is further assumed that one of the class labels is generally desirable;
-for example, it might correspond to being accepted for a credit or being given bail.
+for example, it might correspond to being accepted for a loan or being given bail.
 This class label is being referred to as the positive label: \(y = 1\).
 
 The authors then define a concrete measure of discrimination (where $\hat{y}$ refers to the prediction of a classifier):
@@ -132,7 +132,7 @@ The authors then define a concrete measure of discrimination (where $\hat{y}$ re
 % (The paper uses a different notation.
 % The notation here reflects the notation in later papers.)
 It is zero when the individuals in both groups have the same chance to get a positive prediction.
-Thus, it measures the violation of \ac{DP}, where $Dics=0$ corresponds to satisfying \ac{DP}.
+Thus, it measures the violation of \ac{DP}, where $Disc=0$ corresponds to satisfying \ac{DP}.
 
 Their algorithm for de-biasing the dataset comprises two steps.
 First, a well-calibrated classifier (Na\"ive Bayes in the paper) is trained on the data
@@ -143,7 +143,7 @@ and are potentially discriminated against \(s=0\) get ``promoted'' to \(y=1\)
 and the lowest ranked individuals with label \(y=1\) and \(s=1\) get ``demoted'' to \(y=0\)
 until the dataset is fair according to the \(Disc\) measure.
 The idea being that the ranking ensures that the changes in the dataset
-happen to the most appropriate candidates (close to the decision boundary);
+happen to the most appropriate candidates (those closest to the decision boundary);
 the main goal being a prevention of a big drop in accuracy of the final classifier
 on the test set whose distribution matches the training set.
 
@@ -168,8 +168,8 @@ For \(s=1\), those with \(y=0\) get higher weight than those with \(y=1\).
 Weighting means that when the training examples are sampled from the dataset,
 those with higher weight are used more often.
 The two approaches are compared on the Adult/Census Income dataset \citep{kohavi1996scaling}
-where the task is to estimate if someone earns more than \$50K per year.
-The sensitive attribute is \emph{sex} (``gender'' in some publications).
+where the task is to estimate if someone earns more than \$50K per year;
+the sensitive attribute being \emph{sex} (``gender'' in some publications).
 % In addition to Na\"ive Bayes,
 % two classifiers based on nearest neighbours and a decision tree classifier are used.
 % The comparison shows that changing the labels leads to lower dependency (discrimination)
@@ -183,7 +183,7 @@ instead of manipulating the dataset.
 \citet{calders2010three} proposes three such approaches,
 which potentially give more control over the prediction bias than changing the datasets.
 All three approaches are based on Na\"ive Bayes
-and again aim to enforce \ac{DP} in the predictions as defined before.
+and again aim to enforce \ac{DP} in the predictions, as defined before.
 The first approach shifts the predicted probabilities in a post-processing step
 after training the classifier normally.
 To this end, the sensitive attribute is treated differently
@@ -220,7 +220,7 @@ This means that the bias is in all of the features and not just in the class lab
 The latter was the assumption of the previously discussed model.
 The difference between these assumptions is not explored in much detail in the paper.
 
-The third methods introduces a new latent variable, called \(L\) in the paper.
+The third method introduces a new latent variable, called \(L\) in the paper.
 \(L\) is intended to be an unbiased target class label
 that replaces the biased class label \(y\) from the training data.
 \(L\) can only be estimated and is unbiased
@@ -314,7 +314,7 @@ The setup is still that the training set is biased,
 only a different fairness definition is used to judge classifiers.
 The authors first define a distance metric which defines a neighbourhood,
 based on the Manhattan distance on the z-scores of the attributes.
-The distance metric is supposed to be only make use of legally admissible attributes.
+The distance metric is supposed to be only making use of legally admissible attributes.
 An individual is then considered to be unfairly treated
 if it is classified differently than its neighbours.
 More concretely, for any data point we can check
@@ -341,14 +341,14 @@ and removing it makes everyone worse off.
 % and then argues that fairness is not a worthwhile goal
 % because these individuals will not be able to succeed.
 % The goal of the actor here is to undermine the whole goal of avoiding discrimination.
-Another scenario considers the case of subset targeting,
+Another scenario considers the case of \emph{subset targeting},
 where there is discrimination against subgroups
-which are not covered by the Demographic Parity metric
+which are not covered by the \ac{DP} metric
 that only considers the major demographic groups.
 Defining fairness via group membership will always leave open the possibility
-to discriminate against ever smaller subgroups down to individuals.
+of discriminating against ever smaller subgroups down to the level  of individuals.
 
-Based on these considerations, \citet{dwork2012fairness} then argue for
+Based on these considerations, \citet{dwork2012fairness} argue for
 \emph{individual fairness} instead of \emph{group fairness}.
 They propose a method based on a similarity metric,
 but do not give a general recipe to construct such a metric;
@@ -364,7 +364,7 @@ instead stating it has to be constructed on a case-by-case basis.
 % the similarity measure has to be as close to the ground truth as possible.
 
 The proposed method is then as follows: a classifier is fair
-if and only if the predictive distributions for any two data points
+\emph{if and only if} the predictive distributions for any two data points
 are at least as similar as the two points themselves,
 according to a given similarity measure for distributions
 and a given similarity measure for data points.
