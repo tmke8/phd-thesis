@@ -1,6 +1,8 @@
 \chapter{Summary of contributions}\label{ch:content}
 The following is a summary of the main contributions in this thesis.
 All presented approaches deal with dataset bias that is closely linked to a special attribute $s$.
+In terms of \citet{kamishima2012fairness}'s taxonomy (see section \secref{fair-classifiers}),
+this can be described as tackling \emph{negative legacy} that is mediated by \emph{prejudice}.
 Furthermore, the approaches all rely on some form of side information with allows us to overcome dataset bias.
 This side information is always significantly easier to obtain than unbiased data.
 
@@ -41,7 +43,7 @@ In other words, rather than just enforcing \ac{DP}, the method gives control ove
 These target rates are the only parameters of the model.
 The target labels represent an uncertain estimate of labels corresponding to a balanced dataset.
 Via the sum rule of probabilities, it is possible to express the model likelihood in terms of these target labels,
-such that maximizing the likelihood corresponds to improving the prediction of the target labels
+such that maximising the likelihood corresponds to improving the prediction of the target labels
 instead of the given (biased) training labels.
 
 \section{Overcoming severe sampling bias with a representative set}\label{sec:nifr}
@@ -52,7 +54,7 @@ However, flipping labels is not the only way that labels can become untrustworth
 Another way is \emph{sampling bias}, which is the subject of \citet{kehrenberg2020nullsampling} and \citet{kehrenberg2020zeroshot} (\twochaprefs{ch:paper2}{ch:paper3}).
 
 As an example, consider the scenario where someone wants to create a classifier
-to distuinguish between sheep and cows, that is supposed to work anywhere on earth.
+to distinguish between sheep and cows, that is supposed to work anywhere on earth.
 However, they take a shortcut while creating the dataset
 and take all their sheep images from hot and dry countries
 and all their cow images from mild and rainy countries.
@@ -88,7 +90,7 @@ and those with \(y=1\wedge s=1\).
 If we call \(P(y=1|s=s')\) the acceptance rate,
 then the problem can be described as one of very different acceptance rates in the hair colour groups given by \(s\).
 This is the problem tackled in the previous paper,
-and yet, if we were to equalize the acceptance rates with the method there,
+and yet, if we were to equalise the acceptance rates with the method there,
 the result would be very incorrect.
 The issue is that we would treat the labels as incorrect, when in truth, they are correct.
 
@@ -134,7 +136,7 @@ we deliberately apply sampling bias to the training set and then apply our metho
 
 \section{Overcoming sampling bias with unlabelled deployment set}\label{sec:zsf}
 A shortcoming of the approach from the previous publication \citep{kehrenberg2020nullsampling}
-is its reliance on a representative set which has labels for the spurious attbiute \(s\).
+is its reliance on a representative set which has labels for the spurious attribute \(s\).
 As discussed, it is necessary to make use of \emph{some} kind of side information,
 but perhaps we can relax some requirements.
 In particular, while it is already easier to collect data without \(y\) labels (but with \(s\) labels),
@@ -174,7 +176,7 @@ The invariant representation is trained by performing distribution matching betw
 Finally, the training set is transformed into the invariant representation,
 to serve as training set for the classifier.
 
-The distribution matching is realized with adversarial networks which compare batches of samples,
+The distribution matching is realised with adversarial networks which compare batches of samples,
 in order to try to distinguish data drawn from the training set and the deployment set.
 This process requires balanced batches as an inductive bias,
 because the network will only learn the intended difference between training and deployment set,

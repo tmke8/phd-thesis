@@ -27,7 +27,7 @@
 % but they are still more unfair than the original dataset labels.
 %
 % This phenomenon of predictions being more unfair than an already skewed dataset
-% is due to the generalization that classifiers have to make.
+% is due to the generalisation that classifiers have to make.
 % It is easier to classify all but the most outstanding women as low income
 % than to learn a complicated decision boundary.
 % Furthermore, removing the gender information does not solve the problem
@@ -47,7 +47,7 @@ that will be encountered by the machine learning system once it is in use.
 % This can be seen as a form of transfer learning and notably does not exhibit a fairness-accuracy trade-off.
 
 An instance of this setting has been formalised by \citet{blum2020recovering}.
-In their formalization, the training set starts out unbiased,
+In their formalisation, the training set starts out unbiased,
 but then, for samples with \(s=0\), class labels \(y\) are flipped from 1 to 0 with probability \(\nu\).
 In addition, samples with \(s=0\) and \(y=0\) are dropped with probability \(1-\beta_\mathit{NEG}\)
 and those with \(s=0\) and \(y=1\) are dropped with probability \(1-\beta_\mathit{POS}\).
@@ -79,7 +79,11 @@ a method developed for one of them can often be adapted to the other as well.
 The works discussed in the beginning of this chapter are mostly taking the definition-centric view.
 Towards the end, I discuss more works with the other viewpoint.
 
-\section{Precursors}\label{precursor}
+\section{Foundations of algorithmic fairness}\label{sec:foundations}
+This section discusses the publications that lay the ground work for the algorithmic fairness literature.
+More recent publications are discussed in \secref{sec:refinement-on-previous-ideas-for-fair-classification-and-fair-representations}.
+
+\subsection{Precursors}\label{precursor}
 The first published work to address the problem of biases in machine learning
 was arguably the work by \citet{pedreshi2008discrimination}
 with the main focus being data mining.
@@ -100,7 +104,8 @@ but disproportionally affects people with a specific characteristic.}.
 % The latter case can be
 % detected by checking the other rules in the dataset.
 
-\section{Modification of labels for Fairness enforcement}\label{modification-of-labels-for-fairness-enforcement}
+\subsection{Modification of labels for fairness enforcement}%
+\label{modification-of-labels-for-fairness-enforcement}
 Independently of \citet{pedreshi2008discrimination}, but with a similar intention,
 \citet{kamiran2009classifying} considered discrimination in classification.
 Their goal is to modify the dataset so that any classifier trained on it will be ``fair'',
@@ -164,15 +169,15 @@ Weighting means that when the training examples are sampled from the dataset,
 those with higher weight are used more often.
 The two approaches are compared on the Adult/Census Income dataset \citep{kohavi1996scaling}
 where the task is to estimate if someone earns more than \$50K per year.
-The sensitive attribute is \emph{sex}.
-In addition to Na\"ive Bayes,
-two classifiers based on nearest neighbours and a decision tree classifier are used.
-The comparison shows that changing the labels leads to lower dependency (discrimination)
-than reweighting the examples.
-However, reweighting the examples leads to lower dependency than the baseline.
+The sensitive attribute is \emph{sex} (``gender'' in some publications).
+% In addition to Na\"ive Bayes,
+% two classifiers based on nearest neighbours and a decision tree classifier are used.
+% The comparison shows that changing the labels leads to lower dependency (discrimination)
+% than reweighting the examples.
+% However, reweighting the examples leads to lower dependency than the baseline.
 % The difference in accuracy is minor.
 
-\section{Fair classifiers}\label{fair-classifiers}
+\subsection{Fair classifiers}\label{fair-classifiers}
 Another common approach is to put fairness \emph{constraints} on the classifier
 instead of manipulating the dataset.
 \citet{calders2010three} proposes three such approaches,
@@ -221,7 +226,7 @@ that replaces the biased class label \(y\) from the training data.
 \(L\) can only be estimated and is unbiased
 in the sense that it is statistically independent from sensitive attribute: \(P(L|s=0) = P(L|s=1)\).
 The observed class label \(y\) then only depends on the latent label and the sensitive attribute.
-\(L\) is found by using expectation maximization
+\(L\) is found by using expectation maximisation
 to iteratively search for a value that maximises the likelihood of the dataset.
 The search is restricted by enforcing that \(L\) must be equal to \(y\) except
 when \(s=0\) and \(y=0\) or when \(s=1\) and \(y=1\)
@@ -236,8 +241,9 @@ which are generally not available for real-world datasets
 and conforms to the assumptions made for the third model.
 % Artificial datasets generally have the advantage that the bias can be controlled very precisely,
 % but there is always the danger of tailoring the dataset too closely to the proposed algorithm.
-To the authors surprise, on both datasets the two simpler methods outperformed the third method
-that was based on fair latent class labels;
+% To the authors surprise,
+On both datasets, the two simpler methods outperform the third method
+that is based on fair latent class labels;
 the two first methods perform approximately equally well.
 % The authors mention the possibility of a better fairness measure.
 
@@ -286,8 +292,8 @@ Instead of manipulating the dataset or using explicit algorithm to make a classi
 A term is added to the objective function
 that estimates the mutual information between \(y\) and \(s\)
 and gets minimised together with the other parts of the objective function.
-% This strategy leaves most of the work to the optimization that would need to be run anyway.
-A factor in front of the regularization term determines how much to value fairness over accuracy.
+% This strategy leaves most of the work to the optimisation that would need to be run anyway.
+A factor in front of the regularisation term determines how much to value fairness over accuracy.
 
 % In a comparison between \citet{kamishima2012fairness}'s algorithm
 % and the Na\"ive Bayes method with two different models for the sensitive attributes from \citet{calders2010three},
@@ -296,7 +302,7 @@ A factor in front of the regularization term determines how much to value fairne
 % However, the former has the advantage
 % that the sensitive attribute does not necessarily have to be known for making predictions
 % and the trade-off between accuracy and fairness can be easily controlled
-% with the factor for the regularization term.
+% with the factor for the regularisation term.
 
 \subsection{Fairness based on similarity}%
 \label{fairness-based-on-similarity}
@@ -366,7 +372,7 @@ They call this condition the \emph{Lipschitz condition}.
 The authors propose two practical similarity measures for distributions
 that are well-known in the respective literature.
 In order to train a fair classifier,
-the Lipschitz condition is then used as a constraint for the optimization.
+the Lipschitz condition is then used as a constraint for the optimisation.
 % This is similar to how \citet{kamishima2012fairness} used the fairness criterion as a regulariser.
 % However, \citet{dwork2012fairness} intend to realise it as a strict constraint.
 % Furthermore, they show that their criterion is compatible with Demographic Parity
@@ -394,7 +400,7 @@ the Lipschitz condition is then used as a constraint for the optimization.
 % They speculate that the Lipschitz condition would work better,
 % but ultimately do not provide a real solution to the problem.
 
-\section{Fair representations}\label{sec:fair-representation}
+\subsection{Fair representations}\label{sec:fair-representation}
 \citet{zemel2013learning} approach the problem of biased training data more directly
 by seeking to transform the features such that all traces of the sensitive attribute are removed,
 but so that they still carry the information necessary for predicting the class label.
@@ -502,7 +508,7 @@ They are referred to as \emph{Partial Repair} algorithms, as opposed to full rep
 This is the fairness-accuracy trade-off that basically all works in this area consider.
 Both of the other methods try to preserve the ranking of the data points
 with respect to the individual features
-while minimizing the distance of the distributions for the different groups.
+while minimising the distance of the distributions for the different groups.
 
 % In the experiments, the authors first investigate the theoretically predicted relationship
 % between \(\varepsilon\)-fairness and the \(DI\) measure.
@@ -529,7 +535,7 @@ However, the work does not take into account individual fairness in any way.
 While the algorithms by \citet{feldman2015certifying} are manually constructed and explicit,
 \citet{louizos2016variational} use an approach
 that falls more in the area of end-to-end learning where fewer hand-crafted algorithms are used.
-The method is based on deep variational autoencoders (VAE),
+The method is based on deep \acp{VAE},
 with an encoder and a decoder that are both modelled as deep neural networks.
 The encoder produces the distribution of the latent (fair) representation \(z\)
 from the original features \(x\) and the sensitive attribute \(s\).
@@ -563,7 +569,7 @@ When training a classifier on \(z\) to predict \(y\), there is a small drop in a
 % However, the algorithm by \citet{louizos2016variational} seems more general and more widely applicable
 % as it simply re-uses a widely used technique, variational autoencoders.
 
-\section{Other fairness criteria}%
+\subsection{Other fairness criteria}%
 \label{improved-definitions-of-fairness}
 The early literature on fairness in machine learning used only \ac{DP}
 and si\-mi\-la\-ri\-ty-based fairness to measure the bias in predictions.
@@ -586,7 +592,7 @@ where \(\hat{y}\) is the predicted class label and \(x\) the (non-sensitive) fea
   Balance for the positive class:
   The true positive rate should be the same for both groups: \(P(\hat{y}=1|y=1,s=0) = P(\hat{y}=1|y=1,s=1)\).
 \end{enumerate}
-% These are formalizations of things that have been proposed as definitions of fairness.
+% These are formalisations of things that have been proposed as definitions of fairness.
 The first criterion essentially ensures that the predictor works correctly for both groups.
 This prevents a classifier from predicting one group correctly
 but always returning a negative answer for the other group.
@@ -661,7 +667,7 @@ which might be non-zero.
 In addition to the fairness condition, we also want to enforce accuracy.
 To that end, we introduce a loss function \(\ell (\tilde{y}, y)\)
 that quantifies the cost of predicting the wrong class label.
-The final optimization problem for the 4 free parameters is then to minimise \(\ell\)
+The final optimisation problem for the 4 free parameters is then to minimise \(\ell\)
 under the constraint of \ac{EOpp} or \ac{EOdds}
 and the constraint that the parameters must be valid probabilities.
 
@@ -669,7 +675,7 @@ For a predictor that outputs a \emph{score function},
 the post-processing step consists of choosing differing thresholds for \(s=0\) and \(s=1\),
 such that the predictions become fair.
 If \(f\) is the score, then for a given threshold \(t\) we predict \(\hat{y} = 1\) if \(f > t\).
-The two thresholds (one for each group) are found by minimizing \(\ell\) with the fairness constraints, as before.
+The two thresholds (one for each group) are found by minimising \(\ell\) with the fairness constraints, as before.
 To satisfy the constraint, it might be necessary to randomise the result.
 This is done by using two constraints per group:
 if \(f\) is above both, the result is \(\hat{y} = 1\), if it is below both, \(\hat{y} =0\)
@@ -690,13 +696,15 @@ the Bayes optimal (but biased) classifier becomes the Bayes optimal unbiased cla
 % Demographic Parity does not rely on this assumption so much.
 % All-in-all, the fairness definition still has to be chosen by the user based on the situation and the goals.
 
-\section{Refinement of previous ideas}%
+\section{Recent developments in algorithmic fairness}%
 \label{sec:refinement-on-previous-ideas-for-fair-classification-and-fair-representations}
+This section discusses more recent publications from the fairness literature.
+
 \subsection{Fair classifiers continued}
 Following the initial publications,
 several works refined the ideas that had been presented there.
-In a very influential work by \citet{zafar2017fairnessconstraints}
-present a more efficient way to train a fair classifier.
+A very influential work by \citet{zafar2017fairnessconstraints}
+presents a more efficient way to train a fair classifier.
 The authors explicitly discuss the tension
 between the two goals of making fair predictions and not making use of the sensitive attributes.
 Using sensitive attributes to make predictions
@@ -808,10 +816,10 @@ than the features \(x\), which is arguably an unusual case.
 % The additional information is intended to enable the classifier to learn the desired task quicker or better.
 
 % Combining privileged learning and the \ac{MMD} fairness criterion,
-% the task becomes a multi-objective optimization for an SVM.
+% the task becomes a multi-objective optimisation for an SVM.
 % The MMD criterion is generally non-convex but there are several ways to deal with this.
 % The authors find the best algorithm (low discrimination, high accuracy)
-% with an evolutionary multi-objective optimization.
+% with an evolutionary multi-objective optimisation.
 % The evolutionary algorithm produces a number of variants of the classifier
 % with different trade-offs between classification error and discrimination.
 % As in \citet{zafar2017fairnesstreatment} before,
@@ -875,7 +883,7 @@ the averages are added and get a negative sign to form the objective function.
 For Equalised Odds,
 the average absolute difference is calculated on each sensitive group-label combination
 \((s, y)\) for \(s \in \{0, 1\}\) and \(y \in \{0, 1\}\) separately.
-Computing these separate averages is referred to as \emph{group normalizing} in the paper.
+Computing these separate averages is referred to as \emph{group normalising} in the paper.
 The authors present a proof for upper bounds on unfairness by the optimal adversary
 when these objective functions are used.
 An alternative objective function could be based on cross-entropy -- as used in \citet{edwards2016censoring} --
@@ -1065,7 +1073,7 @@ and it remains an active topic.
 %          copied in - end
 % =====================================
 
-\section{Groundtruth-centric view of bias}%
+\section{Ground-truth-centric view of bias}%
 \label{sec:groundtruth-centric-view-of-bias}
 The fairness-accuracy trade-off which results from fairness constraints like \ac{DP} and \ac{EOpp}
 has often been seen as a thorny issue.
@@ -1106,8 +1114,8 @@ They formalise the problem as one of different environments $e\in E$,
 where each environment is a different, biased view of the same underlying data distribution.
 The idea is to train a predictor that is simultaneously optimal for all the environments,
 with the expectation that this generalises to the test set.
-This idea is formulated as a (intractable) bi-level, constrained optimization problem,
-which they approximate with a tractable regularised optimization.
+This idea is formulated as a (intractable) bi-level, constrained optimisation problem,
+which they approximate with a tractable regularised optimisation.
 
 As the authors point out,
 the goal of machine learning should be to identify natural, deep, robust structures in reality,
@@ -1118,15 +1126,17 @@ Methods for invariance learning can be framed as trying to learn a more fundamen
 than the dataset at first seems to show.
 By aiming to be invariant to specific environments/subgroups/domains (denoted by the variable \(s\)),
 they can be seen as making the claim that \(s\) does not represent a natural structure,
-but is merely an artifact of the data generation process.
-Furthermore, the ground-centric view of dataset bias can be understood as
+but is merely an artefact of the data generation process.
+Furthermore, the ground-truth-centric view of dataset bias can be understood as
 aiming to identify the fundamental structures and aiming to be invariant to everything else.
+This also fits with \citet{kim2019learning}'s work on Coloured MNIST:
+colour is not regarded as the fundamental structure in the data.
 
 \citet{creager2020environment} build directly on \citet{arjovsky2019invariant}.
 They aim to address the limitation that the environments -- that one wants to be invariant to -- have to be pre-defined.
 Their contribution is to infer these environments instead,
 based on identifying which environment splits would most negatively affect an \ac{ERM} classifier.
-Their experiments show that this can even approve upon hand-crafted environments;
+Their experiments show that this can even improve upon human-designated environments;
 experiments are performed on a synthetic dataset and Coloured MNIST.
 In contrast to \citet{kim2019learning} and \citet{arjovsky2019invariant},
 the authors explicitly point out the connection to traditional fairness methods.
@@ -1159,7 +1169,7 @@ it is hard to correct for the bias in the training set because there is not good
 This is a prime example of a ground-truth-centric bias problem.
 
 Finally, as mentioned in the beginning,
-\citet{blum2020recovering} provide a formalization of a setting with label bias and sampling bias
+\citet{blum2020recovering} provide a formalisation of a setting with label bias and sampling bias
 and an unbiased ground truth test set.
 They explicitly state not being affected by a fairness-accuracy trade-off,
 because the true distribution in the considered problem satisfies \acf{DP}.
@@ -1224,7 +1234,7 @@ but there is nevertheless a strong connection to the fairness literature.
 
 % \citet{kilbertus2018blind} recently proposed a mechanism
 % where the sensitive attributes are encrypted to avoid being used for discrimination.
-% \citet{bechavod2017penalizing} use (as some others before) a regularization approach to train fair classifiers.
+% \citet{bechavod2017penalizing} use (as some others before) a regularisation approach to train fair classifiers.
 
 % Finally, \citet{everitt2017reinforcement} investigate
 % a problem in reinforcement learning that is similar to bias in classification.

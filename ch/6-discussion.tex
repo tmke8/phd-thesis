@@ -23,24 +23,49 @@ One could ask if there is one method that is able to cover all possible dataset 
 but I think there is a strong argument to be made that no general method can exist,
 because it is, \eg, not possible to describe in general what is spurious information and what is relevant information.
 Nevertheless, finding methods that are more generally applicable is a worthy goal.
+One immediate avenue for future work is
+the combination of label bias correction and sampling bias correction.
+For example, it might be possible to leverage an unlabelled context set for correcting label bias as well.
+
+There are also certain technical improvements that could be made.
+In general, it would be desirable to have more theoretical bounds on performance.
+This likely involves specifying the requirements for the algorithms more precisely.
+% which is also useful information for potential users.
+The method based on target labels would furthermore benefit from better-calibrated probability outputs.
+\acf{GP} classifiers show generally good calibration,
+but cannot be easily applied in domains where deep neural networks are used.
+On the other hand, neural networks are known to be overconfident
+(especially when using ReLU activations \citep{hein2019relu}),
+so to apply the proposed method to images directly is not straightforward.
+The other two proposed methods would benefit from improved adversarial training procedures.
+Training these models is not straightforward as the losses have to be balanced
+and in some cases, the update schedule needs to be changed.
+Both the calibration of neural networks and the stability of adversarial training
+are issues that are widely recognised in the \ac{ML} community,
+so there is hope that progress will be made on these.
 
 Another potential extension of this work is to work with other modalities.
 The experiments were all performed on either tabular or image data
---- the reason predominatly being ease of visualization ---
+--- the reason predominantly being ease of visualisation ---
 so working with audio (especially speech) or text could present new interesting challenges.
 
 Furthermore, as it currently stands,
 the \ac{ML} practitioner has to know the bias in the data very well in order to choose a method to correct it.
 It would be desirable to have a simple algorithm for deciding which method to use.
+A related limitation is that the dataset bias considered in this thesis
+is assumed to be linked to a special attribute \(s\).
+While \(s\) can be very high-dimensional and is not limited to, say, binary attributes,
+this nevertheless represents a restriction
+that excludes large areas of dataset biases.
 
-Thus, correcting dataset bias remains a challenging topic
+In any case, correcting dataset bias remains a challenging topic
 and one that is relevant to today's machine learning applications.
 Any cutting-edge \ac{ML} system will have to deal with imperfect data,
 especially if the collected data is human-related.
 The possible effects of these data imperfections are certainly highly undesirable:
 a photo tagging service might only work for a certain kind of person;
 a speech recognition system might only work for a certain kind of dialect.
-If, in these situations, enough representative (but unlabelled) data is available,
+If, in these situations, sufficient representative (but unlabelled) data is available,
 then the methods presented here can be used to try and correct the problem.
 
 One area of machine learning that has recently seen increased interest is unsupervised learning.
@@ -56,7 +81,33 @@ they maximise the probability assigned to the next token.
 Thus, such a model has to account for the wide array of human opinions and assign a non-zero probability to all of them.
 So, when asked to summarise a text \citep{stiennon2020learning}, GPT does not give the \emph{best} summary;
 it gives a summary that an average person might have written.
-However, with the help of a very high quality labelled dataset (that was expensive to create),
+However, with the help of a very high-quality labelled dataset (that was expensive to create),
 GPT could be finetuned to actually produce very good summaries.
 I suspect this pattern of learning the basics in an unsupervised fashion
 and then finetuning with high-quality labels will continue in the future.
+With these massive models,
+it is, more than ever, crucial to build tools to make the biases within the models transparent.
+Given the black-box nature of neural networks, this represents a major challenge.
+% When examining these models trained on massive datasets through the lens of the dataset biases discussed in \chapref{ch:related-work},
+% we encounter a novel problem:
+% somewhere in the model,
+% (an approximation of) the fundamental structures of reality are likely represented,
+% but we cannot easily access this.
+
+Finally, an important issue is the communication between human and machine.
+The methods presented in this thesis have all strived to make it easy for human operators to understand what is going on:
+the method in \chapref{ch:paper1} is configured with simple statistics;
+the method in \chapref{ch:paper2} produces invariant images that can be inspected;
+and the method in \chapref{ch:paper3} has the same capability
+(though it is not part of the core functionality).
+However, this is only a beginning.
+It is still not easy to notice that a given dataset has problems,
+and machines on their own cannot notice the problem,
+because they do not (yet) have a complete understanding about what it is that humans care about.
+Human preferences are incredibly complex and hard to predict for today's algorithms.
+Thus, it is important that machines get feedback early and often,
+to keep them aligned with human goals.
+(The aforementioned \citet{stiennon2020learning} is arguably an example of this.)
+Applied to the problem of dataset bias,
+this could mean visualising correlations in the dataset,
+or routinely producing invariant representations to show what the network thinks it is meant to learn.

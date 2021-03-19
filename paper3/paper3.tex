@@ -18,7 +18,7 @@
 %\usepackage{amssymb}
 %\usepackage{amsthm}
 %\usepackage{nicefrac}       % compact symbols for 1/2, etc.
-%\usepackage{xcolor}         %for coloring the text on colorMNIST
+%\usepackage{xcolor}         %for colouring the text on colourMNIST
 %\usepackage{comment}
 %\usepackage{enumitem}
 %\newtheorem{prop}{Proposition}
@@ -155,7 +155,7 @@ We evaluate our approach on several classification benchmarks and show that it i
 \label{sec:introduction}
 Machine learning has been deployed in safety-critical applications such as medicine (e.g. \citep{DunYiLanReetal19}), and socially important contexts such as the allocation of healthcare, education, and credit (\eg\ \citep{HurAde17,RagBarKleLev20}). 
 %
-Efficiency can be improved, costs can be reduced, and personalization of services and products can be greatly enhanced -- these are some of the drivers for the widespread development and deployment of machine learning algorithms. 
+Efficiency can be improved, costs can be reduced, and personalisation of services and products can be greatly enhanced -- these are some of the drivers for the widespread development and deployment of machine learning algorithms. 
 %
 
 Algorithms such as classifiers, however, are trained from large amount of labelled data, and are typically trained to optimise \emph{global} metrics such as average classification accuracy.
@@ -440,7 +440,7 @@ deployment set for learning the disentangled representations.
     \centering
     \includegraphics[width=\columnwidth]{paper3/figures/celeba_dep_recon.png}
     \caption{%
-    Visualization of our method's solutions for the CelebA dataset, with``smiling females'' as the missing subgroup.
+    Visualisation of our method's solutions for the CelebA dataset, with``smiling females'' as the missing subgroup.
     Column 1 shows the original images from $x$ from the deployment set of CelebA.
     Column 2 shows plain reconstructions generated from $x_\textit{recon}=g(f_y(x), f_s(x))$.
     Column 3 shows reconstruction with zeroed-out $z_s$: $g(f_y(x), 0)$, which effectively visualises $z_y$.
@@ -751,15 +751,15 @@ Removing this dependency through automatic determination of the number of cluste
 %
 One difficulty is that we need to ensure that the small but salient clusters are correctly identified. 
 %
-% In the case of 2-digit Colored MNIST, for example, the deployment set may contain only a small portion of {\color{purple}purple} fours relative to the other subgroups, meaning that the cluster they form can be easily overlooked by a clustering algorithm in favor of larger but less salient clusters (which may be sub-clusters of other digit/color combinations). 
-The cluster formed by an underrepresented subgroup can be easily overlooked by a clustering algorithm in favor of larger but less salient clusters
+% In the case of 2-digit Coloured MNIST, for example, the deployment set may contain only a small portion of {\color{purple}purple} fours relative to the other subgroups, meaning that the cluster they form can be easily overlooked by a clustering algorithm in favour of larger but less salient clusters (which may be sub-clusters of other digit/colour combinations). 
+The cluster formed by an underrepresented subgroup can be easily overlooked by a clustering algorithm in favour of larger but less salient clusters
 (which may be sub-clusters of other, larger, subgroups). 
 
 % By leveraging feature space of deep models, previous research has shown that semantically meaningful clusters can be discovered without the need for ground-truth annotations
 % (for example \citet{RayDunCarRe20,GanVanGeoProetal20,SohDunAngGuetal20,HanRebEhrVedetal20}), but how useful these annotations are in practice is still up for question.
 
 % In this paper, we aim to highlight the problem of zero-label stratification that can result from systematic bias, and to make a case for it as something to be seriously considered (even if to be dismissed) when planning, building, evaluating and regulating machine learning systems.
-%Clearly, the use of algorithmic approaches still requires human review in a manner that is similar to error auditing, but is less dependent on the specific human auditor to initially identify the stratifica- tion. While algorithmic approaches to measurement can reduce burden on human analysts and take advantage of learned encodings to identify subclasses, their efficacy is limited by the difficulty of separating important subclasses in the feature space analysed.
+%Clearly, the use of algorithmic approaches still requires human review in a manner that is similar to error auditing, but is less dependent on the specific human auditor to initially identify the stratification. While algorithmic approaches to measurement can reduce burden on human analysts and take advantage of learned encodings to identify subclasses, their efficacy is limited by the difficulty of separating important subclasses in the feature space analysed.
 
 \section{Experiments}
 We perform experiments using image and tabular datasets: Coloured MNIST \citep{kim2019learning}, CelebA \citep{liu2015faceattributes} and Adult Income\footnote{{Results for Adult Income dataset and discussion can be found in the supplementary material.}} \citep{Dua:2017} that are publicly available. 
@@ -775,13 +775,13 @@ To validate the disentangling step, we compare with three other baselines.
 In all cases, the training set is balanced in the same fashion required for our method.
 This is similar in effect to the sampling method proposed by \citet{kamiran2012data} but with those samples with the same class label as the missing sources upsampled, based on knowledge of $\text{dim}(\mathcal{S})$.
 We denote a classifier trained with cross-entropy loss on this data as \texttt{ERM}.
-The second of the aforementioned baselines is \texttt{DRO} \citep{HasSriNamLia18}, which functions without subgroup labels by minimizing the worst-case training loss over all possible groups that are above a certain minimum size;
+The second of the aforementioned baselines is \texttt{DRO} \citep{HasSriNamLia18}, which functions without subgroup labels by minimising the worst-case training loss over all possible groups that are above a certain minimum size;
 along with a variant of it, \texttt{gDRO} \citep{sagawa2019distributionally}, that exploits subgroup label information but is then only applicable when $\text{dim}(\mathcal{S}_{tr}) > 1$.
 Third, we have the \texttt{LfF} model proposed by \citet{nam2020learning} that works by reweighting the cross-entropy loss of a classifier using the predictions of a purposely biased sister network.
 
 %
 %%%%%OR
-%During training, the {\color{green}green} color group is observed in both digits (sources $\Omega_{y=\text{'two' }s=\color{green}green}$ and $\Omega_{y=\text{'four' }s=\color{green}green}$), but for the {\color{purple}purple} color group, we only observe the one-sided outcome ($\Omega_{y=\text{'two'}s=\color{purple}purple}$), so the source $\Omega_{y=\text{'four'}s=\color{green}green}$ defines invisible demographic.  
+%During training, the {\color{green}green} colour group is observed in both digits (sources $\Omega_{y=\text{'two' }s=\color{green}green}$ and $\Omega_{y=\text{'four' }s=\color{green}green}$), but for the {\color{purple}purple} colour group, we only observe the one-sided outcome ($\Omega_{y=\text{'two'}s=\color{purple}purple}$), so the source $\Omega_{y=\text{'four'}s=\color{green}green}$ defines invisible demographic.  
 %
 \subsection{Coloured MNIST}
 The MNIST dataset \citep{lecun1998gradient} consists of 70,000 (60,000 designated for training, 10,000 for testing) images of grey-scale hand-written digits. We colour the digits following a similar procedure to that outlined by \citep{kim2019learning}, randomly assigning each sample one of ten distinct RGB colours. Each source is then a combination of digit-class (class label) and colour (subgroup label). We use no data-augmentation aside from symmetrically zero-padding the images to be of size 32x32.
@@ -801,7 +801,7 @@ The optimal value is 1.
 % The PR ratio being ${\approx} 0$ indicates these methods degenerate to predicting positive for only a single class, a failure case our method avoids.
 
 Fig.~\ref{fig:cmnist-2v4-miss-s} shows that the problem of \emph{missing subgroups} is harder to solve.
-Again we see that poor clustering (in the case of \texttt{K-means}) is detrimental to the disentangling procedure, though for all balancing strategies the IQR is significantly higher than observed in the MS setting, along with there being a number of extreme outliers. The median, however, remains high, which is reflective of the ``hit-or-miss'' performance of the method under these conditions, but where the number of hits far outweighs the number of misses. Visualization of the reconstructions with $z_y$ zeroed-out suggest that misses often mostly occurred due to the semantic information being concentrated in $z_s$ while $z_y$ is left to contain only residual information, even when $z_s$ was set to be one-dimensional and binarised. We leave it to future work to explore how to better offset such degeneracies.
+Again we see that poor clustering (in the case of \texttt{K-means}) is detrimental to the disentangling procedure, though for all balancing strategies the IQR is significantly higher than observed in the MS setting, along with there being a number of extreme outliers. The median, however, remains high, which is reflective of the ``hit-or-miss'' performance of the method under these conditions, but where the number of hits far outweighs the number of misses. Visualisation of the reconstructions with $z_y$ zeroed-out suggest that misses often mostly occurred due to the semantic information being concentrated in $z_s$ while $z_y$ is left to contain only residual information, even when $z_s$ was set to be one-dimensional and binarised. We leave it to future work to explore how to better offset such degeneracies.
 
 To investigate how an increase in the number of classes affects disentangling of classes and groups, we look to a 3-digit, 3-colour variant of the dataset in the SB setting where four sources are missing from $D_{tr}$.
 Results for this configuration are shown in fig.~\ref{fig:cmnist-3dig-4miss}.

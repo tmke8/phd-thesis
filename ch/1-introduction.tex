@@ -7,7 +7,7 @@ This includes their opaqueness and their general tendency to take shortcuts;
 leading to situations where neural networks do not do `what we meant', but just what they were explicitly told to do.
 
 This problem becomes especially severe when the training data is biased in some way,
-which, by default, makes the \ac{ML} system internalize the bias, or, in some cases, even exacerbate it.
+which, by default, makes the \ac{ML} system internalise the bias, or, in some cases, even exacerbate it.
 When applied in the deployment setting, the system will then not behave in the desired way.
 The topic of this thesis is how to deal with biased data,
 where the bias is inextricably linked to a special attribute $s$.
@@ -23,7 +23,7 @@ In the absence of truly `fair' datasets, our methods have to be able to deal wit
 
 Now, one possible objection here is:
 if those datasets are so bad,
-then maybe we just should not train any \ac{ML} model on these and should not use them to make automated decisions.
+then maybe we just should not train any \ac{ML} model on these and should not use them to make automated decisions?
 While this question is mostly beyond the scope of this document, let me offer some thoughts on this:
 It's true that even after the application of de-biasing techniques,
 the resulting models still should not be fully trusted,
@@ -39,12 +39,12 @@ Moreover, two of the three methods presented in this thesis require access to (u
 which is used during the training process.
 The remaining method requires summary statistics of the unbiased target dataset.
 So, the criticism that we are only learning from biased data does not apply here.
-This should allow us to be more confident in the predictions of those methods.
+This should allow us to be more confident in the predictions produced by those methods.
 
 Throughout this thesis, the aim is to learn a model from biased training data,
 which gives fair predictions on an unbiased test set.
-It is thus not enough to simply optimize the cross-entropy on the training set;
-we have to change the optimization target to achieve our stated goal.
+It is thus not enough to simply optimise the cross-entropy on the training set;
+we have to change the optimisation target to achieve our stated goal.
 While it is possible to extend notions of fairness beyond classification tasks,
 the vast majority of work in this area concerns classification only and that will be the case here as well.
 
@@ -55,12 +55,12 @@ we consider a classification problem in which the class labels $y$ needs to be p
 In all cases, there is a special attribute $s$ associated with each input.
 This attribute can have different meanings:
 In the setting of \emph{label bias}, $s$ usually encodes membership in a demographic group, such as gender,
-but more generally is a feature that should not be used to make predictions for legal or ethical reasons.
+but more generally, it is a feature that should not be used to make predictions for legal or ethical reasons.
 (See below for other possible meanings of $s$.)
 In this setting, we call $s$ the \emph{sensitive attribute} (because it carries sensitive information).
-We will often refer to the set of all samples with a specific sensitive attribute as one \emph{demographic group}.
+We will often refer to the set of all samples which share a specific sensitive attribute as one \emph{demographic group}.
 In most of the examples, $s$ and $y$ are binary variables, but this does not have to be the case.
-The label bias is related to $s$ in a very specific way:
+Crucially, however, the label bias is related to $s$ in a very specific way:
 depending on the value of $s$, labels are either flipped from $y=0$ to $y=1$ or vice versa,
 \ie, there is an error in the labels which is correlated with the sensitive attribute.
 
@@ -68,7 +68,7 @@ For \emph{sampling bias},
 there is also a special attribute $s$, but it does not necessarily have to denote a \emph{sensitive} attribute;
 it can more generally be a \emph{spurious} variable which is correlated with the class label $y$ in the training set,
 but is not truly predictive of $y$ in the general case.
-Or, it can refer to natural \emph{subgroups} of the $y$ classes.
+Alternatively, it might refer to a natural \emph{subgroup} of the $y$ classes.
 Sampling bias then means that the training set is not uniformly sampled from the underlying distribution:
 Instead, sampling depends on $s$ and $y$;
 \eg, there might be almost no samples of $s=0$ and $y=1$ in the training set.
