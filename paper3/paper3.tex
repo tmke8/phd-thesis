@@ -416,7 +416,8 @@ Such sets are also very desirable when training algorithmically fair classifiers
 %
 Ideally, we would like to sample our deployment dataset as perfect bags.
 However, the deployment set is unlabelled and is unlikely to be perfect in practice. 
-Instead, we pursue learning under zero-label systematic bias as learning disentangled representations with a collection of \emph{approximately} perfect bags. We show that the disentangling procedure is robust enough to work with this relaxation, but that performance scales with how well the deployment set is balanced.
+Instead, we pursue learning under zero-label systematic bias as learning disentangled representations with a collection of \emph{approximately} perfect bags (produced with clustering techniques, see section~\ref{sec:implementation}).
+We show that the disentangling procedure is robust enough to work with this relaxation, but that performance scales with how well the deployment set is balanced.
 
 \paragraph{Disentangled representation.}
 Disentanglement-learning aims to find a factorised representation of a data point $x$ through mapping functions $f_i$ such that $f_i(x)=z_i$ where $z_1,z_2,\ldots,z_p$ are $p$ distinct (independent) factors of variations, which together form $x$.
