@@ -8,8 +8,8 @@ leading to situations where neural networks do not do `what we meant', but just 
 
 This problem becomes especially severe when the training data is biased in some way,
 which, by default, makes the \ac{ML} system internalise the bias, or, in some cases, even exacerbate it.
-When applied in the deployment setting, the system will then not behave in the desired way.
-The topic of this thesis is how to deal with biased data,
+Consequently, when applied in the deployment setting, the system will not behave in the desired way.
+The topic of this thesis is dealing with biased data,
 where the bias is inextricably linked to a special attribute $s$.
 % and what types of biases exist and how to correct them if possible.
 
@@ -19,18 +19,18 @@ This can range from relatively harmless biases,
 like men being, on average, older than women in the CelebA dataset \citep{liu2015faceattributes},
 to more serious ones,
 like black men being several times less likely to receive bail than white men in the COMPAS dataset \citep{angwin2016machine}.
-In the absence of truly `fair' datasets, our methods have to be able to deal with these biases.
+In the absence of truly `fair' datasets, our methods have to be able to avoid these biases.
 
 Now, one possible objection here is:
-if those datasets are so bad,
+if those datasets are of such poor quality,
 then maybe we just should not train any \ac{ML} model on these and should not use them to make automated decisions?
 While this question is mostly beyond the scope of this document, let me offer some thoughts on this:
-It's true that even after the application of de-biasing techniques,
+It is true that even after the application of de-biasing techniques,
 the resulting models still should not be fully trusted,
 but they can still ease the burden of checking everything manually;
 similar to an email spam filter which is not perfect, but still very useful.
 Or, put another way, it is always important to check what the realistic alternative is;
-we should not compare a model to a non-existing perfect ideal, but to the actual thing that would be used instead.
+we should not compare a model to a non-existing perfect ideal, but to the actual solution that would be used instead.
 One could imagine a hybrid approach where an automated system makes preliminary decisions,
 but random samples are reviewed by humans and decisions can always be challenged.
 Ideally, the model itself would tell us about decisions it is uncertain about.
@@ -39,18 +39,19 @@ Moreover, two of the three methods presented in this thesis require access to (u
 which is used during the training process.
 The remaining method requires summary statistics of the unbiased target dataset.
 So, the criticism that we are only learning from biased data does not apply here.
-This should allow us to be more confident in the predictions produced by those methods.
+This should allow us to be more confident in the predictions produced by those methods,
+because the methods learn from additional, unbiased information.
 
 Throughout this thesis, the aim is to learn a model from biased training data,
-which gives fair predictions on an unbiased test set.
-It is thus not enough to simply optimise the cross-entropy on the training set;
+which gives fair predictions (where `fair' is given by specific definitions) on an unbiased test set.
+It is thus not sufficient to simply optimise the cross-entropy on the training set;
 we have to change the optimisation target to achieve our stated goal.
 While it is possible to extend notions of fairness beyond classification tasks,
 the vast majority of work in this area concerns classification only and that will be the case here as well.
 
 This thesis will discuss two kinds of dataset bias: \emph{label bias} and \emph{sampling bias}.
 In both cases,
-we consider a classification problem in which the class labels $y$ needs to be predicted from input features $\vx$.
+we consider a classification problem in which the class labels $y$ need to be predicted from input features $\vx$.
 
 In all cases, there is a special attribute $s$ associated with each input.
 This attribute can have different meanings:
@@ -63,6 +64,7 @@ In most of the examples, $s$ and $y$ are binary variables, but this does not hav
 Crucially, however, the label bias is related to $s$ in a very specific way:
 depending on the value of $s$, labels are either flipped from $y=0$ to $y=1$ or vice versa,
 \ie, there is an error in the labels which is correlated with the sensitive attribute.
+This could, for example, be result of societal discrimination of demographic groups.
 
 For \emph{sampling bias},
 there is also a special attribute $s$, but it does not necessarily have to denote a \emph{sensitive} attribute;
@@ -70,7 +72,7 @@ it can more generally be a \emph{spurious} variable which is correlated with the
 but is not truly predictive of $y$ in the general case.
 Alternatively, it might refer to a natural \emph{subgroup} of the $y$ classes.
 Sampling bias then means that the training set is not uniformly sampled from the underlying distribution:
-Instead, sampling depends on $s$ and $y$;
+Instead, sampling depends on $s$ and $y\,$;
 \eg, there might be almost no samples of $s=0$ and $y=1$ in the training set.
 The effect is that \ac{ML} models are tempted to take shortcuts and use $s$ as a shorthand for $y$.
 
@@ -88,7 +90,8 @@ because they specifically look at the results in the different subgroups.
 However, we typically try to evaluate our models on a test set that is as unbiased as possible,
 in order for accuracy to be meaningful.
 
-The fairness definition with the clearest interpretation in the described setup of label bias and sampling bias is \acfi{DP},
+Fairness metrics require a fairness \emph{definition},
+and the fairness definition with the clearest interpretation in the described setup of label bias and sampling bias is \acfi{DP},
 also called \emph{statistical parity} or \emph{independence}.
 It demands that the predictions $\hat{y}$ be independent of the sensitive attribute \(s\).
 So, for binary $s$ and $y$:
@@ -99,7 +102,7 @@ So, for binary $s$ and $y$:
 There are multiple \ac{DP} \emph{metrics} which track how close the predictions are to satisfying the equality,
 among them, the difference and the ratio of the terms on the two sides of the equation.
 
-When we previously talked about unbiased datasets,
+When talking about \emph{un}biased datasets above,
 we did not specify exactly what this meant,
 and that is because the definition thereof can differ from task to task,
 but one way to define it is as a \emph{balanced} dataset where all combinations of $s$ and $y$ occur at the same rate:
@@ -109,28 +112,30 @@ but one way to define it is as a \emph{balanced} dataset where all combinations 
 \end{align}
 In such a dataset, we have $y \perp s$, and thus,
 perfect predictions ($\hat{y}=y$) on this dataset will satisfy $\hat{y} \perp s$ and hence \ac{DP}.
-We can conclude that perfect accuracy on a balanced test set implies \acl{DP} (the opposite does not hold).
+We can conclude that perfect accuracy on a balanced test set implies \acl{DP}
+(the reverse does not hold).
 However, if a model's predictions satisfy \ac{DP} on a \emph{biased} dataset,
 then they cannot be perfectly accurate with respect to that dataset's biased labels anymore,
 which makes sense because the goal is to be accurate to the \emph{unbiased} dataset.
 This leads to a fairness-accuracy trade-off on biased test sets.
 
-The other two fairness definitions which are commonly used are \acfi{EOpp} and \acfi{EOdds}.
-These do not require the prediction $\hat{y}$ to be independent of $s$,
+The other two fairness definitions which are commonly used are \acfi{EOpp} and \acfi{EOdds},
+which do not require the prediction $\hat{y}$ to be independent of $s$,
 but they do require that the model makes equally high-quality predictions for all values of $s$.
-In particular, for \ac{EOpp}, the \acfip{TPR} need to be the same for all demographic groups
+Concretely, for \ac{EOpp}, the \acfip{TPR} need to be the same for all demographic groups
 (again for binary $s$ and $y$):
 \begin{align}
   \label{eq:eopp-def}
-  P(\hat{y}=1|y=1,s=0) = P(\hat{y}=1|y=1,s=1)~.
+  P(\hat{y}=1|y=1,s=0) = P(\hat{y}=1|y=1,s=1)~,
 \end{align}
-\ac{EOdds} has the same requirement, but also extends it to the \acp{TNR}:
+which is also required by \ac{EOdds}, but \ac{EOdds} additionally requires the same of the \acp{TNR}:
 \begin{align}
   P(\hat{y}=y'|y=y',s=0) = P(\hat{y}=y'|y=y',s=1)\quad\forall y'~.
   \label{eq:eodds-def}
 \end{align}
 Just like \ac{DP},
-\ac{EOpp} and \ac{EOdds} can help us evaluate how much a classifier is affected by the bias in the training set.
+the fairness definitions \ac{EOpp} and \ac{EOdds} can help us evaluate
+how much a classifier is affected by the bias in the training set.
 
 % \section{Claims and contributions}%
 \section{List of publications and author contributions}%

@@ -64,14 +64,14 @@ Evaluation is typically performed on a test set that has all the same biases as 
 and thus gives rise to a fairness-accuracy trade-off.
 
 The first works in the field almost exclusively took the definition-centric view,
-most of them using \acl{DP} \citep{dwork2012fairness} as the fairness criterion.
+most of them using \acf{DP} \citep{dwork2012fairness} as the fairness criterion.
 
 The boundary between these views is not completely clear-cut.
 Consider the case where a biased training set is available,
 and an unbiased test set is assumed to exist, but we do not have access to it \citep{jiang2020identifying}.
-Then we might at least know that the unbiased test set satisfies \acf{DP}.
+Then we might at least know that the unbiased test set satisfies \ac{DP}.
 In this case, testing the classifier for \ac{DP} is an indication
-for how it would fare on the unbiased test set.
+for how well it would fare on the unbiased test set.
 
 Furthermore, there is significant overlap in the solutions employed for the two views:
 a method developed for one of them can often be adapted to the other as well.
@@ -81,7 +81,8 @@ Towards the end, I discuss more works with the other viewpoint.
 
 \section{Foundations of algorithmic fairness}\label{sec:foundations}
 This section discusses the publications that lay the ground work for the algorithmic fairness literature.
-More recent publications are discussed in \secref{sec:refinement-on-previous-ideas-for-fair-classification-and-fair-representations}.
+More recent publications are discussed in %
+\secref{sec:refinement-on-previous-ideas-for-fair-classification-and-fair-representations}.
 
 \subsection{Precursors}\label{precursor}
 The first published work to address the problem of biases in machine learning
@@ -98,7 +99,7 @@ they distinguish between direct and indirect discrimination:
 the former explicitly uses discriminatory features in the premise of the rule,
 while the latter uses features that are closely associated with discriminatory features%
 \footnote{This is similar to the legal view of direct and indirect discrimination
-where direct discrimination when people with a specific protected characteristic are treated worse,
+where direct discrimination is when people with a specific protected characteristic are treated worse,
 whereas indirect discrimination is a policy that does not make direct references to a protected characteristic
 but disproportionally affects people with a specific characteristic.}.
 % The latter case can be
@@ -114,7 +115,7 @@ The test set is drawn from the same distribution as the training set.
 To demonstrate their method, they use the ``German credit dataset''~\citep{Dua:2017}
 where the task is to classify people as a good or a bad credit risk.
 
-The authors formulate the problem as it was later done in other works on fairness as well:
+The authors formulate the problem as it was later done in other works on fairness:
 there is a set of features \(x\), a binary class label \(y\)
 and a special \emph{sensitive attribute} \(s\) which determines the demographic group.
 The sensitive attribute \(s\) is assumed to be binary in the derivation,
@@ -122,7 +123,7 @@ but does not have to be.
 \(s=0\) refers to the group vulnerable to discrimination and \(s=1\) to all other individuals.
 It is further assumed that one of the class labels is generally desirable;
 for example, it might correspond to being accepted for a loan or being given bail.
-This class label is being referred to as the positive label: \(y = 1\).
+This class label is referred to as the positive label: \(y = 1\).
 
 The authors then define a concrete measure of discrimination (where $\hat{y}$ refers to the prediction of a classifier):
 \begin{align}
@@ -139,7 +140,7 @@ First, a well-calibrated classifier (Na\"ive Bayes in the paper) is trained on t
 \emph{without} the sensitive attribute.
 This classifier is then used to determine a ranking for how likely a positive label is for a given individual.
 The highest ranked individuals that have label \(y=0\)
-and are potentially discriminated against \(s=0\) get ``promoted'' to \(y=1\)
+and are potentially discriminated against (\(s=0\)) get ``promoted'' to \(y=1\)
 and the lowest ranked individuals with label \(y=1\) and \(s=1\) get ``demoted'' to \(y=0\)
 until the dataset is fair according to the \(Disc\) measure.
 The idea being that the ranking ensures that the changes in the dataset
@@ -202,7 +203,7 @@ Nevertheless, the algorithm can be considered an improvement over manipulating t
 as the resulting bias can be controlled to a much finer degree.
 
 The second method in \citet{calders2010three}
-is based on training two separate models for each sensitive attributes.
+is based on training two separate models for each sensitive attribute.
 That is, the dataset is split in two
 where one half contains all examples with \(s=0\), we call this dataset \(D_0\),
 and the other half contains all examples with \(s=1\), called \(D_1\).
@@ -224,7 +225,7 @@ The third method introduces a new latent variable, called \(L\) in the paper.
 \(L\) is intended to be an unbiased target class label
 that replaces the biased class label \(y\) from the training data.
 \(L\) can only be estimated and is unbiased
-in the sense that it is statistically independent from sensitive attribute: \(P(L|s=0) = P(L|s=1)\).
+in the sense that it is statistically independent from the sensitive attribute: \(P(L|s=0) = P(L|s=1)\).
 The observed class label \(y\) then only depends on the latent label and the sensitive attribute.
 \(L\) is found by using expectation maximisation
 to iteratively search for a value that maximises the likelihood of the dataset.
@@ -234,11 +235,12 @@ because these are the two cases where we expect discrimination.
 There is other prior knowledge that can be incorporated into the search.
 % This method seems to have been the most sophisticated at that point in time.
 
-\citet{calders2010three} present experimental results for the three methods on an artificial dataset
+The authors present experimental results for the three methods on an artificial dataset
 and the Adult/Census Income data that \citet{calders2009building} used before.
-The artificial data has biased and also unbiased class labels
-which are generally not available for real-world datasets
-and conforms to the assumptions made for the third model.
+The artificial data has biased and also unbiased class labels,
+the latter of which are generally not available for real-world datasets,
+and the data conforms to the assumptions made for the third model.
+(The existence of the unbiased ground-truth labels makes this paper an example of the ground-truth-centric view.)
 % Artificial datasets generally have the advantage that the bias can be controlled very precisely,
 % but there is always the danger of tailoring the dataset too closely to the proposed algorithm.
 % To the authors surprise,
@@ -260,8 +262,6 @@ at the ways in which training data can be biased (or more generally of poor qual
   If it is with the non-sensitive features, they call it \emph{latent prejudice}.
   In line with \citet{pedreshi2008discrimination},
   \emph{direct prejudice} refers to classifiers that make direct use of the sensitive attribute.
-  Indirect prejudice and latent prejudice can be quantified by
-  the mutual information between \(y\) and \(s\) or \(x\) and \(s\) respectively.
   \citet{kamishima2012fairness} do not consider latent prejudice to be immediately harmful,
   but it can be a problem with respect to the protection of personal data and compliance with laws.
 \item
@@ -284,7 +284,7 @@ at the ways in which training data can be biased (or more generally of poor qual
 We see that previous works nearly exclusively dealt with the first of these issues, \emph{prejudice},
 and more precisely \emph{indirect prejudice}.
 \citet{kamishima2012fairness} also focus on \emph{indirect prejudice};
-essentially because it is the easiest to deal with, apart from \emph{direct prejudice}.
+mostly because it is the easiest to deal with, apart from \emph{direct prejudice}.
 They use \acf{LR} as the basis for their fair classifier.
 Their approach to enforcing fairness is qualitatively different from the previous proposals.
 Instead of manipulating the dataset or using explicit algorithm to make a classifier fair,
@@ -320,11 +320,11 @@ if it is classified differently than its neighbours.
 More concretely, for any data point we can check
 how many of the \(k\) nearest neighbours have the same class label as that data point.
 If the percentage is under a certain threshold
-then there was discrimination against the individual corresponding to that data point.
+then -- so the authors argue -- there was discrimination against the individual corresponding to that data point.
 In order to create a fair classifier, for this definition of fairness,
 the authors propose to pre-process the dataset,
 similar to \citet{kamiran2009classifying} before,
-by flipping the class labels of those data points where the class label is considered unfair.
+by flipping the class labels of those data points where the class label is considered wrong or biased.
 The experiments in the paper show that this method is successful in reducing the discrimination
 (according to the given criterion)
 for a range of classifiers on the Adult/Census Income dataset.
@@ -345,6 +345,7 @@ Another scenario considers the case of \emph{subset targeting},
 where there is discrimination against subgroups
 which are not covered by the \ac{DP} metric
 that only considers the major demographic groups.
+(This problem has also been referred to as \emph{hidden stratification}.)
 Defining fairness via group membership will always leave open the possibility
 of discriminating against ever smaller subgroups down to the level  of individuals.
 
@@ -402,8 +403,8 @@ the Lipschitz condition is then used as a constraint for the optimisation.
 
 \subsection{Fair representations}\label{sec:fair-representation}
 \citet{zemel2013learning} approach the problem of biased training data more directly
-by seeking to transform the features such that all traces of the sensitive attribute are removed,
-but so that they still carry the information necessary for predicting the class label.
+by seeking to transform the features, such that all traces of the sensitive attribute are removed,
+while at the same time letting the features still carry the information required for predicting the class label.
 % \citet{zemel2013learning} expand on the idea of creating a \emph{fair representation}.
 % That is, the features of the data points are transformed such that all bias is removed
 This is different from \citet{kamiran2009classifying} where the dataset was transformed as well,
@@ -422,7 +423,7 @@ Let \(z\) denote the learned fair representation.
 The condition for fairness is then
 \begin{align}
   \label{eq:fair-representation}
-  P(s=0|z=z') = P(s=1|z=z') ~.
+  P(s=s'|z=z') = P(s=s') \quad \forall s' \in \{0, 1\}, z' \in \mathbb{Z}~.
 \end{align}
 \citet{zemel2013learning} propose to map the biased inputs \(x\) to \emph{prototypes} in the same space as \(x\).
 The probability for being assigned to a particular prototype
@@ -435,9 +436,9 @@ Aside from the distance function, the whole model has therefore only two kinds o
 the locations of the prototypes and the weights in the linear model.
 These parameters are all optimised together.
 The objective function consists of three terms:
-the first enforcing Demographic Parity via the prototype locations,
+the first enforcing \acf{DP} via the prototype locations,
 the second ensuring that the prototypes are close to the inputs
-and the third targeting a good accuracy by adapting the weights of the classifier.
+and the third trying to maximise accuracy by adapting the weights of the classifier.
 %
 The experiments are done on the German credit dataset, the Adult / Census Income dataset
 and a dataset based on the Heritage Health Prize milestone 1 challenge~\citep{heritagehealth}
@@ -476,7 +477,7 @@ they advocate the 80\% Rule, which states that \(DI\) should not be below 80\% (
 This means that the acceptance rate of a disadvantaged demographic group
 should not be less than 80\% of the acceptance rate of the other group.
 With this definition, there is an explicit allowed range for small unfairness.
-Previously, people just tried to get as close as possible to \(DI = 1\),
+Previously, researchers just tried to get as close as possible to \(DI = 1\),
 without stating how close is close enough.
 
 For measuring the fairness of the (non-sensitive) input features
@@ -484,7 +485,7 @@ For measuring the fairness of the (non-sensitive) input features
 The features \(x\) are \(\varepsilon\)-fair,
 if any predictor that tries to predict \(s\) from \(x\) can only achieve a balanced error rate
 that is higher than \(\varepsilon\).
-\citet{feldman2015certifying} prove that that \(\varepsilon\)-fairness with a suitable \(\varepsilon\)
+\citet{feldman2015certifying} prove that \(\varepsilon\)-fairness with a suitable \(\varepsilon\)
 is incompatible with violating the 80\% rule.
 That is, if the sensitive attribute cannot be predicted from the features,
 then a classifier trained on that data will automatically be fair (to a certain degree).
@@ -493,14 +494,16 @@ the required \(\varepsilon\) approaches 1/2
 which corresponds to absolutely no information in \(x\) about \(s\).
 Note that the definitions require that the performance of the best possible classifiers is known,
 which is rarely the case.
-In the paper, an \ac{SVM} classifier is used to measure the \(\varepsilon\) for \(\varepsilon\)-fairness.
+In the paper, \iac{SVM} classifier is used to measure the \(\varepsilon\) for \(\varepsilon\)-fairness.
 
 In order to create a fair dataset,
 the authors present an algorithm that considers every feature individually
 and shifts the values such that the distributions \(P(z=z'|s=0)\) and \(P(z=z'|s=1)\) are identical
 (\(z\) refers to the shifted values, \(x\) refers to the original values).
 This shift retains the ordering of the data points with regard to that feature.
-This is to ensure that \(z\) can still be used to predict \(y\).
+This is to ensure that \(z\) can still be used to predict \(y\)
+(which assumes that \(y\) and \(s\) are sufficiently uncorrelated,
+so that \(z\) can at the same time be unpredictive of \(s\) and predictive of \(y\)).
 The method only works on numerical features.
 The paper contains two other algorithms for removing unfairness which are not as invasive,
 meaning some amount of unfairness remains, but the ability to predict is improved.
@@ -603,9 +606,9 @@ In other words, members of the different groups have the same chance
 to get a correct classification if they should receive a negative classification.
 The same holds for criterion 3 and positive classifications (\(y=1\)).
 
-A plausible question is whether it is possible achieve all of these criteria simultaneously.
+A plausible question is whether it is possible to achieve all of these criteria simultaneously.
 The authors show that a perfect predictor,
-which gives a score of \(P(\hat{y}=1|x) = 1\) to data points with \(y=1\)
+\ie one that gives a score of \(P(\hat{y}=1|x) = 1\) to data points with \(y=1\)
 and \(P(\hat{y}=0|x) = 1\) to those with \(y=0\),
 automatically satisfies all three criteria.
 (The same is in general not true for \ac{DP}:
@@ -617,7 +620,7 @@ also satisfies all three criteria.
 For this case, \ac{DP} is satisfied as well.
 The paper provides a proof
 that those two cases are the only ones that achieve the three presented guarantees simultaneously.
-Demographic Parity can only be achieved simultaneously with these in the second scenario.
+Demographic Parity can only be achieved simultaneously with these in the second scenario (``random classifier'').
 The general case sits between those extremes:
 the predictor is not perfect and the test set is not unbiased,
 and therefore, these definitions of fairness are not compatible.
@@ -631,15 +634,15 @@ that it is remains difficult to choose the appropriate definition of fairness to
 \citet{hardt2016equality} expand on criterion 3 in \citet{kleinberg2016inherent}
 and develop a method to enforce it via post-processing.
 Furthermore, an alternative criterion is introduced that is the combination of criterion 2 and 3.
-This is also the work that gave criterion 3 the name \acl{EOpp}
-and that popularised the name \acl{DP}.
+This is also the work that gave criterion 3 the name \emph{\acl{EOpp}}
+and that popularised the name \emph{\acl{DP}}.
 The treatment of fairness by the authors is explicitly ``oblivious'',
 which here means that only the general statistics are known
 about the features \(x\), the sensitive attributes and the class labels \(y\).
 In particular, there is not enough information available to develop a similarity measure
 which could be used to target \emph{individual fairness}.
 
-\citet{hardt2016equality} define the criteria in terms of statistical independence:
+The authors define the criteria in terms of statistical independence:
 \acf{EOdds} refers to the case where \(\hat{y}\) and \(s\) are independent conditional on \(y\).
 This is equivalent to the true positive rate and the false positive rate being the same for all groups.
 \ac{EOpp} is, as mentioned above,
@@ -730,7 +733,7 @@ The first way is to minimise the loss that enforces accuracy
 with the constraint that the covariance criterion is below a certain threshold.
 The other way is to minimise the covariance criterion
 with the constraint that the accuracy is above a certain threshold.
-The paper includes experiments with these techniques with SVM and Logistic Regression classifiers
+The paper includes experiments with these techniques with \ac{SVM} and Logistic Regression classifiers
 on the Adult/Census Income dataset and the Bank marketing dataset~\citep{Dua:2017}.
 In the Bank marketing dataset, the task is to predict whether a client will respond to marketing for a term deposit,
 based on 20 attributes of the person.
