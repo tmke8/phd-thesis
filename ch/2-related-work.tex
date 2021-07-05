@@ -642,21 +642,21 @@ about the features \(x\), the sensitive attributes and the class labels \(y\).
 In particular, there is not enough information available to develop a similarity measure
 which could be used to target \emph{individual fairness}.
 
-The authors define the criteria in terms of statistical independence:
+In this ``oblivious'' setting, the authors define their fairness criteria in terms of statistical independence:
 \acf{EOdds} refers to the case where \(\hat{y}\) and \(s\) are independent conditional on \(y\).
 This is equivalent to the true positive rate and the false positive rate being the same for all groups.
 \ac{EOpp} is, as mentioned above,
 the case where just the true positive rate is the same for all groups.
 This means that \(\hat{y}\) and \(s\) are independent conditional on \(y=1\).
-One main advantage that these definitions have over \ac{DP} is that a perfect predictor satisfies them on any evaluation set.
+One of the main advantages of these definitions compared to \ac{DP} is that a perfect predictor satisfies them on any evaluation set.
 % Demographic Parity is at odds with achieving perfect accuracy.
 % Furthermore, for Demographic Parity a classifier might be forced to give a positive prediction to a lot of individuals
 % where it is really not appropriate.
 
 In order to construct a fair classifier out of a \emph{binary predictor}
-(giving only binary predictions) via post-processing,
+(giving only hard binary predictions $\{0, 1\}$) via post-processing,
 the output is randomised in such a way as to remove the bias.
-If the overall probability for a positive predictions of the unfair classifier is given by \(P(\hat{y}=1|s)\),
+If the overall probability for a positive prediction of the unfair classifier is given by \(P(\hat{y}=1|s)\),
 then the randomised probability for the fair positive predictions \(\tilde{y} = 1\) is given by:
 \begin{align}
   \label{eq:hardt}
@@ -668,7 +668,7 @@ As an example, if the unfair predictor predicts \(\hat{y} =0\) for an input with
 then the fair predictor predicts \(\tilde{y} =1\) with probability \(P(\tilde{y} = 1| \hat{y}=0, s=0)\)
 which might be non-zero.
 In addition to the fairness condition, we also want to enforce accuracy.
-To that end, we introduce a loss function \(\ell (\tilde{y}, y)\)
+To that end, the authors introduce a loss function \(\ell (\tilde{y}, y)\)
 that quantifies the cost of predicting the wrong class label.
 The final optimisation problem for the 4 free parameters is then to minimise \(\ell\)
 under the constraint of \ac{EOpp} or \ac{EOdds}
@@ -684,7 +684,7 @@ This is done by using two constraints per group:
 if \(f\) is above both, the result is \(\hat{y} = 1\), if it is below both, \(\hat{y} =0\)
 and if \(f\) is between the thresholds, then the result is chosen at random.
 This method -- as well as the one before --
-requires the sensitive attribute for all predictions as it has to choose the right threshold.
+requires the sensitive attribute for all predictions at test time, as it has to choose the right threshold.
 
 The authors prove that with this post-processing,
 the Bayes optimal (but biased) classifier becomes the Bayes optimal unbiased classifier.
@@ -709,7 +709,7 @@ several works refined the ideas that had been presented there.
 A very influential work by \citet{zafar2017fairnessconstraints}
 presents a more efficient way to train a fair classifier.
 The authors explicitly discuss the tension
-between the two goals of making fair predictions and not making use of the sensitive attributes.
+between the two goals of making fair predictions and not making use of the sensitive attributes at test time.
 Using sensitive attributes to make predictions
 is referred to as \emph{Disparate Treatment} by the authors.
 Algorithms like the one by \citet{calders2009building} use the sensitive
@@ -733,7 +733,7 @@ The first way is to minimise the loss that enforces accuracy
 with the constraint that the covariance criterion is below a certain threshold.
 The other way is to minimise the covariance criterion
 with the constraint that the accuracy is above a certain threshold.
-The paper includes experiments with these techniques with \ac{SVM} and Logistic Regression classifiers
+The paper includes experiments with these techniques with \ac{SVM} and \acf{LR} classifiers
 on the Adult/Census Income dataset and the Bank marketing dataset~\citep{Dua:2017}.
 In the Bank marketing dataset, the task is to predict whether a client will respond to marketing for a term deposit,
 based on 20 attributes of the person.
@@ -742,8 +742,8 @@ The proposed algorithm performs similarly to the best previous algorithms (simil
 notably without making use of the sensitive attribute for predictions.
 % This is an impressive achievement.
 
-In a follow up work, \citet{zafar2017fairnesstreatment} adapt their work to avoid ``disparate mistreatment''.
-Avoiding disparate mistreatment is equivalent to enforcing \acf{EOdds}
+In a follow-up work, \citet{zafar2017fairnesstreatment} adapt their work to avoid ``disparate mistreatment''.
+Avoiding disparate mistreatment is the same as enforcing \acf{EOdds},
 as defined in the contemporary work by \citet{hardt2016equality}.
 As in the previous work, they define a tractable proxy for this measure.
 To this end, they first define a function \(g\) that measures
@@ -754,7 +754,7 @@ how well the class label \(y \in \{0, 1\}\) and the predicted score for a data p
 \end{align}
 Subtracting \(\tfrac{1}{2}\) is necessary to centre the values around \(0\).
 The proxy for \ac{EOdds} is then the covariance between the sensitive attribute and \(g\).
-\(g\) can also be modified to only take into account cases with \(y=1\) which corresponds to Equality of Opportunity.
+\(g\) can also be modified to only take into account cases with \(y=1\) which corresponds to enforcing \acf{EOpp.
 The paper contains experiments on the ProPublica/COMPAS dataset~\citep{angwin2016machine}.
 The task for this dataset is to predict
 whether a criminal offender committed another misconduct or felony within two years,
@@ -783,7 +783,9 @@ but when doing post-processing on a Bayes-optimal predictor for this distributio
 the result can be a very bad predictor that gives essentially random predictions.
 The authors explicitly construct one such distribution:
 it corresponds to the case where the sensitive attribute \(s\) is more predictive of the class label \(y\)
-than the features \(x\), which is arguably an unusual case.
+than the features \(x\),
+which becomes an especially severe problem when \(s\) is only predictive during training time, but not at test time.
+See the discussion of \emph{Coloured MNIST} below for such an example.
 
 % The proposed method is then as follows.
 % First, a classifier is trained that minimises a loss function with Equalised Odds as a constraint.
@@ -837,7 +839,7 @@ This topic has since received more contributions than can be listed here.
 The following is a very short sample.
 In the direction of \citet{zafar2017fairnessconstraints}, there is for example \citet{quadrianto2017recycling,ustun2019fairness,lohaus2020too}.
 In the direction of \citet{kamiran2012data}, there is for example \citet{AgaBeyDudLanetal18,roh2021fairbatch}.
-In the direction of \citet{hardt2016equality}, there is for example \citet{kim2019multiaccuracy}.
+In the direction of \citet{hardt2016equality}, there is for example \citet{hebert2018multicalibration}.
 
 \subsection{Fair representations continued}
 With the emergence of adversarial neural networks, interest was renewed in creating fair representations.
@@ -856,7 +858,7 @@ The classifier \(g\) ensures that \(z\) contains enough information to predict \
 The decoder \(k\) ensures that the fair representation contains enough information from \(x\)
 and can be used by other classifiers as well.
 The sign of the adversary's loss is inverted for the gradient of the encoder \(f\),
-so that encoder tries to make the adversary's predictions worse.
+so that the encoder tries to make the adversary's predictions worse.
 Encoder and adversary should converge to a point
 where the adversary can only predict the correct \(s\) from \(z\) at chance level.
 Assuming that the adversary is powerful enough to detect any trace of \(s\) in \(z\),
@@ -982,13 +984,12 @@ counterfactuals require a deeper level of causal information than interventions.
 The causal model depends on unobserved background variables \(U\),
 non-sensitive features \(x\) and a sensitive attribute \(s\).
 A predictor \(\hat{y}\) is then \emph{counterfactually fair}
-if the following equality of counterfactual probabilities holds:
+if the following equality of \emph{counterfactual probabilities} holds:
 \begin{align}
   \label{eq:counterfactual-fairness}
   P(\hat{y}_{s=i}(U) = 1|x, s=i)=P(\hat{y}_{s=j}(U) = 1|x, s=i)
 \end{align}
 where \(i, j \in \{0, 1\}\) and \(i \neq j\).
-
 The first counterfactual probability is actually not a real counterfactual:
 it is just the probability of observing \(\hat{y} = 1\)
 given the background variables \(U\), the features \(x\) and \(s=i\).
@@ -996,7 +997,7 @@ The second counterfactual probability is the probability of observing \(\hat{y} 
 given \(U\) and \(x\) and given that we had \(s=j\) instead of the actual value \(s=i\).
 In other words, the criterion demands this:
 the prediction would have been the same in the counterfactual world
-where sensitive attribute is \(j\) instead of \(i\).
+where the sensitive attribute is \(j\) instead of \(i\).
 In the counterfactual world, everything that is not causally dependent on \(s\) is held constant.
 
 % The difficult problem that Pearl solved with his theory of counterfactuals
@@ -1047,8 +1048,9 @@ Additionally, two (unfair) baseline models were trained:
 one trained on only \(x\) and the other trained on \(x\) and \(s\);
 those baseline models indeed turn out to be not counterfactually fair.
 
-The work by \citet{chiappa2019path} can be seen as a refinement of \citet{kilbertus2017avoiding}.
-Instead of disallowing influence of \emph{nodes}, this works disallows certain \emph{paths} to influence the outcome.
+\citet{chiappa2019path} have a similar approach,
+but their work by  can be seen as a refinement of \citet{kilbertus2017avoiding}.
+Instead of disallowing influence of \emph{nodes}, this work disallows certain \emph{paths} to influence the outcome.
 The path pointing directly from the sensitive attribute to the outcome is not allowed,
 but paths via certain variables are allowed.
 An example for such a permissible variable comes from the Berkeley admissions dataset~\citep{bickel1975sex}:
@@ -1084,8 +1086,9 @@ has often been seen as a thorny issue.
 For example, the labels of the ProPublica/COMPAS~\citep{angwin2016machine} dataset had been treated as unbiased ground truth in previous work,
 which the authors call into question.
 The simple change they do is evaluating fairness-enforcing models on actual \emph{unbiased} test data.
-In practice, they simulate datasets such that unbiased labels can be used for evaluation,
-which is necessary because they do not have access to (unobserved) ground truth labels.
+In practice, they use simulated datasets such that unbiased labels can be used for evaluation,
+which is in contrast to real data where we do not have access to ground truth labels,
+and cannot evaluate on them.
 The paper considers label bias and ``selection bias''
 (``selecting a subsample of the data in such a way that happens to introduce unexpected correlations,
 say, between a protected attribute and the target label''),
@@ -1093,7 +1096,7 @@ which we previously referred to as sample bias.
 In their experiments they find,
 that enforcing fairness can in some situations improve the accuracy on the (unbiased) test set.
 
-\citet{kim2019learning} also consider the problem of learning from biased data (and evaluating on unbiased data).
+\citet{kim2019learning} also consider the problem of learning from biased data (and evaluating on \emph{un}biased data).
 While they do not formulate the problem as a fairness problem,
 it is equivalent to enforcing fairness in the presence of severe sampling bias.
 Their main motivating example is the Coloured MNIST dataset;
@@ -1108,11 +1111,11 @@ The goal is then to learn a domain-independent representation.
 The main difference to previous work is an additional entropy loss term in the adversarial loss.
 
 \citet{arjovsky2019invariant} tackle a similar problem, but take a very different approach,
-which they term ``Invariant Risk Minimisation'', in contrast to the default method \acf{ERM}.
+which they term ``Invariant Risk Minimisation'', contrasted to the usual approach of \acf{ERM}.
 As with \citet{kim2019learning},
 the goal is to ignore spurious correlations that only appear in the very imperfect training set,
 but not in the test set;
-and they also perform experiments on Coloured MNIST (see above).
+and they also perform experiments on Coloured MNIST.
 They formalise the problem as one of different environments $e\in E$,
 where each environment is a different, biased view of the same underlying data distribution.
 The idea is to train a predictor that is simultaneously optimal for all the environments,
@@ -1125,7 +1128,7 @@ the goal of machine learning should be to identify natural, deep, robust structu
 instead of relying on superficial correlations.
 (This dichotomy is sometimes framed as \emph{correlation} vs \emph{causality},
 where ``causality'' takes on a very broad meaning that encompasses any kind of fundamental structure in reality.)
-Methods for invariance learning can be framed as trying to learn a more fundamental structure
+Under this view, methods for invariance learning can be framed as trying to learn a more fundamental structure
 than the dataset at first seems to show.
 By aiming to be invariant to specific environments/subgroups/domains (denoted by the variable \(s\)),
 they can be seen as making the claim that \(s\) does not represent a natural structure,
@@ -1146,7 +1149,7 @@ the authors explicitly point out the connection to traditional fairness methods.
 
 A conceptually very influential work was \citet{friedler2016possibility}.
 While this work does not explicitly present a ground-truth-centric approach to bias,
-their concepts of the construct space and the observed space are close
+their concepts of the ``construct space'' and the ``observed space'' are close
 to the idea of the (biased) training distribution and the true underlying distribution.
 
 \citet{jiang2020identifying} also formulate their problem this way:
@@ -1159,21 +1162,22 @@ that is just as biased as the training set.
 
 \citet{kallus2018residual} is another more conceptual work.
 They present an intuitive model for how sampling bias can enter a training set
-and how it can be very hard to correct for it.
+and how it can be very hard to correct for such a bias.
 The paper refers to the process as \emph{systematic censoring},
 but this is not meant to necessarily imply that this censoring was a conscious decision by some authority;
 it can also be an unintended side effect of an enacted policy.
-Systematic censoring can arise any time a screening process prevents observing the outcome for the screened-out samples.
+\emph{Systematic censoring} can arise any time a screening process prevents observing the outcome for the screened-out samples.
 For example, if, historically, a certain demographic group was screened out from receiving loans,
 then it was not possible to observe default rates for this group;
 and so any historical data on defaulting is useless for that demographic group.
 Even if a bank wants to change their policy,
-it is hard to correct for the bias in the training set because there is not good data to learn from.
-This is a prime example of a ground-truth-centric bias problem.
+it is hard to correct for the bias in the training set because there is no good data to learn from.
+This is a prime example of a ground-truth-centric bias problem,
+as defined in the beginning of the chapter.
 
 Finally, as mentioned in the beginning,
 \citet{blum2020recovering} provide a formalisation of a setting with label bias and sampling bias
-and an unbiased ground truth test set.
+and an unbiased ground-truth test set.
 They explicitly state not being affected by a fairness-accuracy trade-off,
 because the true distribution in the considered problem satisfies \acf{DP}.
 Their formalised dataset generation process has multiple steps:
@@ -1215,7 +1219,7 @@ Thus, a classifier is learned in such a way that it predominantly tries to make 
 that is, samples where the model is very confident receive a higher weight.
 The assumption is that this model learns to predict the subgroup (or spurious attribute),
 for which no labels are available.
-A second model is then trained, for which those samples are downweighted for which the first model was very confident;
+A second model is then trained, such that those samples are downweighted for which the first model was very confident;
 the hope being that by learning the ``hard'' samples, the model learns the correct relationship.
 Both \citet{HasSriNamLia18,nam2020learning} frame their methods as improving accuracy on an unbiased test set
 and do not make references to fairness metrics,

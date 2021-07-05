@@ -3,7 +3,7 @@ The following is a summary of the main contributions in this thesis.
 All presented approaches deal with dataset bias that is closely linked to a special attribute $s$.
 In terms of \citet{kamishima2012fairness}'s taxonomy (see section \secref{fair-classifiers}),
 this can be described as tackling \emph{negative legacy} that is mediated by \emph{prejudice}.
-Furthermore, the approaches all rely on some form of side information with allows us to overcome dataset bias.
+Furthermore, the approaches all rely on some form of side information which allows us to overcome dataset bias.
 This side information is always significantly easier to obtain than unbiased data.
 
 \section{Mitigating label bias with target labels}\label{sec:target-labels}
@@ -37,7 +37,7 @@ which also display a significant amount of sample bias (disadvantaged groups are
 Furthermore, in addition to the result for \ac{DP}, we also show that the proposed scheme improves \acf{EOpp}.
 
 In order to construct the target labels,
-we use side information about summary statistics for an balanced training set.
+we use side information about summary statistics for a balanced training set.
 This allows us to target a specific balanced set, instead of just any balanced set.
 In other words, rather than just enforcing \ac{DP}, the method gives control over the target rates \(P(\hat{y}=1|s)\).
 These target rates are the only parameters of the model.
@@ -47,7 +47,7 @@ such that maximising the likelihood corresponds to improving the prediction of t
 instead of the given (biased) training labels.
 
 \section{Overcoming severe sampling bias with a representative set}\label{sec:nifr}
-In the setting from the previous paper \citep{kehrenberg2020tuning},
+In the setting from the above paper \citep{kehrenberg2020tuning},
 labels were untrustworthy because they had been flipped;
 a phenomenon we referred to as \emph{label bias}.
 However, flipping labels is not the only way that labels can become untrustworthy.
