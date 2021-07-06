@@ -39,12 +39,13 @@ Furthermore, in addition to the result for \ac{DP}, we also show that the propos
 In order to construct the target labels,
 we use side information about summary statistics for a balanced training set.
 This allows us to target a specific balanced set, instead of just any balanced set.
-In other words, rather than just enforcing \ac{DP}, the method gives control over the target rates \(P(\hat{y}=1|s)\).
-These target rates are the only parameters of the model.
-The target labels represent an uncertain estimate of labels corresponding to a balanced dataset.
-Via the sum rule of probabilities, it is possible to express the model likelihood in terms of these target labels,
-such that maximising the likelihood corresponds to improving the prediction of the target labels
-instead of the given (biased) training labels.
+In other words, rather than just enforcing \ac{DP}, the method gives control over the target rates \(P(\hat{y}=1|s)\),
+which are the only fairness-hyperparameters of the model.
+The target labels \(\bar{y}\) represent an uncertain estimate of labels corresponding to a balanced dataset
+(one where \(\bar{y} \perp s\)).
+The idea is then the learn a predictor for these target labels instead of the given (biased) training labels \(y\).
+Via the sum rule of probabilities, it is possible to express the model likelihood in terms of the target labels,
+such that maximising the likelihood corresponds to improving the prediction of the target labels.
 
 \section{Overcoming severe sampling bias with a representative set}\label{sec:nifr}
 In the setting from the above paper \citep{kehrenberg2020tuning},
@@ -75,11 +76,11 @@ In other words, landscape has become a \emph{spurious attribute}.
 % As hair colour is easier to recognise with a \ac{CNN}, the labels have effectively been turned into hair colour labels.
 % In other words, hair colour has become a \emph{spurious attribute}.
 In the following, we denote the spurious attribute with \(s\),
-as it takes a role that is very similar to that of the sensitive attribute that was also denoted by \(s\).
+as it takes on a role that is very similar to that of the sensitive attribute that was also denoted by \(s\).
 However, there is a difference in emphasis between a \emph{sensitive} and a \emph{spurious} attribute:
 the former indicates that the attribute should not be used for legal or ethical reasons,
 whereas the latter can be any attribute that is associated with the class label \(y\) in an undesired way
-that leads to lower quality predictions.
+that leads to lower quality generalisation.
 
 The method, proposed in the previous paper (\chapref{ch:paper1}),
 is not able to deal with such a dataset bias as we can easily see:
@@ -92,7 +93,8 @@ then the problem can be described as one of very different acceptance rates in t
 This is the problem tackled in the previous paper,
 and yet, if we were to equalise the acceptance rates with the method there,
 the result would be very incorrect.
-The issue is that we would treat the labels as incorrect, when in truth, they are correct.
+The issue is that we would treat the labels as incorrect, when in truth, they are correct;
+the problem with the data being sampling bias.
 
 To deal with sampling bias, a different approach is needed.
 Indeed, the problem, as posed, is not solvable in the general case.
@@ -107,22 +109,23 @@ which is invariant to a sensitive attribute.
 With the invariant representation of the training set,
 a classifier can then be trained to accurately predict the class label \(y\).
 The invariant representation cannot be learned from the training set
-because there, due to the sampling bias, \(s\) and \(y\) are not distinguishable.
+because there, due to the sampling bias, \(s\) and \(y\) are not sufficiently distinguishable.
 
 A parallel to the previous paper is that the method makes use of side information
 (in this case the representative set)
 in order to overcome the bias in the training set.
 
-The method presented in \citet{kehrenberg2020nullsampling} (\chapref{ch:paper2}) is based on the idea of \emph{null-sampling},
+The method implementing this general strategy, and presented in \citet{kehrenberg2020nullsampling} (\chapref{ch:paper2}),
+is based on the idea of \emph{null-sampling},
 which refers to zeroing out part of an encoding,
 and then reconstructing the modified encoding as if it were a normal encoding.
-Before we apply null-sampling, an encoding of the input \(x\) is learned that is split into two parts:
+In order to apply null-sampling, an encoding of the input \(x\) is learned that is split into two parts:
 \(z_u\), which has no information about the spurious attribute \(s\),
-and \(z_b\), which has all information needed to reconstruct \(x\) that is not contained in \(z_u\).
+and \(z_b\), which has all the remaining information needed to reconstruct \(x\) that is not contained in \(z_u\).
 \(z_u\) is ensured to be not predictive of \(s\) via adversarial training.
 During null-sampling, \(z_b\) is zeroed out, and after decoding it,
 we obtain an invariant representation \emph{in the data domain}.
-The fact that it is in the data domain makes it interpretable.
+The fact that it is in the data domain makes it interpretable or inspectable.
 
 The described method works particularly well with \acp{INN},
 as they ensure that no information is lost that is unrelated to \(s\).
@@ -134,7 +137,7 @@ As colour is ``easier'' to learn, a neural network will learn to predict \(s\) i
 For additional experiments on the CelebA dataset and the UCI Adult Income dataset,
 we deliberately apply sampling bias to the training set and then apply our method.
 
-\section{Overcoming sampling bias with unlabelled deployment set}\label{sec:zsf}
+\section{Overcoming sampling bias with an unlabelled deployment set}\label{sec:zsf}
 A shortcoming of the approach from the previous publication \citep{kehrenberg2020nullsampling}
 is its reliance on a representative set which has labels for the spurious attribute \(s\).
 As discussed, it is necessary to make use of \emph{some} kind of side information,
@@ -146,16 +149,16 @@ Thus, requiring only an unlabelled context set would improve the applicability o
 
 The setting is very similar to the previous publication \citep{kehrenberg2020nullsampling}:
 the training set suffers from severe sampling bias, but we have access to a (mostly) unbiased \emph{deployment set}
-(similar to but not quite identical with the previously discusses \emph{representative set}).
+(similar to but not quite identical to the previously discussed \emph{representative set}).
 The idea is that the deployment set corresponds to the setting in which the model is meant to be deployed.
-The change is that this additional set may be completely unlabelled,
-but in exchange, we have some stronger requirements for the training set.
-Namely, the holes left by the sampling bias may not be so numerous
+The change from the previous setting is that this additional set may be completely unlabelled,
+but in exchange, we have some stronger requirements for the training set:
+The holes left by the sampling bias may not be so numerous
 as to make \(s\) and \(y\) completely indistinguishable.
-In the previous paper, the example of Coloured MNIST had a training set
+For example, in the previous work, the example of Coloured MNIST had a training set
 where there was a strict one-to-one mapping of colour and digit;
 but this kind of blending of \(s\) and \(y\) into one is not the focus of this paper.
-The focus is instead on a setting where the training set lacks certain combinations of \(s\) and \(y\),
+Instead, the focus is on a setting where the training set lacks certain combinations of \(s\) and \(y\),
 which results in poor predictions for these combinations on the test set (or deployment setting)
 where those combinations \emph{do} occur.
 We refer to these missing combinations as \emph{subgroup bias} or \emph{missing subgroups},
@@ -168,13 +171,14 @@ The difference between a spurious attribute and a subgroup label is that
 the former is mostly characterised via its confusion with the prediction target,
 whereas the latter refers to natural groups in the data
 which have differing levels of annotation quality which affects the classification performance on these subgroups.
-However, in both cases, the goal is to make the model output invariant to the \(s\) label.
+However, in both cases, the goal is to make the model output invariant to the \(s\) label,
+\ie the classification performance should be independent of the subgroup.
 
 As in the previous paper, the first step is to train a neural network to produce an invariant representation.
-The second step is then to train a classifier on that.
-The invariant representation is trained by performing distribution matching between the training set and the deployment set.
-Finally, the training set is transformed into the invariant representation,
-to serve as training set for the classifier.
+The second step is then to train a classifier on said representation.
+The invariant representation is trained by performing \emph{distribution matching} between the training set and the deployment set.
+% Finally, the training set is transformed into the invariant representation,
+% to serve as training set for the classifier.
 
 The distribution matching is realised with adversarial networks which compare batches of samples,
 in order to try to distinguish data drawn from the training set and the deployment set.
@@ -186,6 +190,6 @@ then distribution matching will learn to change digit shapes.
 Balancing batches from the training set is easily possible with the available labels,
 but those are not available for the deployment set,
 so we use clustering techniques to identify the different groups in the deployment set,
-and then draw samples for the batches at equal rate from all clusters.
+and then draw samples for the batches at an equal rate from all clusters.
 It is important to note here that imperfections in the clustering are not a problem
-as long as the show on average the intended difference between training and deployment set.
+as long as the batches show on average the intended difference between training and deployment set.

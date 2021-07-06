@@ -115,7 +115,7 @@ We discuss the suitability of the different fairness criteria in the discussion 
 There are many existing models for enforcing demographic parity and equalised odds
 \citep{creager2019flexibly,AgaBeyDudLanetal18,calders2009building,kamishima2012fairness,zafar2017fairnesstreatment,zafar2017fairnessconstraints}.
 However, these existing approaches to balancing accuracy and fairness rely on intermediate, unintuitive control parameters such as allowable constraint violation $\epsilon$ (e.g. $0.01$) in \citet{AgaBeyDudLanetal18}, or a covariance threshold $c$
-(e.g. $0$ that is controlled by another parameters $\tau$ and $\mu$ -- $0.005$ and $1.2$ -- to trade off this threshold and accuracy)
+(e.g. $0$ that is controlled by other parameters $\tau$ and $\mu$ -- $0.005$ and $1.2$ -- to trade off this threshold and accuracy)
 in \citet{zafar2017fairnesstreatment}.
 This is related to the fact that many of these approaches embed fairness criteria as \emph{constraints} in the optimisation procedure
 \citep{DonOneBenShaetal18,quadrianto2017recycling,zafar2017fairnesstreatment,zafar2017fairnessconstraints}.
@@ -146,7 +146,7 @@ We focus on the case where $s$ and $y$ are binary.
 We assume that a positive label $y=1$ corresponds to a positive outcome for an individual -- for example, being accepted for a loan.
 %
 %
-\emph{Group fairness} balances a certain condition between groups of individuals with different sensitive attribute, $s$ versus $s\sp{\prime}$. 
+\emph{Group fairness} balances a certain condition between groups of individuals with different sensitive attributes, $s$ versus $s\sp{\prime}$. 
 %
 The term $\hat{y}$ below is the prediction of a machine learning model that,
 in most works, uses only non-sensitive attributes $x$.
@@ -307,7 +307,7 @@ The relation presented in \eqref{eq:etaeta} allows us to formulate a likelihood
 that targets $\bar{\eta}_s(x)$ while only having access to the imbalanced labels $y$.
 As we only have access to $y$, $P(y|x,s,\theta)$ is the likelihood to optimise.
 It represents the probability that $y$ is the imbalanced label,
-given the input $x$, the sensitive attribute $s$ that available in the training set
+given the input $x$, the sensitive attribute $s$ that is available in the training set
 and the model parameters $\theta$ for a model that is targeting $\bar{y}$.
 Thus, we get
 \begin{align}
@@ -497,7 +497,7 @@ but this is of less interest as this case does not appear in our experiments.
 
 The previous statements about $t_s$ do not directly translate into observable quantities like accuracy if the Tsybakov condition is not satisfied,
 and even if it is satisfied, the usefulness depends on the constants $C$ and $\lambda$.
-Conversely, the following theorem makes \emph{generally} applicable statement about the accuracy that can be achieved.
+Conversely, the following theorem makes a \emph{generally} applicable statement about the accuracy that can be achieved.
 Before we get to the theorem, we introduce some notation.
 We are given a dataset $\mathcal{D} = {\{(x_i, y_i)\}}_i$,
 where the $x_i$ are vectors of features and the $y_i$ the corresponding labels.

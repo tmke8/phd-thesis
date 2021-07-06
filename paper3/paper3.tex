@@ -130,7 +130,7 @@ Machine learning models are typically trained to optimise global metrics such as
 Hidden stratification arises when the trained models have high average performance over classes but exhibit highly variable performance across different hidden subgroups.
 %
 In this paper, we consider the setting where the hidden stratification has zero class-labelled data for some subgroups. 
-As an illustration, we have digit images labelled as "two" or "four", each class comprises "green" and "purple" subgroups.
+As an illustration, we have digit images labelled as ``two'' or ``four'', each class comprises ``green'' and ``purple'' subgroups.
 %
 Challengingly, in the training data, twos can be any colour, but all fours are green. 
 %
@@ -138,7 +138,7 @@ Without additional knowledge, it is impossible to directly control the discrepan
 %
 We develop a disentanglement algorithm that decomposes a data representation into a component that captures the subgrouping factors and a component that is invariant to them based on unlabelled (deployment) data. 
 %
-We cluster the unlabelled data, and equalise the cluster sizes to form "perfect bags" with respect to class and subgroup information.
+We cluster the unlabelled data, and equalise the cluster sizes to form ``perfect bags'' with respect to class and subgroup information.
 %
 We cast the problem of disentangling as one of distribution matching and propose an adversarial learning approach.
 %
@@ -153,7 +153,7 @@ We evaluate our approach on several classification benchmarks and show that it i
 
 \section{Introduction}%
 \label{sec:introduction}
-Machine learning has been deployed in safety-critical applications such as medicine (e.g. \citep{DunYiLanReetal19}), and socially important contexts such as the allocation of healthcare, education, and credit (\eg\ \citep{HurAde17,RagBarKleLev20}). 
+Machine learning has been deployed in safety-critical applications such as medicine \citep[e.g.][]{DunYiLanReetal19}, and socially important contexts such as the allocation of healthcare, education, and credit \citep[e.g.][]{HurAde17,RagBarKleLev20}.
 %
 Efficiency can be improved, costs can be reduced, and personalisation of services and products can be greatly enhanced -- these are some of the drivers for the widespread development and deployment of machine learning algorithms. 
 %
@@ -170,7 +170,7 @@ Algorithms such as classifiers, however, are trained from large amount of labell
 In many real-world classification tasks, each labelled class consists of multiple semantically distinct subclasses, or subgroups.
 For example, the ``dog'' class label can have finer-grained intra-class variations, such as ``dog indoor'' and ``dog outdoor''.
 %
-This finer-grained subgrouping information is typically unavailable/unlabelled (e.g. \citep{SohDunAngGuetal20,nam2020learning}).
+This finer-grained subgrouping information is typically unavailable/unlabelled \citep[e.g.][]{SohDunAngGuetal20,nam2020learning}.
 %
 The standard training process brings about two inter-connected challenges: a) classifiers often under-perform on important hidden subgroups (\emph{hidden stratification}) \citep{RayDunCarRe20,SohDunAngGuetal20};
 and b) \emph{systematic bias}~\citep{kallus2018residual} affects whether or not entire collections of data points appear in the training dataset,
@@ -392,7 +392,7 @@ In the experimental section, we use metrics based on these equalities to quantif
 \paragraph{Perfect bag.}
 We call a sampled set for which $y\perp s$ holds, a perfect bag \citep{chouldechova2017fair,kleinberg2016inherent}.
 Such sets are also very desirable when training algorithmically fair classifiers
-(see the \emph{sampling} method in \citet{kamiran2012data}).
+\citep[see the \emph{sampling} method in][]{kamiran2012data}.
 %
 %If we have access to perfect bags, we could equalise true positive/negative rates (\eqref{eq:TPR}) and also equalise positive/negative predicted values (\eqref{eq:PPV}) for all demographic groups.
 %This can be shown by using the sum and product rule of conditional probabilities, e.g. \citet{KanRotZia19}.
@@ -723,7 +723,7 @@ When clustering with the training labels (such as with the rank statistics appro
 
 \paragraph{Clustering guarantees.}
 By leveraging the feature space of deep models, previous research has shown that semantically meaningful clusters can be discovered without the need for ground-truth annotations
- (for example \citet{RayDunCarRe20,GanVanGeoProetal20,SohDunAngGuetal20,HanRebEhrVedetal20}). 
+\citep[for example][]{RayDunCarRe20,GanVanGeoProetal20,SohDunAngGuetal20,HanRebEhrVedetal20}.
 \citet{SohDunAngGuetal20} recently provided a ``clustering guarantee'' when assuming access to ground truth class labels $y$ and using clustering within each class to generate approximate subgroups $s$.  
 %
 Even with infinite data, accurate identification of the subgroups is unfortunately impossible. 

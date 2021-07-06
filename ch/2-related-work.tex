@@ -410,7 +410,7 @@ while at the same time letting the features still carry the information required
 This is different from \citet{kamiran2009classifying} where the dataset was transformed as well,
 but there, the change was to the \emph{labels}.
 The idea of transforming the features assumes that the main problem with the data
-are unwanted dependencies between $s$ and the other features (called \emph{latent prejudice} in \citet{kamishima2012fairness}),
+are unwanted dependencies between $s$ and the other features \citep[called \emph{latent prejudice} in ][]{kamishima2012fairness},
 and that the training labels are mostly unproblematic.
 The intended result is then that classifiers trained on the transformed data will make $s$-invariant predictions `by default',
 because they do not know about $s$.
@@ -645,7 +645,7 @@ which could be used to target \emph{individual fairness}.
 In this ``oblivious'' setting, the authors define their fairness criteria in terms of statistical independence:
 \acf{EOdds} refers to the case where \(\hat{y}\) and \(s\) are independent conditional on \(y\).
 This is equivalent to the true positive rate and the false positive rate being the same for all groups.
-\ac{EOpp} is, as mentioned above,
+\Acf{EOpp} is, as mentioned above,
 the case where just the true positive rate is the same for all groups.
 This means that \(\hat{y}\) and \(s\) are independent conditional on \(y=1\).
 One of the main advantages of these definitions compared to \ac{DP} is that a perfect predictor satisfies them on any evaluation set.
@@ -754,7 +754,7 @@ how well the class label \(y \in \{0, 1\}\) and the predicted score for a data p
 \end{align}
 Subtracting \(\tfrac{1}{2}\) is necessary to centre the values around \(0\).
 The proxy for \ac{EOdds} is then the covariance between the sensitive attribute and \(g\).
-\(g\) can also be modified to only take into account cases with \(y=1\) which corresponds to enforcing \acf{EOpp.
+\(g\) can also be modified to only take into account cases with \(y=1\) which corresponds to enforcing \acf{EOpp}.
 The paper contains experiments on the ProPublica/COMPAS dataset~\citep{angwin2016machine}.
 The task for this dataset is to predict
 whether a criminal offender committed another misconduct or felony within two years,
@@ -977,7 +977,7 @@ A contemporary paper by \citet{kusner2017counterfactual} approaches the problem 
 In this paper, a new fairness criterion which they call ``counterfactual fairness''
 is defined making use of causal reasoning.
 For the definition, they assume access to a causal model
-that can be used to compute \emph{counterfactuals} (for example a structural equation model \citep{kaplan2008structural}).
+that can be used to compute \emph{counterfactuals} \citep[for example a structural equation model;][]{kaplan2008structural}.
 This is in contrast to \citet{kilbertus2017avoiding} who relied on just \emph{interventions}.
 (According to Pearl's causal hierarchy \citep{pearl2019seven},
 counterfactuals require a deeper level of causal information than interventions.)
