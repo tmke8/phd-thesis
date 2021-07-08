@@ -193,3 +193,66 @@ so we use clustering techniques to identify the different groups in the deployme
 and then draw samples for the batches at an equal rate from all clusters.
 It is important to note here that imperfections in the clustering are not a problem
 as long as the batches show on average the intended difference between training and deployment set.
+
+% \section{Claims and contributions}%
+\section{List of publications and author contributions}%
+\label{sec:claims-contributions}
+This thesis is based on 3 publications, corresponding to \rangechapref{ch:paper1}{ch:paper3}.
+The first one is concerned with \emph{label bias} and the other two with \emph{sampling bias}.
+
+\subsection{Publication 1}
+\begin{refsection}[allreferences]
+    \nocite{kehrenberg2020tuning}
+    \printbibliography[heading=none]
+\end{refsection}
+\noindent A shorter version was published as a workshop paper:
+\begin{refsection}[allreferences]
+    \nocite{kehrenberg2018interpretable}
+    \printbibliography[heading=none]
+\end{refsection}
+\noindent\textsc{Contributions:}
+\begin{itemize}
+  \item I conceived the idea of using Target Labels to target a balanced set.
+    I developed the proof from a starting point that my supervisor pointed me to.
+    I wrote all of the code dealing with the modified loss function and nearly all of the remaining code as well.
+    I ran most of the experiments and wrote all of the methods section and most of the remaining text as well.
+  \item Z. Chen was a discussion partner and helped run the experiments, and wrote some parts of the code.
+  \item N. Quadrianto suggested the initial direction of the work, was a discussion partner,
+    and helped write the introduction and related work.
+\end{itemize}
+
+\subsection{Publication 2}
+\begin{refsection}[allreferences]
+    \nocite{kehrenberg2020nullsampling}
+    \printbibliography[heading=none]
+\end{refsection}%
+\noindent\textsc{Contributions:}
+\begin{itemize}
+  \item I conceived the idea of using an \acf{INN} and a representative set to learn an invariant representation.
+    I wrote a large part of the code, and ran about half the experiments. I wrote a significant part of the text.
+  \item M. Bartlett developed a large part of the tricks needed for training the \ac{INN} successfully.
+    He wrote a significant part of the code, and of the text.
+  \item O. Thomas helped with writing the code and with running the experiments.
+  \item N. Quadrianto gave feedback on the progress and suggested directions to explore.
+\end{itemize}
+
+\subsection{Publication 3}
+\begin{refsection}[allreferences]
+    \nocite{kehrenberg2020zeroshot}
+    \printbibliography[heading=none]
+\end{refsection}%
+\noindent\textsc{Contributions:}
+\begin{itemize}
+  \item I developed the idea of distribution matching as an extension of the previous paper.
+    In addition, I tried to achieve similar goals by applying clustering to an unlabelled auxiliary set,
+    with supervision from the labelled training set.
+    I wrote all of the initial implementation of the method, and a large part of the later refined implementation.
+    I ran the majority of the experiments.
+  \item V. Sharmanska developed the original link to a fairness problem
+    and wrote parts of the introduction and related work and contributed to other sections.
+  \item M. Bartlett introduced the idea of batches-of-bags.
+    He also improved the \ac{NN} architectures of the encoder and the discriminator,
+    ran experiments, wrote the sections on architecture and contributed to other parts of the paper.
+  \item N. Quadrianto suggested how to combine the two research directions that I had into a coherent whole.
+    He also gave general feedback and suggested directions to explore.
+\end{itemize}

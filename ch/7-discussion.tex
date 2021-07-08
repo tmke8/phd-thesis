@@ -17,6 +17,30 @@ as close to a one-to-one mapping of \(y\) and \(s\) as in the second approach.
 From these simple starting points, an invariant representation is learned
 that can be used to train unbiased classifiers.
 
+\section{data is bad}
+Now, one possible objection here is:
+if those datasets are of such poor quality,
+then maybe we just should not train any \ac{ML} model on these and should not use them to make automated decisions?
+While this question is mostly beyond the scope of this document, let me offer some thoughts on this:
+It is true that even after the application of de-biasing techniques,
+the resulting models still should not be fully trusted,
+but they can still ease the burden of checking everything manually;
+similar to an email spam filter which is not perfect, but still very useful.
+Or, put another way, it is always important to check what the realistic alternative is;
+we should not compare a model to a non-existing perfect ideal, but to the actual solution that would be used instead.
+One could imagine a hybrid approach where an automated system makes preliminary decisions,
+but random samples are reviewed by humans and decisions can always be challenged.
+Ideally, the model itself would tell us about decisions it is uncertain about.
+
+Moreover, two of the three methods presented in this thesis require access to (unlabelled) \emph{unbiased} data,
+which is used during the training process.
+The remaining method requires summary statistics of the unbiased target dataset.
+So, the criticism that we are only learning from biased data does not apply here.
+This should allow us to be more confident in the predictions produced by those methods,
+because the methods learn from additional, unbiased information.
+
+\section{resume previous text}
+
 While this by no means covers \emph{all} possible biases,
 it contributes to a growing literature that tries to tackle this problem.
 One could ask if there is one method that is able to cover all possible dataset biases,
