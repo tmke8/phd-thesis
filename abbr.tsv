@@ -6,7 +6,7 @@ Proc. of WWW | {WWW} '.*: The Web Conference .*
 International Conference on Learning Representations (ICLR) | .* International Conference on Learning Representations,
 International Conference on Machine Learning  (ICML) | .*Proceedings of the .* International Conference on Machine Learning.*
 International Conference on Machine Learning (ICML) | Machine Learning, Proceedings of the .* International Conference.*
-{AAAI} Conference on Artificial Intelligence | Proceedings of the .*AAAI.* Conference on Artificial Intelligence
+{AAAI} Conference on Artificial Intelligence | .*AAAI. Conference on Artificial Intelligence
 {ACM} {SIGKDD} International Conference on Knowledge Discovery | The .* \{ACM\} \{SIGKDD\} International Conference on Knowledge Discovery
 {IEEE} Conference on Computer Vision and Pattern Recognition  ({CVPR}) | .*IEEE.* Computer Society Conference on Computer Vision and Pattern Recognition.*
 {IEEE} Conference on Computer Vision and Pattern Recognition ({CVPR}) | .*Conference on Computer Vision and Pattern Recognition
