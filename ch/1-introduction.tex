@@ -137,8 +137,14 @@ Just like \ac{DP},
 the fairness definitions \ac{EOpp} and \ac{EOdds} can help us evaluate
 how much a classifier is affected by the bias in the training set.
 
-\section{Connection to other fields}
-The thesis is mostly written from the perspective of algorithmic  fairness, but it touches on other fields as well, like \emph{domain shift} and \emph{causality}.
+\section{Relations to other fields and clarification of terms}
+\subsection{aka: Isn't this thesis actually about XY instead of fairness?}
+The thesis is mostly written from the perspective of algorithmic fairness,
+but it touches on other fields as well, like \emph{domain shift} and \emph{causality}.
+Furthermore, the thesis makes use of concepts like \emph{transferable representations}
+and \emph{interpretability}.
+I summarise the areas here and discuss their relevance to the presented work.
+
 A domain shift is, in general, a change in the data distribution between the training set and the deployment setting;
 one often talks of a ``source domain'' and a ``target domain''.
 Typically, this leads to poor performance of the \ac{ML} system in the deployment setting,
@@ -150,9 +156,23 @@ whereas in the biased-data setting (as defined in this thesis), the distribution
 Furthermore, the field of algorithmic fairness is characterised by a focus on special attributes (sensitive attributes) that should not be used to make predictions;
 a focus that the problem of domain shift lacks.
 Nevertheless, methods developed for domain adaptation can often be adapted to the problem of biased data:
-A good amount of the prior work discussed in \chapref{ch:related-work} was motivated by domain adaptation instead of fairness.
+A not insignificant amount of the prior work discussed in \chapref{ch:related-work} was motivated by domain adaptation instead of fairness.
 Similarly, it should be possible to adapt fairness methods to tackle domain shift,
 however, this has rarely happened.
+
+A related area is \emph{transfer learning},
+which is usually summarised as:
+learning on one task and transferring the knowledge to a different task.
+The transfer can happen without any additional training (zero shot),
+or, more commonly, with fine-tuning on a small (few shot) or large amount of additional data.
+Transfer learning is not a direct goal of this thesis,
+but learning \emph{transferable representations} is,
+which is a much narrower goal.
+In the context of this thesis,
+transferable representations are understood to be representations of input features
+that are (ideally) suitable for \emph{all} tasks that the original data is suitable for,
+except for predicting the sensitive\slash spurious attribute \(s\).
+This is in contrast to representations that are only useful for predicting one specific target.
 
 The other closely related topic is \emph{causality}.
 The argument that a solution to the dataset bias problem involves causality goes as follows:
@@ -182,7 +202,14 @@ and are not helpful for discovering such structures.
 To work properly, they need access to either Bayesian networks or structural equation models.
 Neither of which the methods presented in this thesis can provide.
 
-Finally, I will mention transfer learning and terms like interpretability and explainability.
+Finally, a note on the terms ``interpretability'' and ``explainability'' in the context of \ac{ML} and artificial intelligence:
+many different definitions have been proposed \citep{barredoarrieta2020xai},
+but no consensus has emerged yet on what these terms should mean.
+In the context of this thesis, the term ``interpretable'' is applied to information,
+and is taken to mean that these pieces of information are provided in a form that is readily understandable and inspectable by humans.
+In this sense, a visualisation of an embedding or representation as an image in the original data domain
+is interpretable,
+but a 100-dimensional vector of floating point number is not.
 
 \section{Structure of document}%
 \label{sec:thesis-structure}
