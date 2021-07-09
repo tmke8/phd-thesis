@@ -1,0 +1,18 @@
+Proc. of SIGMOD | Proceedings\s*of\s*the\s*.*\s*International\s*Conference\s*on\s*Management\s*of\s*Data,\s*{SIGMOD}\s*Conference
+Proc. of NAACL-HLT | Proceedings\s*of\s*the\s*.*\s*Conference\s*of\s*the\s*North\s*{A}merican\s*Chapter\s*of\s*the\s*Association\s*for\s*Computational\s*Linguistics:\s*Human\s*Language\s*Technologies
+Proc. of EMNLP | Proceedings\s*of\s*the\s*.*\s*Conference\s*on\s*Empirical\s*Methods\s*in\s*Natural\s*Language\s*Processing
+Proc. of ACL | Proceedings\s*of\s*the\s*.*\s*Annual\s*Meeting\s*of\s*the\s*Association\s*for\s*Computational\s*Linguistics
+Proc. of WWW | {WWW}\s*'.*:\s*The\s*Web\s*Conference\s*.*
+International Conference on Learning Representations (ICLR) | .*\s*International\s*Conference\s*on\s*Learning\s*Representations,
+International Conference on Machine Learning (ICML) | .*roceedings\s*of\s*the\s*.*\s*International\s*Conference\s*on\s*Machine\s*Learning.*
+International Conference on Machine Learning (ICML) | Machine\s*Learning,\s*Proceedings\s*of\s*the\s*.*\s*International\s*Conference.*
+International Conference on Machine Learning (ICML) | Proceedings of the .+ International Conference on Machine Learning
+{AAAI} Conference on Artificial Intelligence | Proceedings\s*of\s*the\s*.*AAAI.*\s*Conference\s*on\s*Artificial\s*Intelligence
+{ACM} {SIGKDD} International Conference on Knowledge Discovery | The\s*.*\s*{ACM}\s*{SIGKDD}\s*International\s*Conference\s*on\s*Knowledge\s*Discovery
+{IEEE} Conference on Computer Vision and Pattern Recognition ({CVPR}) | .*IEEE.*\s*Computer\s*Society\s*Conference\s*on\s*Computer\s*Vision\s*and\s*Pattern\s*Recognition.*
+Proc. of ICDE | .*International\s*Conference\s*on\s*Data\s*Engineering.*
+Proc. of SIGIR | .*International\s*{ACM}\s*{SIGIR}.*
+TKDE | IEEE\s*Transactions\s*on\s*Knowledge\s*and\s*Data\s*Engineering
+Advances in Neural Information Processing Systems (NIPS) | .*\s*Annual\s*Conference\s*on\s*Neural\s*Information\s*Processing\s*Systems\s*200.*
+Advances in Neural Information Processing Systems (NIPS) | .*\s*Annual\s*Conference\s*on\s*Neural\s*Information\s*Processing\s*Systems\s*201[0-7],\s*.*
+Advances in Neural Information Processing Systems (NeurIPS) | .*\s*Annual\s*Conference\s*on\s*Neural\s*Information\s*Processing\s*Systems\s*201[89],\s*.*
