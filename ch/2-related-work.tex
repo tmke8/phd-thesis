@@ -1152,6 +1152,27 @@ which we previously referred to as sample bias.
 In their experiments they find,
 that enforcing fairness can in some situations improve the accuracy on the (unbiased) test set.
 
+\begin{figure}[tp]
+  \centering
+  \begin{subfigure}[b]{0.4\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/cmnist-train.png}
+    \caption{Training set: one-to-one mapping between colour and digit class.}%
+    \label{fig:literature-cmnist-train}
+  \end{subfigure}
+  \quad\quad
+  \begin{subfigure}[b]{0.4\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/cmnist-test.png}
+    \caption{Test set: random assignment of colours.}%
+    \label{fig:literature-cmnist-test}
+  \end{subfigure}
+  \caption{%
+    A typical example of the Coloured MNIST dataset.
+  }%
+  \label{fig:literature-cmnist}
+\end{figure}
+
 \citet{kim2019learning} also consider the problem of learning from biased data (and evaluating on \emph{un}biased data).
 While they do not formulate the problem as a fairness problem,
 it is equivalent to enforcing fairness in the presence of severe sampling bias.
@@ -1159,6 +1180,7 @@ Their main motivating example is the Coloured MNIST dataset;
 a dataset derived from the MNIST dataset~\citep{lecun1994mnist}.
 In this dataset, digits are randomly coloured in the test set,
 but in the training set there is a one-to-one correspondence between digit class and colour.
+(See \figref{fig:literature-cmnist} for an example of this dataset.)
 A na\"ive classifier will learn to predict colour instead of digit class.
 The proposed method is very similar to \citet{ganin2016domain} and \citet{edwards2016censoring},
 if we think of the colours as forming different domains
@@ -1183,7 +1205,7 @@ As the authors point out,
 the goal of machine learning should be to identify natural, deep, robust structures in reality,
 instead of relying on superficial correlations.
 (This dichotomy is sometimes framed as \emph{correlation} vs \emph{causality},
-where ``causality'' takes on a very broad meaning that encompasses any kind of fundamental structure in reality.)
+where ``causality'' takes on a very broad meaning that encompasses any kind of fundamental structure in reality; see also the discussion of \emph{causality} in \chapref{ch:introduction}.)
 Under this view, methods for invariance learning can be framed as trying to learn a more fundamental structure
 than the dataset at first seems to show.
 By aiming to be invariant to specific environments/subgroups/domains (denoted by the variable \(s\)),

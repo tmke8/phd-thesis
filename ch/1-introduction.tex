@@ -76,6 +76,20 @@ Instead, sampling depends on $s$ and $y\,$;
 \eg, there might be almost no samples of $s=0$ and $y=1$ in the training set.
 The effect is that \ac{ML} models are tempted to take shortcuts and use $s$ as a shorthand for $y$.
 
+\Figref{fig:dataset-bias-overview} shows a visual representation of the two kinds of dataset bias discussed here.
+
+\begin{figure}[tp]
+  \centering
+  \includegraphics[width=\textwidth]{figures/dataset_bias_overview_vertical.pdf}
+  \caption{%
+    Schematic representation of label bias and sampling bias.
+    \textsc{Top}: the label bias changes positive labels to negative labels for \(s=0\),
+    and in the opposite direction for \(s=1\) (though this not always the case).
+    \textsc{Bottom}: the sampling bias \emph{intercepts} samples with a positive label from \(s=0\).
+  }%
+  \label{fig:dataset-bias-overview}
+\end{figure}
+
 The overall goal in all cases is to make the classifier invariant to $s$.
 We can measure the invariance to $s$ directly by computing \emph{fairness metrics}
 for the predictions of the classifier.

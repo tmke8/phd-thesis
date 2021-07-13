@@ -20,6 +20,18 @@ to implicitly learn from a \emph{balanced} dataset,
 in which \(y\perp s\) holds, and which thus satisfies \acf{DP}.
 This falls under the area of \emph{fair classifiers} discussed in \secref{fair-classifiers}
 
+\begin{figure}[tp]
+  \centering
+  \includegraphics[width=0.9\textwidth]{figures/label_bias.pdf}
+  \caption{%
+    A diagram of a simple case of label bias, where both the class label \(y\) and the sensitive attribute \(s\) are binary.
+    On the left, we have the ideal (possibly fictional) dataset with the target labels \(\bar{y}\),
+    where the proportion of positive outcomes is the same for both demographic groups;
+    and on the right, the training labels, for which the proportions are \emph{not} the same.
+  }%
+  \label{fig:label-bias-overview}
+\end{figure}
+
 We can interpret the contributions of this publication in two ways.
 The first corresponds to the definition-centric view of dataset bias,
 and the second to the ground-truth-centric view.
@@ -47,7 +59,7 @@ This allows us to target a specific balanced set, instead of just any balanced s
 In other words, rather than just enforcing \ac{DP}, the method gives control over the target rates \(P(\hat{y}=1|s)\),
 which are the only fairness-hyperparameters of the model.
 The target labels \(\bar{y}\) represent an uncertain estimate of labels corresponding to a balanced dataset
-(one where \(\bar{y} \perp s\)).
+(one where \(\bar{y} \perp s\); see also \figref{fig:label-bias-overview}).
 The idea is then the learn a predictor for these target labels instead of the given (biased) training labels \(y\).
 Via the sum rule of probabilities, it is possible to express the model likelihood in terms of the target labels,
 such that maximising the likelihood corresponds to improving the prediction of the target labels.
@@ -151,9 +163,10 @@ but also does not suffer from the increased training cost as much.
 \acp{VAE} are similar to \acp{INN}
 in that their encoding conforms to a specific probability distribution,
 from which we can sample our null-samples.
-The choice between the two presented variants comes down
-to whether the user is willing to trade higher training costs for higher-quality results.
-However, the key element is any kind encoder -- producing a split-encoding --
+The choice between the two presented variants is determined
+by whether the user is willing to accept higher training costs
+for a lower probability of losing information needed for any prediction tasks.
+However, the key element is simply any kind encoder -- producing a split-encoding --
 whose output can be subjected to adversarial training,
 and other kinds of encoders will potentially work as well.
 
