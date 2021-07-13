@@ -1,34 +1,3 @@
-\begin{figure*}[!htb]
-    \centering
-    \subfloat[Samples from the cMNIST training set, $\sigma=0$.]{%
-        \scalebox{0.3}{\includegraphics[width=\textwidth]{paper2/Images/cmnist/cflow_original_task_x_scale_0.png}}%
-        \label{fig:cflow_cmnist_task_train}
-    }
-    % \hfill
-    % \subfloat[Samples from the cMNIST test set with $\sigma=0.02$.]{%
-    %     \scalebox{0.225}{\includegraphics[width=\textwidth]{./Images/cmnist/cflow_pretrain_x.png}}%
-    %     \label{fig:cflow_cmnist_pretrain}
-    % }
-    \hfill
-    \subfloat[$x_u$ null-samples from the cFlow model.]{%
-        \scalebox{0.3}{\includegraphics[width=\textwidth]{paper2/Images/cmnist/cflow_task_xy_scale_0.png}}%
-        \label{fig:cflow_cmnist_y}
-    }
-    \hfill
-    \subfloat[$x_b$ null-samples from the cFlow model.]{%
-        \scalebox{0.3}{\includegraphics[width=\textwidth]{paper2/Images/cmnist/cflow_task_xs_scale_0.png}}%
-        \label{fig:cflow_cmnist_s}
-    }
-    \caption{
-        Sample images from the coloured MNIST dataset problem with $10$ predefined mean colours.
-        (a): Images from the spuriously correlated subpopulation where colour is a reliable signal of the digit class-label.
-        (b-c): Results of running our approach realised with cFlow on the cMNIST dataset.
-        The model learns to retain the shape of the digit shape while removing the relationship with colour.
-        A downstream classifier is now less prone to exploiting correlations between colour and the digit label class.
-    }\label{fig:cmnist}
-\end{figure*}
-
-
 \section{Background}\label{sec:background}
 % \noindent We frame our approach in the context of relevant literature on the interrelated problems of fair representation learning and learning representations free of spurious correlations.
 % The background is far too long - we also need to touch on the interpretability literature

@@ -36,6 +36,58 @@
 % The following is a review of the literature on Fairness in Machine Learning.
 % Several different approaches to and definition of Fairness are presented.
 % The focus is on identifying the major trends in the field from the beginning.
+%
+\begin{figure}[tbp]
+  \resizebox{\textwidth}{!}{
+    \begin{forest}
+    forked edges,
+    for tree={rounded corners, edge+={darkgray, line width=1pt}, draw=darkgray, align=center, anchor=children},
+    before packing={where n children=3{calign child=2, calign=child edge}{}},
+    before typesetting nodes={where content={}{coordinate}{}},
+    where level<=1{line width=2pt}{line width=1pt},
+    [methods for algorithmic fairness
+      [data de-biasing
+        [dropping\\features]
+        [fair repre-\\sentations
+          [non-parametric
+            [HSIC]
+            [MMD]
+          ]
+          [adversarial\\networks
+            [sample-wise, draw=blue]
+            [set-wise, draw=blue]
+          ]
+        ]
+      ]
+      [post-hoc methods, line width = 2pt
+        [separate\\models]
+        [threshold\\shifting]
+      ]
+      [
+        [change to train-\\ing procedure, line width = 2pt
+          [modified\\sampling]
+          [
+            [change to loss
+              [change of\\optimisation target, draw=blue]
+              [constrained\\optimisation]
+            ]
+          ]
+          [loss\\reweighting]
+        ]
+      ]
+    ]
+    \end{forest}
+  }
+  \caption{%
+    Taxonomy of fairness methods.
+    The three categories with blue borders are those categories
+    to which the proposed models in this thesis belong (see \chapref{ch:content} for details).
+    This diagram does not show all the axes along which methods can vary.
+    In particular, it does not distinguish between different intended \emph{settings}.
+  }%
+  \label{fig:fairness-taxonomy}
+\end{figure}%
+%
 \section{Two views of the dataset bias problem}\label{two-views-of-the-dataset-bias-problem}
 As alluded to in the introduction,
 there is a divide in the relevant literature in how the problem of dataset bias is approached.
@@ -78,6 +130,10 @@ a method developed for one of them can often be adapted to the other as well.
 
 The works discussed in the beginning of this chapter are mostly taking the definition-centric view.
 Towards the end, I discuss more works with the other viewpoint.
+
+\Figref{fig:fairness-taxonomy} provides a high-level overview
+of one possible categorisation of the methods presented here.
+It is meant as a rough guide through the chapter.
 
 \section{Foundations of algorithmic fairness}\label{sec:foundations}
 This section discusses the publications that lay the ground work for the algorithmic fairness literature.

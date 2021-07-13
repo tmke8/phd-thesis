@@ -112,32 +112,3 @@ We call our model \emph{NIFR} (\emph{N}ull-sampling for \emph{I}nterpretable and
 % which we expect to be common not only in fairness problems but machine learning problems more broadly,
 demonstrating an approach based on transferring information from a more diverse representative set,
 with guarantees of the non-spurious information being preserved.
-
-\begin{figure*}[tb]
-  \centering
-  \subfloat[Original images.]{%
-      \scalebox{0.3}{\includegraphics[width=\textwidth]{paper2/Images/celeba/train_original_x_2.png}}%
-      \label{fig:cflow_celeba_original_x}
-  }
-  \hfill
-  \subfloat[$\bm{x}_u$ null-samples from the cFlow model.]{%
-      \scalebox{0.3}{\includegraphics[width=\textwidth]{paper2/Images/celeba/train_reconstruction_y_2.png}}%
-      \label{fig:cflow_celeba_recon_y}
-  }
-  \hfill
-  \subfloat[$\bm{x}_b$ null-samples from the cFlow model.]{%
-      \scalebox{0.3}{\includegraphics[width=\textwidth]{paper2/Images/celeba/train_reconstruction_s_2.png}}%
-      \label{fig:cflow_celeba_recon_s}
-  }
-  \caption{
-    CelebA null-samples learned by our cFlow model, with gender as the sensitive attribute.
-    (a) The original, untransformed samples from the CelebA dataset
-    (b) Reconstructions using only information unrelated to $s$.
-    (c) Reconstruction using only information related to $\neg s$.
-    The model learns to disentangle gender from the non-gender related information.
-    % Attributes such as \emph{makeup} and \emph{hair length} are also often modified in the process due to inherent correlations between them and the sensitive attribute, which the intepretability of our representations allows us to easily identify.
-    Note that some attributes like skin tone seem to change along with gender due to the correlation between the attributes.
-    This is especially visible in images (1,1) and (3,2). Only because our representations are produced in the data-domain can we easily spot such instances of entanglement.
-  }%
-  \label{fig:celeba_cflow}
-\end{figure*}

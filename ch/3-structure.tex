@@ -6,6 +6,11 @@ this can be described as tackling \emph{negative legacy} that is mediated by \em
 Furthermore, the approaches all rely on some form of side information which allows us to overcome dataset bias.
 This side information is always significantly easier to obtain than unbiased data.
 
+% - suddenly images?
+% - (explain in the linking chapter)
+% - is it specific to images?
+% - explain how it works for tabular data
+
 \section{Mitigating label bias with target labels}\label{sec:target-labels}
 The first work is \citet{kehrenberg2020tuning} (\chapref{ch:paper1})
 which is predominantly concerned with label bias.
@@ -46,6 +51,15 @@ The target labels \(\bar{y}\) represent an uncertain estimate of labels correspo
 The idea is then the learn a predictor for these target labels instead of the given (biased) training labels \(y\).
 Via the sum rule of probabilities, it is possible to express the model likelihood in terms of the target labels,
 such that maximising the likelihood corresponds to improving the prediction of the target labels.
+
+The method is validated with experiments
+on the UCI Adult Income dataset and the ProPublica/COMPAS dataset,
+which have been mentioned several times in \chapref{ch:related-work},
+and which are the most common tabular fairness datasets.
+While both these datasets comprise only tabular data,
+there is nothing in principle that stops this method from being used for other kinds of data.
+The choice to use these datasets and not others
+was predominantly made for easier comparison to baselines.
 
 \section{Overcoming severe sampling bias with a representative set}\label{sec:nifr}
 In the setting from the above paper \citep{kehrenberg2020tuning},
@@ -125,17 +139,38 @@ and \(z_b\), which has all the remaining information needed to reconstruct \(x\)
 \(z_u\) is ensured to be not predictive of \(s\) via adversarial training.
 During null-sampling, \(z_b\) is zeroed out, and after decoding it,
 we obtain an invariant representation \emph{in the data domain}.
-The fact that it is in the data domain makes it interpretable or inspectable.
+The fact that it is in the data domain makes it interpretable (or inspectable)
+as defined in \chapref{ch:introduction}.
 
 The described method works particularly well with \acp{INN},
 as they ensure that no information is lost that is unrelated to \(s\).
+However, the price to pay for using \acp{INN} is higher memory requirement and slower training.
+Thus, we also present a variant of the method using \iac{VAE},
+which does not have the guarantee about preserving information,
+but also does not suffer from the increased training cost as much.
+\acp{VAE} are similar to \acp{INN}
+in that their encoding conforms to a specific probability distribution,
+from which we can sample our null-samples.
+The choice between the two presented variants comes down
+to whether the user is willing to trade higher training costs for higher-quality results.
+However, the key element is any kind encoder -- producing a split-encoding --
+whose output can be subjected to adversarial training,
+and other kinds of encoders will potentially work as well.
 
 We perform experiments on the Coloured MNIST dataset (as described in \secref{sec:groundtruth-centric-view-of-bias}),
 which has a one-to-one mapping between the class label (\ie, digit) and the spurious attribute (colour)
 in the training set.
 As colour is ``easier'' to learn, a neural network will learn to predict \(s\) instead of \(y\).
-For additional experiments on the CelebA dataset and the UCI Adult Income dataset,
+For additional experiments on the CelebA dataset (another image dataset)
+and the UCI Adult Income dataset (a tabular dataset),
 we deliberately apply sampling bias to the training set and then apply our method.
+For the tabular dataset, an autoencoder is trained to produce a continuous representation,
+which is then fed into the \ac{INN} or \ac{VAE} model.
+Thus, we demonstrate that the method is \emph{general}
+in the sense that it is applicable to both image-based and tabular datasets
+and furthermore should be applicable to other modalities as well.
+For the main experiments, we focus on image datasets,
+because they are easiest to visualise in a document.
 
 \section{Overcoming sampling bias with an unlabelled deployment set}\label{sec:zsf}
 A shortcoming of the approach from the previous publication \citep{kehrenberg2020nullsampling}
@@ -194,11 +229,16 @@ and then draw samples for the batches at an equal rate from all clusters.
 It is important to note here that imperfections in the clustering are not a problem
 as long as the batches show on average the intended difference between training and deployment set.
 
+Experiments are performed on the same datasets as in the previous papers:
+Coloured MNIST, UCI Adult Income and CelebA.
+Again, these datasets were chosen, because image data is easy to visualise,
+and because demonstrating the method on tabular data provides evidence for the generality.
+
 % \section{Claims and contributions}%
 \section{List of publications and author contributions}%
 \label{sec:claims-contributions}
 This thesis is based on 3 publications, corresponding to \rangechapref{ch:paper1}{ch:paper3}.
-The first one is concerned with \emph{label bias} and the other two with \emph{sampling bias}.
+% The first one is concerned with \emph{label bias} and the other two with \emph{sampling bias}.
 
 \subsection{Publication 1}
 \begin{refsection}[allreferences]

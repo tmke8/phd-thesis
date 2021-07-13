@@ -96,6 +96,37 @@ For binary $s$/$y$ we quantify the fairness of a classifier's predictions using 
     }%
     \label{fig:cmnist_chart}
 \end{figure}
+
+\begin{figure*}[!htb]
+    \centering
+    \subfloat[Samples from the cMNIST training set, $\sigma=0$.]{%
+        \scalebox{0.3}{\includegraphics[width=\textwidth]{paper2/Images/cmnist/cflow_original_task_x_scale_0.png}}%
+        \label{fig:cflow_cmnist_task_train}
+    }
+    % \hfill
+    % \subfloat[Samples from the cMNIST test set with $\sigma=0.02$.]{%
+    %     \scalebox{0.225}{\includegraphics[width=\textwidth]{./Images/cmnist/cflow_pretrain_x.png}}%
+    %     \label{fig:cflow_cmnist_pretrain}
+    % }
+    \hfill
+    \subfloat[$x_u$ null-samples from the cFlow model.]{%
+        \scalebox{0.3}{\includegraphics[width=\textwidth]{paper2/Images/cmnist/cflow_task_xy_scale_0.png}}%
+        \label{fig:cflow_cmnist_y}
+    }
+    \hfill
+    \subfloat[$x_b$ null-samples from the cFlow model.]{%
+        \scalebox{0.3}{\includegraphics[width=\textwidth]{paper2/Images/cmnist/cflow_task_xs_scale_0.png}}%
+        \label{fig:cflow_cmnist_s}
+    }
+    \caption{
+        Sample images from the coloured MNIST dataset problem with $10$ predefined mean colours.
+        (a): Images from the spuriously correlated subpopulation where colour is a reliable signal of the digit class-label.
+        (b-c): Results of running our approach realised with cFlow on the cMNIST dataset.
+        The model learns to retain the shape of the digit shape while removing the relationship with colour.
+        A downstream classifier is now less prone to exploiting correlations between colour and the digit label class.
+    }\label{fig:cmnist}
+\end{figure*}
+
 \subsection{Experimental results}
 % \noindent Our model can be applied to tabular data and image data alike.
 % Due to space constraints, the experiments with the tabular dataset \emph{UCI Adult} are situated in the Appendix.
@@ -130,7 +161,8 @@ The only difference between the setups is the dataset creation, including the ra
 Our versions of the dataset, on the whole, exhibit much stronger colour bias, to the point of the mapping the digit's colour and class being bijective.
 Fig.~\ref{fig:cmnist_chart} shows that the model significantly underperforms even the na\"ive baseline, aside from at $\sigma = 0$, where they are on par.
 
-Inspection of the null-samples shows that both the cVAE and cFlow model succeed in removing almost all colour information, which is supported quantitatively by fig.~\ref{fig:cmnist_chart}.
+Inspection of the null-samples shows that both the cVAE and cFlow model succeed in removing almost all colour information, which is supported quantitatively by fig.~\ref{fig:cmnist_chart},
+and qualitatively by fig.~\ref{fig:cmnist}.
 While the cVAE outperforms cFlow marginally at low $\sigma$ values, performance degrades
 %rapidly
 as this increases.
@@ -155,6 +187,35 @@ and is then used to encode the artificially biased training set and the test set
 The results for the most strongly biased training set ($\eta=0$) can be found in fig.~\ref{fig:celeba-targets}.
 Our method outperforms the baselines in accuracy and fairness.
 
+\begin{figure*}[tb]
+  \centering
+  \subfloat[Original images.]{%
+      \scalebox{0.3}{\includegraphics[width=\textwidth]{paper2/Images/celeba/train_original_x_2.png}}%
+      \label{fig:cflow_celeba_original_x}
+  }
+  \hfill
+  \subfloat[$\bm{x}_u$ null-samples from the cFlow model.]{%
+      \scalebox{0.3}{\includegraphics[width=\textwidth]{paper2/Images/celeba/train_reconstruction_y_2.png}}%
+      \label{fig:cflow_celeba_recon_y}
+  }
+  \hfill
+  \subfloat[$\bm{x}_b$ null-samples from the cFlow model.]{%
+      \scalebox{0.3}{\includegraphics[width=\textwidth]{paper2/Images/celeba/train_reconstruction_s_2.png}}%
+      \label{fig:cflow_celeba_recon_s}
+  }
+  \caption{
+    CelebA null-samples learned by our cFlow model, with gender as the sensitive attribute.
+    (a) The original, untransformed samples from the CelebA dataset
+    (b) Reconstructions using only information unrelated to $s$.
+    (c) Reconstruction using only information related to $\neg s$.
+    The model learns to disentangle gender from the non-gender related information.
+    % Attributes such as \emph{makeup} and \emph{hair length} are also often modified in the process due to inherent correlations between them and the sensitive attribute, which the intepretability of our representations allows us to easily identify.
+    Note that some attributes like skin tone seem to change along with gender due to the correlation between the attributes.
+    This is especially visible in images (1,1) and (3,2). Only because our representations are produced in the data-domain can we easily spot such instances of entanglement.
+  }%
+  \label{fig:celeba_cflow}
+\end{figure*}
+%
 We also assess performance for different mixing factors ($\eta$) which correspond to varying degrees of bias in the training set
 (see fig.~\ref{fig:celeba-multiplot}).
 This is to verify that the model does not \emph{harm} performance when there is not much bias in the training set.
