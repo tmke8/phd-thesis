@@ -23,7 +23,7 @@ I discuss some of the limitations of the presented methods to keep in mind,
 and what the goal of the applications of the methods should be.
 \Secref{sec:potential-extentions} is about ways in which the work could be extended,
 and \secref{sec:broader-perspective} discusses the broader perspective of this topic,
-including a wider discussion of the future of \acl{ML}.
+including a wider discussion of the future of the field.
 
 \section{Limitations and intended use}\label{sec:ch7-limitations}
 %
@@ -40,9 +40,25 @@ For example, it might be possible to leverage an unlabelled context set for corr
 % ==============
 
 % ============ price of fairness ==========
-% ==============
-
-% ============ does your method help with finding clusters unsupervisedly ==========
+It also should be mentioned here that compared to training straightforward, bias-unaware classifiers,
+the sampling-bias-targeting methods (\ie, the second and the third method)
+incur additional costs in terms of computing resources, training time and human labour.
+This label-bias-targeting method (\ie, the first one) only impacts the computation of the loss
+and does not require additional training data,
+so it has a negligible impact training cost.
+The second method is the most costly
+as the training of \acp{INN} requires a large amount of memory and compute
+because \acp{INN} only \emph{transform} the (very high-dimensional) inputs
+and never perform anything like the lossy compression that other neural network do.
+Furthermore, the method requires additional data with \(s\) labels.
+Still, if the additional training cost enables the use of data
+that was previously unusable due to strong spurious correlations,
+then it can still be worthwhile,
+and it is also important to keep in mind that a model can be trained once
+and then used millions of times.
+This has to be decided on a case-by-case basis,
+and unfortunately means that these de-biasing methods will likely not be use prophylactically,
+but only if there is an explicit expectation of harm otherwise.
 % ==============
 
 % ========= argument that dataset bias is an important topic =======
@@ -60,11 +76,11 @@ then the methods presented here can be used to try and correct the problem.
 % ====== why even work with bad data? =====
 Now, one possible objection here is:
 if those datasets are of such poor quality,
-then maybe we just should not train any \ac{ML} model on these and should not use them to make automated decisions?
+then maybe we just should not train any \ac{ML} model on these and should not use them to make automated decisions.
 While this question is mostly beyond the scope of this document, let me offer some thoughts on this:
 It is true that even after the application of de-biasing techniques,
 the resulting models still should not be fully trusted,
-but they can still ease the burden of checking everything manually;
+but they can still ease the burden of tedious manual labour;
 similar to an email spam filter which is not perfect, but still very useful.
 Or, put another way, it is always important to check what the realistic alternative is;
 we should not compare a model to a non-existing perfect ideal, but to the actual solution that would be used instead.
@@ -80,10 +96,28 @@ This should allow us to be more confident in the predictions produced by those m
 because the methods learn from additional, unbiased information.
 % ==============
 
+% ============ does your method help with finding clusters unsupervisedly ==========
+% I think by "cluster" he means demographic group
+% the answer is 'no' :(
+The last limitation to mention is that throughout the thesis,
+the assumption is made that all relevant `demographic groups' (or `environments' or `subgroups')
+are known, or at least that it is known how \emph{many} groups there are.
+This goes back to the argument above that no \emph{completely general} method can exist to solve dataset bias;
+there has to be \emph{some} inductive bias in order to be able to learn anything.
+There have been attempts in the literature to address this,
+like \citet{HasSriNamLia18} (see \secref{sec:groundtruth-centric-view-of-bias}),
+which only requires knowledge of a lower bound on the size of groups in the given data.
+Such an assumption could potentially replace the assumption of knowing the \emph{number} of groups
+(as we assume for the third method presented).
+The other direction to go in is to give up on groups altogether and try to enforce \emph{individual fairness}.
+However, this has its own set of problems,
+the foremost of which is requiring a sensible distance function.
+% ==============
+
 \section{Potential extensions}\label{sec:potential-extentions}
 %
 % ======= potential technical improvements ======
-There are also certain technical improvements that could be made.
+% There are also certain technical improvements that could be made.
 In general, it would be desirable to have more theoretical bounds on performance.
 This likely involves specifying the requirements for the algorithms more precisely.
 % which is also useful information for potential users.
