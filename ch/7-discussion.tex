@@ -17,7 +17,47 @@ as close to a one-to-one mapping of \(y\) and \(s\) as in the second approach.
 From these simple starting points, an invariant representation is learned
 that can be used to train unbiased classifiers.
 
-\section{data is bad}
+The remainder of this chapter is split into three parts:
+In \secref{sec:ch7-limitations},
+I discuss some of the limitations of the presented methods to keep in mind,
+and what the goal of the applications of the methods should be.
+\Secref{sec:potential-extentions} is about ways in which the work could be extended,
+and \secref{sec:broader-perspective} discusses the broader perspective of this topic,
+including a wider discussion of the future of \acl{ML}.
+
+\section{Limitations and intended use}\label{sec:ch7-limitations}
+%
+% ========== acknowledge that this doesn't cover all biases =====
+The presented work by no means covers \emph{all} possible biases,
+but it contributes to a growing literature that tries to tackle this problem.
+One could ask if there is one method that is able to cover all possible dataset biases,
+but I think there is a strong argument to be made that no general method can exist,
+because it is, \eg, not possible to describe in general what is spurious information and what is relevant information.
+Nevertheless, finding methods that are more generally applicable is a worthy goal.
+One immediate avenue for future work is
+the combination of label bias correction and sampling bias correction.
+For example, it might be possible to leverage an unlabelled context set for correcting label bias as well.
+% ==============
+
+% ============ price of fairness ==========
+% ==============
+
+% ============ does your method help with finding clusters unsupervisedly ==========
+% ==============
+
+% ========= argument that dataset bias is an important topic =======
+In any case, correcting dataset bias remains a challenging topic
+and one that is increasingly relevant to today's machine learning applications.
+Any cutting-edge \ac{ML} system will have to deal with imperfect data,
+especially if the collected data is human-related.
+The possible effects of these imperfections in the data are certainly highly undesirable:
+a photo-tagging service might only work for a certain kind of person;
+a speech recognition system might only work for a certain kind of dialect.
+If, in these situations, sufficient representative (but unlabelled) data is available,
+then the methods presented here can be used to try and correct the problem.
+% ==============
+
+% ====== why even work with bad data? =====
 Now, one possible objection here is:
 if those datasets are of such poor quality,
 then maybe we just should not train any \ac{ML} model on these and should not use them to make automated decisions?
@@ -38,19 +78,11 @@ The remaining method requires summary statistics of the unbiased target dataset.
 So, the criticism that we are only learning from biased data does not apply here.
 This should allow us to be more confident in the predictions produced by those methods,
 because the methods learn from additional, unbiased information.
+% ==============
 
-\section{resume previous text}
-
-While this by no means covers \emph{all} possible biases,
-it contributes to a growing literature that tries to tackle this problem.
-One could ask if there is one method that is able to cover all possible dataset biases,
-but I think there is a strong argument to be made that no general method can exist,
-because it is, \eg, not possible to describe in general what is spurious information and what is relevant information.
-Nevertheless, finding methods that are more generally applicable is a worthy goal.
-One immediate avenue for future work is
-the combination of label bias correction and sampling bias correction.
-For example, it might be possible to leverage an unlabelled context set for correcting label bias as well.
-
+\section{Potential extensions}\label{sec:potential-extentions}
+%
+% ======= potential technical improvements ======
 There are also certain technical improvements that could be made.
 In general, it would be desirable to have more theoretical bounds on performance.
 This likely involves specifying the requirements for the algorithms more precisely.
@@ -67,12 +99,22 @@ and in some cases, the update schedule needs to be changed.
 Both the calibration of neural networks and the stability of adversarial training
 are issues that are widely recognised in the \ac{ML} community,
 so there is hope that progress will be made on these.
+% ==============
 
+% ======== other modalities ======
 Another potential extension of this work is to extend it to other modalities.
 The experiments were all performed on either tabular or image data
 --- the reason predominantly being ease of visualisation ---
 so working with audio (especially speech) or text could present new, interesting challenges.
+% ==============
 
+% ======== something something adversarial examples ========
+% ==============
+
+% ======== what can we do if we don't know there is a bias? ========
+% ==============
+
+% ======== algorithm for identifying which bias is present ======
 Furthermore, as it currently stands,
 the \ac{ML} practitioner has to know the bias in the data very well in order to choose a method to correct it.
 It would be desirable to have a simple algorithm for deciding which method to use.
@@ -81,17 +123,34 @@ is assumed to be linked to a special attribute \(s\).
 While \(s\) can be very high-dimensional and is not limited to, say, binary attributes,
 this nevertheless represents a restriction
 that excludes large areas of dataset biases.
+% ==============
 
-In any case, correcting dataset bias remains a challenging topic
-and one that is increasingly relevant to today's machine learning applications.
-Any cutting-edge \ac{ML} system will have to deal with imperfect data,
-especially if the collected data is human-related.
-The possible effects of these imperfections in the data are certainly highly undesirable:
-a photo-tagging service might only work for a certain kind of person;
-a speech recognition system might only work for a certain kind of dialect.
-If, in these situations, sufficient representative (but unlabelled) data is available,
-then the methods presented here can be used to try and correct the problem.
+\section{Broader perspective}\label{sec:broader-perspective}
+%
+% ====== human-machine interface aspect =======
+Finally, an important issue is the communication between human and machine.
+The methods presented in this thesis have all strived to make it easy for human operators to understand what is going on:
+the method in \chapref{ch:paper1} is configured with simple statistics;
+the method in \chapref{ch:paper2} produces invariant images that can be inspected;
+and the method in \chapref{ch:paper3} has the same capability
+(though it is not part of the core functionality).
+However, this is only a beginning.
+It is still not easy to notice that a given dataset has problems,
+and machines on their own cannot notice the problem,
+because they do not (yet) have a complete understanding about what it is that humans care about;
+human preferences are incredibly complex \citep{yudkowsky2011complex} and hard to predict for today's algorithms.
+Thus, it is important that machines get feedback early and often,
+to keep them aligned with human goals.
+(The aforementioned \citet{stiennon2020learning} is arguably an example of this.)
+Applied to the problem of dataset bias,
+this could mean visualising correlations in the dataset,
+or routinely producing invariant representations to show what the network thinks it is meant to learn.
+% ==============
 
+% ======== can we be de-biased everywhere? ========
+% ==============
+
+% ========= unsupervised learning =======
 One area of machine learning that has recently seen increased interest is unsupervised learning,
 and the latter two chapters make use of it to some degree.
 The exciting promise of unsupervised learning in general is
@@ -117,21 +176,13 @@ Given the black-box nature of neural networks, this represents a major challenge
 % somewhere in the model,
 % (an approximation of) the fundamental structures of reality are likely represented,
 % but we cannot easily access this.
+% ==============
 
-Finally, an important issue is the communication between human and machine.
-The methods presented in this thesis have all strived to make it easy for human operators to understand what is going on:
-the method in \chapref{ch:paper1} is configured with simple statistics;
-the method in \chapref{ch:paper2} produces invariant images that can be inspected;
-and the method in \chapref{ch:paper3} has the same capability
-(though it is not part of the core functionality).
-However, this is only a beginning.
-It is still not easy to notice that a given dataset has problems,
-and machines on their own cannot notice the problem,
-because they do not (yet) have a complete understanding about what it is that humans care about;
-human preferences are incredibly complex \citep{yudkowsky2011complex} and hard to predict for today's algorithms.
-Thus, it is important that machines get feedback early and often,
-to keep them aligned with human goals.
-(The aforementioned \citet{stiennon2020learning} is arguably an example of this.)
-Applied to the problem of dataset bias,
-this could mean visualising correlations in the dataset,
-or routinely producing invariant representations to show what the network thinks it is meant to learn.
+% ======== is it fair that AI has to be fair, if humans tend to be unfair anyhow? ========
+%   - yes, because there is no excuse to make something artificially biased, and also, an AI might affect many more people than a single person
+%   - it's like asking: isn't it unfair that our president should have a better character than the average person?
+
+% ==============
+
+% ======== giving my social perspective viewpoint ========
+% ==============
