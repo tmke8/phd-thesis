@@ -114,6 +114,30 @@ However, this has its own set of problems,
 the foremost of which is requiring a sensible distance function.
 % ==============
 
+% ======== data augmentation ========
+A topic that was left out of the thesis is \emph{data augmentation},
+which refers to the practice of modifying copies of the samples in the training set
+with pre-defined transformations, which do not change the ``semantic content'',
+such that more samples are available for training.
+For image data, typical transformations are rotations, crops, mirroring, Gaussian noise, and slight colour modifications.
+If chosen right, data augmentation alone can solve the problems presented in this thesis:
+grey-scaling is a transformation that is sometimes used for image data,
+and works quite well on the Coloured MNIST problem
+(though not perfectly well, because even as shades of grey, the colours are distinguishable).
+However, this only works because the spurious feature is so simply here
+(after all, Coloured MNIST is mostly intended to be a simple toy dataset).
+Grey-scaling would not help with real-world datasets like CelebA.
+Furthermore, even if a simple transformation would be able to remove the spurious feature,
+knowing \emph{which} transformation will accomplish this is not always as obvious as with Coloured MNIST,
+and may require special domain knowledge (like signal processing for audio data).
+Thus, the goal for the presented methods here was to make them applicable do any kind of data,
+without requiring knowledge of the specific details of how the bias manifests itself in the data,
+and without requiring knowledge of which data augmentations can be applied.
+However, this is not a recommendation \emph{against} data augmentations;
+if you have reason to believe that augmentations will help,
+there is no reason not to use them.
+% ==============
+
 \section{Potential extensions}\label{sec:potential-extentions}
 %
 % ======= potential technical improvements ======
@@ -142,12 +166,6 @@ The experiments were all performed on either tabular or image data
 so working with audio (especially speech) or text could present new, interesting challenges.
 % ==============
 
-% ======== something something adversarial examples ========
-% ==============
-
-% ======== what can we do if we don't know there is a bias? ========
-% ==============
-
 % ======== algorithm for identifying which bias is present ======
 Furthermore, as it currently stands,
 the \ac{ML} practitioner has to know the bias in the data very well in order to choose a method to correct it.
@@ -157,6 +175,15 @@ is assumed to be linked to a special attribute \(s\).
 While \(s\) can be very high-dimensional and is not limited to, say, binary attributes,
 this nevertheless represents a restriction
 that excludes large areas of dataset biases.
+% ==============
+
+% ======== what can we do if we don't know there is a bias? ========
+Another element that is currently missing is a way to determine
+whether a given dataset has a bias,
+in cases where you do not know enough about the data to know where to look.
+This runs into very similar problems to the ones discussed above:
+how can the algorithm know what counts as a bias?
+(use GPT to find out?)
 % ==============
 
 \section{Broader perspective}\label{sec:broader-perspective}

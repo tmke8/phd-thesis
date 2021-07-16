@@ -755,6 +755,43 @@ the Bayes optimal (but biased) classifier becomes the Bayes optimal unbiased cla
 % Demographic Parity does not rely on this assumption so much.
 % All-in-all, the fairness definition still has to be chosen by the user based on the situation and the goals.
 
+\subsection{Balancing datasets with synthetic data}
+Another way to view the fairness problem is to regard the dataset as missing certain kinds of samples.
+This falls under the ground-truth-centric view:
+the \emph{true} data distribution is fair, but our training set only covers a part of it,
+which means it looks unbalanced or unfair.
+An idea to deal with this, is to \emph{generate} the missing data,
+typically with a \ac{GAN}.
+
+\citet{sattigeri2019fairness} is one such approach.
+The method is based on a conditional \ac{GAN},
+that is conditioned on the sensitive attribute \(s\).
+The \ac{GAN} then produces fake input samples \(x_F\) together with corresponding labels \(y_F\).
+In addition to the usual discriminator which tries to distinguish fake \(x_F\) from real \(x\) samples,
+there is another adversary that tries to predict \(s\) from \(y_F\),
+which is opposed by the generator.
+This is meant to ensure that the labels of the generated samples
+have the same distribution for all values of \(s\),
+\ie, that the generated data distribution is balanced in terms of \(s\) and \(y\).
+There is also a discriminator that takes both \(x_F\) and \(y_F\) as inputs,
+and determines whether this is a plausible pair.
+Once this \ac{GAN} has been trained,
+a classifier is trained on the generated, balanced data.
+The expected advantage over other methods of balancing the dataset is
+that this method produces a more realistic distribution,
+because the adversarial training ensures that the data ``looks real''.
+However, this reliance on the discriminator also means
+that the generated data cannot contain data from unobserved parts of the data distribution,
+because such data would very easily be spotted as fake.
+For example, if a face image dataset does not contain men with lipstick,
+then the \ac{GAN} will also not produce such samples
+(even though it knows about men and it knows about lipstick).
+Generally, \acp{GAN} cannot produce something out of nothing,
+so if the data is missing certain sectors entirely,
+it is very hard to produce samples from this sector that are \emph{realistic}.
+This problem can potentially be ameliorated by pretraining the \ac{GAN}
+on diverse, unlabelled data.
+
 \section{Recent developments in algorithmic fairness}%
 \label{sec:refinement-on-previous-ideas-for-fair-classification-and-fair-representations}
 This section discusses more recent publications from the fairness literature.
