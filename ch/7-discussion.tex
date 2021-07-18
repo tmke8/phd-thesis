@@ -110,8 +110,10 @@ which only requires knowledge of a lower bound on the size of groups in the give
 Such an assumption could potentially replace the assumption of knowing the \emph{number} of groups
 (as we assume for the third method presented).
 The other direction to go in is to give up on groups altogether and try to enforce \emph{individual fairness}.
-However, this has its own set of problems,
+However, this has its own set of problems;
 the foremost of which is requiring a sensible distance function.
+Given these issues, it is likely not possible to remove all bias everywhere
+(though that should not discourage us from trying to).
 % ==============
 
 % ======== data augmentation ========
@@ -178,18 +180,27 @@ that excludes large areas of dataset biases.
 % ==============
 
 % ======== what can we do if we don't know there is a bias? ========
-Another element that is currently missing is a way to determine
-whether a given dataset has a bias,
-in cases where you do not know enough about the data to know where to look.
-This runs into very similar problems to the ones discussed above:
-how can the algorithm know what counts as a bias?
-(use GPT to find out?)
+A potential -- very ambitious -- extension would be
+to try to learn to automatically to detect biases:
+\ie an algorithm that can recognise biases without prompting a human operator.
+The question is then, where can an \ac{ML} algorithm learn about all possible biases?
+This could potentially be done with models like GPT-3 \citep{brown2020language},
+which are trained on enormous amounts of text data,
+such that they conceivably have learned a lot about what human writers consider to be biases.
+There is then perhaps a way to extract what such a model knows about biases
+(it could be as easy as a text prompt which asks ``is it okay to discriminate based on gender''),
+which would allow us to check whether those biases exist in our data.
+Of course, this assumes that humans agree what biases are --
+otherwise the model might be very unreliable --
+which seems like quite a risky assumption to make.
+There are also other potential problems with unsupervised models like GPT-3;
+some of which are discussed below.
 % ==============
 
 \section{Broader perspective}\label{sec:broader-perspective}
 %
 % ====== human-machine interface aspect =======
-Finally, an important issue is the communication between human and machine.
+An important issue is the communication between human and machine.
 The methods presented in this thesis have all strived to make it easy for human operators to understand what is going on:
 the method in \chapref{ch:paper1} is configured with simple statistics;
 the method in \chapref{ch:paper2} produces invariant images that can be inspected;
@@ -202,13 +213,10 @@ because they do not (yet) have a complete understanding about what it is that hu
 human preferences are incredibly complex \citep{yudkowsky2011complex} and hard to predict for today's algorithms.
 Thus, it is important that machines get feedback early and often,
 to keep them aligned with human goals.
-(The aforementioned \citet{stiennon2020learning} is arguably an example of this.)
+% (The aforementioned \citet{stiennon2020learning} is arguably an example of this.)
 Applied to the problem of dataset bias,
 this could mean visualising correlations in the dataset,
 or routinely producing invariant representations to show what the network thinks it is meant to learn.
-% ==============
-
-% ======== can we be de-biased everywhere? ========
 % ==============
 
 % ========= unsupervised learning =======
@@ -242,8 +250,40 @@ Given the black-box nature of neural networks, this represents a major challenge
 % ======== is it fair that AI has to be fair, if humans tend to be unfair anyhow? ========
 %   - yes, because there is no excuse to make something artificially biased, and also, an AI might affect many more people than a single person
 %   - it's like asking: isn't it unfair that our president should have a better character than the average person?
-
+It was mentioned before that an \ac{ML} model should be judged by how useful it is,
+how it stacks up to realistic alternatives, and not if it is perfect.
+However, one has to be careful not to take this philosophy too far.
+Namely, one should avoid giving up and saying,
+``why should AI need to be fair if humans tend to be bias anyhow?''
+The faults of humans has little to do with the question of what we expect of machines.
+% and we should certainly not go out of our way to encode the same biases in our creations.
+If one of our machines will affect many of our fellow humans,
+we would not want it to be harmful, right?
+Should we make the machine artificially biased
+so that humans do not need to feel too guilty about their own biases?
+That way lies folly.
+We should always strive to do the best we can.
 % ==============
 
 % ======== giving my social perspective viewpoint ========
+As AI models (as opposed to mere \ac{ML} models) become more powerful,
+the biases as presented in this thesis will likely become less relevant.
+However, we can argue that generalisations of these biases will still be applicable.
+Spurious correlations in the training data might become less relevant,
+because a powerful AI can do its own physics experiments
+and thus will be able to figure out the causal structure of our world on its own.
+However, what is still relevant is the existence of robust, analysable world models,
+which it is possible to reason on and do planning with.
+The potential trap here is not that the world model is \emph{wrong},
+but that it fails to have a useful structure for other tasks.
+Furthermore, learning about the physical world will not in and of itself be enough to
+become aligned with \emph{human values},
+which is here a catch-all term for
+what morality is or what good is and what wrong is and what good things are,
+the things that we want more of, and what bad things are.
+Such questions may appear very different from the issue of label bias
+and objectives like demographic parity,
+but if we take the problem of classical algorithmic fairness to be
+that we want the model to treat our fellow humans right,
+then this is just the generalisation of that.
 % ==============
