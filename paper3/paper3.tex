@@ -856,6 +856,8 @@ First, we construct perfect bags from an unlabelled deployment set via  clusteri
 Second, we learn a disentangled representations using the perfect bags for adversarial distribution-matching. 
 We empirically validate our framework on the Coloured MNIST, CelebA and Adult Income datasets, and find evidence that it is possible to maintain high performance on the subgroups with zero training data. 
 We analyse our approach using the disentanglement calculus of \citet{ShuCheKumErmetal20} that relies on the notions of restrictiveness and consistency, and show that we can derive some guarantees.
+We presented our approach in the context of biased data,
+but it could be used as a general-purpose method for learning invariances
 Future work includes further restricting the amount of information that can be encoded in the bias factor, and the limitations that we mentioned in sec.~\ref{sec:limitations}.
 Furthermore, the literature on clustering can potentially provide further insights on theoretical guarantees for clustering. This was not a focus in this paper as the disentangling aspect is more crucial to the approach.
 

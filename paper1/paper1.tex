@@ -976,6 +976,18 @@ The current work focuses on a single binary sensitive variable. %, but can be ex
 Future work could extend our tuning approach to other fairness concepts like the closely related predictive parity group fairness~\citep{chouldechova2017fair}
 or individual fairness~\citep{dwork2012fairness}.
 
+Furthermore, as currently formulated, the approach is only compatible with likelihood-based models
+(which covers neural networks),
+but the only real requirement is reasonably-well calibrated probabilities from the used model,
+which are needed to compute the expected target labels.
+Thus, future work could extend it to other kinds of models, like \acp{SVM},
+for which solutions exists to transform the output to a probability;
+the most common being Platt scaling \citep{platt1999probabilistic},
+which applies a logistic transformation with two free parameters to the output of the \ac{SVM}.
+The free parameters have to be estimated by iterating over the whole training set.
+The remaining (substantial) challenge is then
+to integrate the loss computed from these probabilities into the training of the \ac{SVM}.
+
 % Reviewer: Here: I would like to ask the authors to clarify
 % whether the proposed method can be used to enforce or to address other notions of fairness; among many I mention:
 % conditional statistical parity, disparate treatment, disparate mistreatment ,
