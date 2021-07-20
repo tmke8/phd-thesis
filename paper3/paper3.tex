@@ -211,6 +211,7 @@ We aim to convert our unlabelled data into a collection of \emph{perfect bags} \
 Making use of the terminology from \emph{multiple-instance learning}, our batches comprise a certain number of bags which are a collection of samples.
 %
 We will then use these perfect bags as the inductive bias for learning the disentangled representations. 
+The disentangling procedure is thus in a sense \emph{supervised}.
 %
 How can we construct these perfect bags in the absence of any labelled data?
 %
@@ -230,7 +231,7 @@ In contrast, we train a discriminator to assign scores at the level of bags of s
 
 Specifically, our paper provides the following contributions:
 \begin{enumerate}
-    \item An example of systematic bias leading to one or more  subgroups having \emph{zero labelled data}.
+    \item An example of systematic bias leading to one or more subgroups having \emph{zero labelled data}.
     \item Applying clustering methods to the task of transforming an \emph{unlabelled dataset} into perfect bags.
     \item Theoretical and experimental justification that the disentangling model with \emph{the perfect bag as an inductive bias} provides a well-disentangled representation, where one component captures the subgrouping factors and another component is invariant to them.
     \item A new parametric approach to disentangling that combines elements from adversarial learning and set-classification to guide an encoder network towards the goal of producing encodings invariant to the source distribution and thereby the subgroup factors in which source distributions differ.
@@ -530,6 +531,28 @@ In the \emph{missing subgroup} scenario, the disentangling supervision is weaker
 Thus, for this case, we restrict the amount of information that can be encoded in $z_s$ by setting its dimensionality equal to $\ceil{\text{log}_2(\text{dim}(\mathcal{S}))}$;
 \eg, in the case of binary $s$, we restrict $z_s$ to be one-dimensional.
 Additionally, $z_s$ can be discretised with a straight-through estimator of the gradient \citep{bengio2013estimating}.
+
+Note that as long as the model sees the different \(s\)-\(y\)-combinations at the right proportions,
+disentangling can (to an extent) also be achieved without the bag-wise loss
+(\ie, when the bag size is set to 1).
+The model then has to learn an implicit prior for which \(s\)-\(y\)-combinations to expect
+in the two different sets -- training set and deployment set.
+However, in our preliminary experiments we found this sample-wise approach to work much poorer
+than using a bag-wise loss.
+For those experiments, the batch was balanced in the same way as described above for the bags,
+but the batch was not subdivided into bags
+and there was no attention or aggregation method applied to the batch:
+the loss was just computed per sample.
+From the poor performance,
+we inferred that the sample-wise loss lacks the necessary context
+to easily differentiate between the two datasets.
+
+Our contribution to the disentanglement problem is thus two-fold:
+i) the use of the difference between two distinct sets as the supervision signal,
+and ii) the use of a bag-wise loss
+(where the bags are sampled to represent their corresponding data distribution in an idealised way)
+which allows the model to contrast the two sets more easily.
+Together, they form the idea of disentangling with ``perfect bags''.
 
 \paragraph{Disentanglement guarantees.}
 %\citet{ShuCheKumErmetal20} decomposed disentanglement into two distinct concepts: consistency and restrictiveness.
@@ -857,7 +880,14 @@ Second, we learn a disentangled representations using the perfect bags for adver
 We empirically validate our framework on the Coloured MNIST, CelebA and Adult Income datasets, and find evidence that it is possible to maintain high performance on the subgroups with zero training data. 
 We analyse our approach using the disentanglement calculus of \citet{ShuCheKumErmetal20} that relies on the notions of restrictiveness and consistency, and show that we can derive some guarantees.
 We presented our approach in the context of biased data,
-but it could be used as a general-purpose method for learning invariances
+but it could be used as a general-purpose method for learning disentanglements
+as long as the factors can be expressed by contrasting two data subsets;
+that is, the data will be disentangled into two factors,
+the first of which corresponding to the aspect that is common in the two sets,
+and the second corresponding to the one that differs.
+The method thus does not compete directly with \emph{unsupervised} disentanglement,
+but is potentially more widely applicable than to only fairness problems.
+
 Future work includes further restricting the amount of information that can be encoded in the bias factor, and the limitations that we mentioned in sec.~\ref{sec:limitations}.
 Furthermore, the literature on clustering can potentially provide further insights on theoretical guarantees for clustering. This was not a focus in this paper as the disentangling aspect is more crucial to the approach.
 
