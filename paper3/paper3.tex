@@ -253,7 +253,8 @@ The unlabelled data, despite not containing the class label $y$, \emph{is} label
 %
 Our setting is significantly harder because there is no label information about $y$ and $s$ in the perfect bag.
 
-\subsection{On disentangled representations learning.}
+\subsection{On disentangled representations learning.}%
+\label{ssec:on-disentangled-representation-learning}
 \citet{locatello2019fairness} suggested that disentanglement in representation learning may be a useful property to remove algorithmic bias when subgroup information is not observed.
 %
 In order for disentangled representations to reduce algorithmic bias without the knowledge of subgroup label $s$, they have to assume that the class label $y$ and the subgroup label $s$ are independent, i.e. $y\perp s$.
@@ -263,6 +264,9 @@ Though, in many real-world tasks, the variable $s$ is correlated with the variab
 Indeed, experiments in \citet{locatello2019fairness} were wholly done with procedurally generated synthetic datasets involving 2D and 3D shapes. 
 %
 Without some supervision or inductive bias, disentangled representation methods would not solve the issue of algorithmic fairness with invisible demographics \citep{locatello2019challenging}. 
+\citet{locatello2020weakly} suggest that that it is possible to learn disentangled representations
+with contrasting pairs that share at least one of the underlying factors but differ in some.
+Here, the difference between the pairs acts as the supervision signal.
 
 %\begin{wrapfigure}{!t}{0.6\textwidth}
 \begin{figure}[t]
@@ -553,6 +557,18 @@ and ii) the use of a bag-wise loss
 (where the bags are sampled to represent their corresponding data distribution in an idealised way)
 which allows the model to contrast the two sets more easily.
 Together, they form the idea of disentangling with ``perfect bags''.
+
+As mentioned in \secref{ssec:on-disentangled-representation-learning},
+\citet{locatello2020weakly} learned to disentangle from non-i.i.d.\ pairs
+which share at least one underlying factor.
+In our scenario, constructing the pairs each out of one sample from the training set and one sample from the deployment set
+would satisfy this requirement if we allow the `underlying factor' to be quite abstract
+(see also the section below for a discussion of this).
+However, constructing the pairs each out of two \emph{bags} instead of two samples
+makes the analysis much clearer:
+bags from the training and deployment set are constructed such
+that they both have the same distribution of \(y\) values (a uniform distribution over \(y\)),
+but they differ in the distribution of \(s\) values.
 
 \paragraph{Disentanglement guarantees.}
 %\citet{ShuCheKumErmetal20} decomposed disentanglement into two distinct concepts: consistency and restrictiveness.
@@ -888,8 +904,19 @@ and the second corresponding to the one that differs.
 The method thus does not compete directly with \emph{unsupervised} disentanglement,
 but is potentially more widely applicable than to only fairness problems.
 
+Another take-away from our work concerns the general disentangling setup described in
+\citet{locatello2020weakly}
+-- \ie\ using pairs that share at least one underlying factor but also differ some.
+For our work, we found it advantageous to do this pair matching not on the level of samples,
+but on the level of bags (\ie, small, specially-sampled \emph{sets} of samples).
+It is possible that other disentangling problems would benefit
+from a similar switch in perspective
+that identifies not the samples but some other structure
+as the natural way to construct the pairs for the disentangling.
+
 Future work includes further restricting the amount of information that can be encoded in the bias factor, and the limitations that we mentioned in sec.~\ref{sec:limitations}.
-Furthermore, the literature on clustering can potentially provide further insights on theoretical guarantees for clustering. This was not a focus in this paper as the disentangling aspect is more crucial to the approach.
+Furthermore, the literature on clustering can potentially provide further insights on theoretical guarantees for clustering.
+This was not a focus in this paper as the disentangling aspect is more crucial to the approach.
 
 % Acknowledgements should only appear in the accepted version.
 %\section*{Acknowledgements}

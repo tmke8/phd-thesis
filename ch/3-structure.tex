@@ -242,6 +242,19 @@ and then draw samples for the batches at an equal rate from all clusters.
 It is important to note here that imperfections in the clustering are not a problem
 as long as the batches show on average the intended difference between training and deployment set.
 
+The absolutely essential elements for this method are the encoder (also referred to as `de-biaser')
+that encodes both, samples from the training set and samples from the deployment set,
+to a splittable representation;
+the adversary that tries to identify, from one part of the split representation,
+which dataset the given samples originated from;
+and some kind of reconstruction loss
+to ensure the splittable representation represents the input data well.
+The following elements are in theory optional,
+but are needed for the method to work with real-world data:
+clustering and sampling to ensure the training batches are balanced in specific ways;
+and subdivision of the batches into bags and the aggregation of the adversarial loss over the bags.
+Roughly speaking, these elements strengthen the supervision signal for the invariance learning.
+
 Experiments are performed on the same datasets as in the previous papers:
 Coloured MNIST, UCI Adult Income and CelebA.
 Again, these datasets were chosen, because image data is easy to visualise,
@@ -252,6 +265,7 @@ and because demonstrating the method on tabular data provides evidence for the g
 \label{sec:claims-contributions}
 This thesis is based on 3 publications, corresponding to \rangechapref{ch:paper1}{ch:paper3}.
 % The first one is concerned with \emph{label bias} and the other two with \emph{sampling bias}.
+The following is a detailed listing of all the individual author contributions.
 
 \subsection{Publication 1}
 \begin{refsection}[allreferences]
