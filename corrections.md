@@ -42,10 +42,10 @@ As such, we have selected recommendation 2, as the corrections can be completed 
 ## Chapter 6
   - [ ] 11. Is the last chapter more about disentanglement caused by fairness, rather than fairness and using disentanglement?
       - a.) Would be also good to outline what are the necessary elements: bags, de-biaser or the combination, running,e g., some ablation study?
-      - b.) Basically you may have more here than you think. See discussion in viva as per Locatello et al. (ICML 2019a) and needing supervision and working on bags.
-          - i.) Be clear maybe that first contribution is using variation of a single feature per bag (see also Locatello et al.; ICML 2019a) as a supervision signal and the 2nd is bags.
+      - b.) Basically you may have more here than you think. See discussion in viva as per Locatello et al. (ICML 2020) and needing supervision and working on bags.
+          - i.) Be clear maybe that first contribution is using variation of a single feature per bag (see also Locatello et al.; ICML 2020) as a supervision signal and the 2nd is bags.
           - ii.) Maybe also that you disprove Locatello (NeurIPS 2019b) on the fairness of disentangled representations? (Could place your work more boldly within the literature (as per the discussion in the viva).
-          - iii.) Could you do an ablation study on the components of the overall architecture? Maybe add the detail on what you did in preliminary work which maybe shows Locatello et al. (NeurIPS 2019b) is wrong.
+          - iii.) Could you do an ablation study on the components of the overall architecture? Maybe add the detail on what you did in preliminary work which maybe shows Locatello et al. (ICML 2020) is wrong.
           - iv.) Tell a story with this chapter. 
   - [ ] 12. Up to you but could add the new version of the chapter submitted to Neurips
 ## Discussion
