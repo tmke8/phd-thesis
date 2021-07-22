@@ -120,7 +120,7 @@
 Thomas Kehrenberg$^1$, Viktoriia Sharmanska$^1$, Myles Bartlett$^1$, and Novi Quadrianto$^1$ \\
 \textsc{Affiliations}:\\
 $^1$ Predictive Analytics Lab (PAL), University of Sussex, Brighton, UK\\
-\textsc{Conference}:\;\; Submitted to \textit{International Conference on Machine Learning} (ICML), 2021 \\
+% \textsc{Conference}:\;\; Submitted to \textit{International Conference on Machine Learning} (ICML), 2021 \\
 % \textsc{DOI}:\;\;10.3389/frai.2020.00033
 \textsc{Note}:\;\; The appendix has been included as section~\ref{sec:zsf-appendix}.
 
@@ -569,6 +569,8 @@ makes the analysis much clearer:
 bags from the training and deployment set are constructed such
 that they both have the same distribution of \(y\) values (a uniform distribution over \(y\)),
 but they differ in the distribution of \(s\) values.
+Thus, the \emph{shared} factor is the one concerning the prediction target \(y\),
+and the \emph{differing} factor is the one concerning \(s\).
 
 \paragraph{Disentanglement guarantees.}
 %\citet{ShuCheKumErmetal20} decomposed disentanglement into two distinct concepts: consistency and restrictiveness.
@@ -904,9 +906,19 @@ and the second corresponding to the one that differs.
 The method thus does not compete directly with \emph{unsupervised} disentanglement,
 but is potentially more widely applicable than to only fairness problems.
 
+However, it is not really accurate to say that
+we found a new ``fairness-based'' way to learn disentanglements.
+Rather, it is the opposite way: we found a new disentanglement-based fairness method.
+In order to achieve the goal of fairness,
+we used building blocks (like adversarial training)
+which happen to also be used in disentanglement learning.
+And thus, it is not surprising that the method does in fact work by disentangling,
+but it was just the choice of tools which would get the job done that produced this outcome.
+The fairness aspect only acted as the motivator, and did not in itself contribute to the solution.
+
 Another take-away from our work concerns the general disentangling setup described in
 \citet{locatello2020weakly}
--- \ie\ using pairs that share at least one underlying factor but also differ some.
+-- \ie\ using pairs that share at least one underlying factor but also differ in some.
 For our work, we found it advantageous to do this pair matching not on the level of samples,
 but on the level of bags (\ie, small, specially-sampled \emph{sets} of samples).
 It is possible that other disentangling problems would benefit

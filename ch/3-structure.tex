@@ -64,6 +64,20 @@ The idea is then the learn a predictor for these target labels instead of the gi
 Via the sum rule of probabilities, it is possible to express the model likelihood in terms of the target labels,
 such that maximising the likelihood corresponds to improving the prediction of the target labels.
 
+The requirements for the model are that it outputs probabilities
+and that they are well-calibrated --
+which means that for those samples
+that the model predicts a 10\% chance of having a positive label (\(y=1\))
+about 10\% in fact have a positive label,
+and analogously for all other predicted probabilities.
+The probabilities are needed for calculating the expected target label,
+and the calibration ensures that this expectation is sensible.
+Thus, we picked a \acf{GP} model as one model for the experiments,
+as they have a reputation for being well-calibrated.
+However, they come with the downside that they are (at least in their standard form)
+not well-suited to very high dimensional data like images.
+As such, we also construct a model based on \acf{LR}.
+
 The method is validated with experiments
 on the UCI Adult Income dataset and the ProPublica/COMPAS dataset,
 which have been mentioned several times in \chapref{ch:related-work},
@@ -71,7 +85,8 @@ and which are the most common tabular fairness datasets.
 While both these datasets comprise only tabular data,
 there is nothing in principle that stops this method from being used for other kinds of data.
 The choice to use these datasets and not others
-was predominantly made for easier comparison to baselines.
+was predominantly made for easier comparison to baselines,
+and shorter experiment runtime.
 
 \section{Overcoming severe sampling bias with a representative set}\label{sec:nifr}
 In the setting from the above paper \citep{kehrenberg2020tuning},
@@ -303,7 +318,7 @@ The following is a detailed listing of all the individual author contributions.
   \item N. Quadrianto gave feedback on the progress and suggested directions to explore.
 \end{itemize}
 
-\subsection{Publication 3}
+\subsection{Publication 3 (work in progress)}
 \begin{refsection}[allreferences]
     \nocite{kehrenberg2020zeroshot}
     \printbibliography[heading=none]
