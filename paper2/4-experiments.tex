@@ -5,12 +5,12 @@
 while still allowing a classifier to predict $y$ from them.
 We run our cVAE and cFlow models on the coloured MNIST (cMNIST) and CelebA dataset,
 which we artificially bias, first describing the sampling procedure we follow to do so for non-synthetic datasets.
-As baselines we have the model of~\citet{kim2019learning} (Ln2L) and the same CNN used to evaluate the cFlow and cVAE models
+As baselines we have the model of~\citet{kim2019learning} (Ln2L) and the same \acs{CNN} used to evaluate the cFlow and cVAE models
 but with the unmodified images as input (CNN).
 For the cFlow model we adopt a Glow-like architecture~\citep{KinDha18},
 while both subnetworks of the cVAE model comprise gated convolutions~\citep{van2016conditional}, where the encoding size is $256$.
 For cMNIST, we construct the Ln2L baseline according to its original description, for CelebA,
-we treat it as an augmentation of the baseline CNN's objective function.
+we treat it as an augmentation of the baseline \acs{CNN}'s objective function.
 %More
 Detailed information regarding model architectures can be found in sections~\ref{sec:architectures} and~\ref{sec:optimisation-details}.%
 \footnote{The code can be found at \url{https://github.com/predictive-analytics-lab/nifr}.}
