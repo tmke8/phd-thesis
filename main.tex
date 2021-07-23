@@ -282,7 +282,7 @@ titlepage,numbers=noenddot,%1headlines,
 
 % don't make section titles all lower case
 \newcommand{\spacedsmallcaps}[1]{\spacedlowsmallcaps{\NoCaseChange{#1}}}
-\titleformat{\section}{\relax}{\thesection}{1em}{\spacedsmallcaps}
+\titleformat{\section}[hang]{\relax}{\thesection}{1em}{\spacedsmallcaps}
 \DeclareRobustCommand{\mytextsc}[1]{\textsc{#1}}
 % paragraphs
 \titleformat{\paragraph}[runin]
