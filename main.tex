@@ -39,7 +39,7 @@ titlepage,numbers=noenddot,%1headlines,
 % (see ClassicThesis.pdf for more information):
 % ****************************************************************************************************
 \PassOptionsToPackage{
-  drafting=false,    % print version information on the bottom of the pages
+  drafting=true,    % print version information on the bottom of the pages
   tocaligned=false, % the left column of the toc will be aligned (no indentation)
   dottedtoc=true,  % page numbers in ToC flushed right
   eulerchapternumbers=true, % use AMS Euler for chapter font (otherwise Palatino)
@@ -69,7 +69,7 @@ titlepage,numbers=noenddot,%1headlines,
 \newcommand{\myUni}{University of Sussex\xspace}
 \newcommand{\myLocation}{Hove\xspace}
 \newcommand{\myTime}{March 2021\xspace}
-\newcommand{\myVersion}{Thesis v1.0-rc1}
+\newcommand{\myVersion}{Thesis v1.1-rc1}
 
 % ********************************************************************
 % Setup, finetuning, and useful commands
@@ -456,10 +456,10 @@ titlepage,numbers=noenddot,%1headlines,
 % ************************************
 % \includeonly{FrontBackmatter/Contents}
 % \includeonly{ch/1-introduction}
-% \includeonly{ch/2-related-work}
+\includeonly{ch/2-related-work}
 % \includeonly{ch/3-structure}
 % \includeonly{paper1/paper1}
-\includeonly{paper2/paper2}
+% \includeonly{paper2/paper2}
 % \includeonly{paper3/paper3}
 % \includeonly{ch/7-discussion}
 
