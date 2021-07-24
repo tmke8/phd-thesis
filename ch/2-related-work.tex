@@ -46,9 +46,10 @@
     before typesetting nodes={where content={}{coordinate}{}},
     where level<=1{line width=2pt}{line width=1pt},
     [methods for algorithmic fairness
-      [data de-biasing
+    [
+    [
+      [data de-biasing, line width = 2pt
         [dropping\\features]
-        [additional\\synthetic data]
         [
           [fair representations
             [non-parametric
@@ -56,28 +57,28 @@
               [MMD]
             ]
             [adversarial networks
-              [sample-wise, draw=blue]
               [set-wise, draw=blue]
+              [sample-wise, draw=blue]
             ]
           ]
         ]
-      ]
+        [additional\\synthetic data]
+      ]]]
       [post-hoc methods, line width = 2pt
-        [separate\\models]
-        [threshold\\shifting]
+        [separate models]
+        [threshold shifting]
       ]
-      [
-        [change to\\training\\procedure, line width = 2pt
-          [modified\\sampling]
-          [
-            [change to loss
-              [change of\\optimisation target, draw=blue]
-              [constrained\\optimisation]
-            ]
+      [[
+      [change to training procedure, line width = 2pt
+        [modified sampling]
+        [
+          [change to loss
+            [change of optim-\\isation target, draw=blue]
+            [constrained\\optimisation]
           ]
-          [loss\\reweighting]
         ]
-      ]
+        [loss reweighting]
+      ]]]
     ]
     \end{forest}
   }
