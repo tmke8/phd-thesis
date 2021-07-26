@@ -46,10 +46,9 @@
     before typesetting nodes={where content={}{coordinate}{}},
     where level<=1{line width=2pt}{line width=1pt},
     [methods for algorithmic fairness
-    [
-    [
       [data de-biasing, line width = 2pt
         [dropping\\features]
+        [additional\\synthetic data]
         [
           [fair representations
             [non-parametric
@@ -57,35 +56,36 @@
               [MMD]
             ]
             [adversarial networks
-              [set-wise, draw=blue]
               [sample-wise, draw=blue]
+              [set-wise, draw=blue]
             ]
           ]
         ]
-        [additional\\synthetic data]
-      ]]]
-      [post-hoc methods, line width = 2pt
-        [separate models]
-        [threshold shifting]
       ]
-      [[
-      [change to training procedure, line width = 2pt
+      [post-hoc methods, line width = 2pt
+        [separate\\models]
+        [threshold\\shifting]
+      ]
+      [
+      [change to train-\\ing procedure, line width = 2pt
         [modified sampling]
         [
           [change to loss
-            [change of optim-\\isation target, draw=blue]
-            [constrained\\optimisation]
+            [
+              [change of optim-\\isation target, draw=blue]
+              [constrained\\optimisation]
+            ]
           ]
         ]
         [loss reweighting]
-      ]]]
+      ]]
     ]
     \end{forest}
   }
   \caption{%
     Taxonomy of fairness methods.
-    The three categories with blue borders are those categories
-    to which the proposed models in this thesis belong (see \chapref{ch:content} for details).
+    The three categories with blue borders correspond to those categories
+    under which the proposed models in this thesis fall (see \chapref{ch:content} for details).
     This diagram does not show all the axes along which methods can vary.
     In particular, it does not distinguish between different intended \emph{settings}.
   }%
@@ -137,7 +137,8 @@ Towards the end, I discuss more works with the other viewpoint.
 
 \Figref{fig:fairness-taxonomy} provides a high-level overview
 of one possible categorisation of the methods presented here.
-It is meant as a rough guide through the chapter.
+It can serve as a map for navigating through this chapter.
+% It is meant as a rough guide through the chapter.
 
 \section{Foundations of algorithmic fairness}\label{sec:foundations}
 This section discusses the publications that lay the ground work for the algorithmic fairness literature.

@@ -20,7 +20,7 @@ that can be used to train unbiased classifiers.
 The remainder of this chapter is split into three parts:
 In \secref{sec:ch7-limitations},
 I discuss some of the limitations of the presented methods to keep in mind,
-and what the goal of the applications of the methods should be.
+and the goals that can be achieved by applying the methods.
 \Secref{sec:potential-extentions} is about ways in which the work could be extended,
 and \secref{sec:broader-perspective} discusses the broader perspective of this topic,
 including a wider discussion of the future of the field.
@@ -43,9 +43,9 @@ For example, it might be possible to leverage an unlabelled context set for corr
 It also should be mentioned here that compared to training straightforward, bias-unaware classifiers,
 the sampling-bias-targeting methods (\ie, the second and the third method)
 incur additional costs in terms of computing resources, training time and human labour.
-This label-bias-targeting method (\ie, the first one) only impacts the computation of the loss
+The label-bias-targeting method (\ie, the first one) only impacts the computation of the loss
 and does not require additional training data,
-so it has a negligible impact training cost.
+so it has a negligible impact on training cost.
 The second method is the most costly
 as the training of \acp{INN} requires a large amount of memory and compute
 because \acp{INN} only \emph{transform} the (very high-dimensional) inputs
@@ -76,7 +76,7 @@ then the methods presented here can be used to try and correct the problem.
 % ====== why even work with bad data? =====
 Now, one possible objection here is:
 if those datasets are of such poor quality,
-then maybe we just should not train any \ac{ML} model on these and should not use them to make automated decisions.
+then maybe we should not train any \ac{ML} model on these and should not use them to make automated decisions.
 While this question is mostly beyond the scope of this document, let me offer some thoughts on this:
 It is true that even after the application of de-biasing techniques,
 the resulting models still should not be fully trusted,
@@ -132,7 +132,7 @@ Grey-scaling would not help with real-world datasets like CelebA.
 Furthermore, even if a simple transformation would be able to remove the spurious feature,
 knowing \emph{which} transformation will accomplish this is not always as obvious as with Coloured MNIST,
 and may require special domain knowledge (like signal processing for audio data).
-Thus, the goal for the presented methods here was to make them applicable do any kind of data,
+Thus, the goal for the presented methods here was to make them applicable to any kind of data,
 without requiring knowledge of the specific details of how the bias manifests itself in the data,
 and without requiring knowledge of which data augmentations can be applied.
 However, this is not a recommendation \emph{against} data augmentations;
@@ -145,7 +145,7 @@ there is no reason not to use them.
 % ======= potential technical improvements ======
 % There are also certain technical improvements that could be made.
 In general, it would be desirable to have more theoretical bounds on performance.
-This likely involves specifying the requirements for the algorithms more precisely.
+This would likely involve specifying the requirements for the algorithms more precisely.
 % which is also useful information for potential users.
 The method based on target labels would furthermore benefit from better-calibrated probability outputs.
 \acf{GP} classifiers show generally good calibration,
@@ -181,18 +181,27 @@ that excludes large areas of dataset biases.
 
 % ======== what can we do if we don't know there is a bias? ========
 A potential -- very ambitious -- extension would be
-to try to learn to automatically to detect biases:
-\ie an algorithm that can recognise biases without prompting a human operator.
+to try to learn to automatically detect biases:
+\ie\ an algorithm that can recognise biases without asking a human operator.
 The question is then, where can an \ac{ML} algorithm learn about all possible biases?
+Given the complexity of human values \citep{yudkowsky2011complex},
+it will not be possible to compress knowledge of all biases down to a compact representation.
+Essentially, the only way is to learn them all individually, one by one.
 This could potentially be done with models like GPT-3 \citep{brown2020language},
 which are trained on enormous amounts of text data,
 such that they conceivably have learned a lot about what human writers consider to be biases.
 There is then perhaps a way to extract what such a model knows about biases
-(it could be as easy as a text prompt which asks ``is it okay to discriminate based on gender''),
+(it could be as easy as a text prompt which asks ``is it okay to discriminate based on gender?''),
 which would allow us to check whether those biases exist in our data.
-Of course, this assumes that humans agree what biases are --
+Of course, this assumes that humans agree amongst themselves what biases are --
 otherwise the model might be very unreliable --
 which seems like quite a risky assumption to make.
+Furthermore, prevalent ethics have change over the course of human history,
+and are likely to change in the future as well.
+The ideal solution would be to predict which ethics humans will adopt in the future,
+after they thought about it even more,
+which is the goal of \emph{coherent extrapolated volition} \citep{tarleton2010coherent},
+but has large technical hurdles.
 There are also other potential problems with unsupervised models like GPT-3;
 some of which are discussed below.
 % ==============
@@ -208,9 +217,7 @@ and the method in \chapref{ch:paper3} has the same capability
 (though it is not part of the core functionality).
 However, this is only a beginning.
 It is still not easy to notice that a given dataset has problems,
-and machines on their own cannot notice the problem,
-because they do not (yet) have a complete understanding about what it is that humans care about;
-human preferences are incredibly complex \citep{yudkowsky2011complex} and hard to predict for today's algorithms.
+and \emph{currently}, machines on their own cannot notice the problem (see above).
 Thus, it is important that machines get feedback early and often,
 to keep them aligned with human goals.
 % (The aforementioned \citet{stiennon2020learning} is arguably an example of this.)
@@ -227,14 +234,14 @@ that labour-intensive labelling is not needed and so vast amounts of existing, u
 One could ask the question whether bias-correcting methods are still needed, with access to so much data.
 It could be that, while the data is certainly not perfect,
 there is so much of it that the biased parts ``cancel each other out''.
-However, recent investigations of the GPT models \citep{radford2018improving,radford2019language,brown2020language} do not seem to support this \citep{khalifa2021distributional}.
+However, recent investigations into the GPT models \citep{radford2018improving,radford2019language,brown2020language} do not seem to support this \citep{khalifa2021distributional}.
 One reason for this might be the way these models are trained at the moment:
 they maximise the probability assigned to the next token.
 Thus, such a model has to account for the wide array of human opinions and assign a non-zero probability to all of them.
 So, when asked to summarise a text \citep{stiennon2020learning}, GPT does not give the \emph{best} summary;
 rather, it gives a summary that an average person might have written.
 However, with the help of a very high-quality labelled dataset (that was expensive to create),
-GPT could be finetuned to actually produce very good summaries.
+it was possible to fintetune GPT to actually produce very good summaries.
 I suspect this pattern of learning the basics in an unsupervised fashion,
 and then finetuning with high-quality labels, will continue in the future.
 With these massive models,
@@ -251,10 +258,10 @@ Given the black-box nature of neural networks, this represents a major challenge
 %   - yes, because there is no excuse to make something artificially biased, and also, an AI might affect many more people than a single person
 %   - it's like asking: isn't it unfair that our president should have a better character than the average person?
 It was mentioned before that an \ac{ML} model should be judged by how useful it is,
-how it stacks up to realistic alternatives, and not if it is perfect.
+how it stacks up to realistic alternatives, and not whether it is perfect.
 However, one has to be careful not to take this philosophy too far.
 Namely, one should avoid giving up and saying,
-``why should AI need to be fair if humans tend to be bias anyhow?''
+``why should AI need to be fair if humans tend to be biased anyhow?''
 The faults of humans has little to do with the question of what we expect of machines.
 % and we should certainly not go out of our way to encode the same biases in our creations.
 If one of our machines will affect many of our fellow humans,

@@ -107,8 +107,8 @@ in order for accuracy to be meaningful.
 Fairness metrics require a fairness \emph{definition},
 and the fairness definition with the clearest interpretation in the described setup of label bias and sampling bias is \acfi{DP},
 also called \emph{statistical parity} or \emph{independence}.
-It demands that the predictions $\hat{y}$ be independent of the sensitive attribute \(s\).
-So, for binary $s$ and $y$:
+It demands that the predictions $\hat{y}$\, be independent of the sensitive attribute \(s\).
+So, for binary $s$ and $y$\,:
 \begin{align}
   P(\hat{y}=1|s=0) &= P(\hat{y}=1|s=1)~.
   \label{eq:dp-def}
@@ -153,7 +153,7 @@ how much a classifier is affected by the bias in the training set.
 
 \section{Relations to other fields and clarification of terms}
 % \subsection{aka: Isn't this thesis actually about XY instead of fairness?}
-The thesis is principally written from the perspective of algorithmic fairness,
+This thesis is principally written from the perspective of algorithmic fairness,
 but it touches on other fields as well, like \emph{domain shift} and \emph{causality}.
 Furthermore, the thesis makes use of concepts like \emph{transferable representations}
 and \emph{interpretability}.
