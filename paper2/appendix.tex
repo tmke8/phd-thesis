@@ -317,17 +317,6 @@ We try to mitigate the aforementioned degeneracies by maintaining a diverse set 
 There are several ways of ensuring that the size of $z_b$ is sufficient to capture all s dependencies, but minimal enough that information unrelated to s is maximally preserved
 We adopt the straightforward search strategy of, starting from some initial guess, calibrating the value according to accuracy attained by a classifier trained to predict $s$ from $z_b$ on a held-out subset of the representative set, which is measured whenever the adversarial loss plateaus. If the accuracy is above chance level then that suggests the size of the $z_b$ partition, $|z_b|$, needs to be increased to accommodate more information about $s$. If the accuracy is found to be at chance level then are two possibilities: 1) $|z_b|$ is already optimal; 2) $|z_b|$ is large enough that it fully contains both information $s$ as well as that of a portion of $y$. If the former is true, then perturbations around the current value allow us to confirm this; if the latter is true then decreasing the value was indeed the correct decision.
 
-\subsection{Synthesising Coloured MNIST}\label{sec:color-details}
-\noindent We use a colourised version of MNIST as a controlled setting investigate learning from biased data in the image domain. In the biased training set, each digit is assigned a unique mean RGB value parameterising the multivariate Gaussian from which its colour is drawn. These values were chosen to be maximally dispersed across the 8-bit colour spectrum and are listed in table \ref{tab:cmnist_rgb_values}. By adjusting the standard deviation, $\sigma$, of the Gaussians, we adjust the degree of bias in the dataset. When $\sigma=0$, there is a perfect and noiseless correspondence between colour and digit class which a classifier can exploit. The classifier can favour the learning of the low-level spurious feature over those higher level features constituent of the digit's class. As the standard deviation increases, the sampled RGB values are permitted to drift further from the mean, leading to overlap between the samples of the colour distributions and reducing their reliability as indicators of the digit class. In the test and representative sets alike, however, the colour of each sample is sampled from one of the 10 distributions randomly, such that colour can no longer be leveraged as a shortcut to predicting the digit's class.
-
-\subsection{Stabilising the Coupling layers}\label{sec:those-darn-coupling-layers}
-\noindent Heuristically, we found that  applying an additional nonlinear function to the scale coefficient of the form
-\begin{align}
-  s = \sigma (f(u)) + 0.5
-  \label{eq:heuristic-1}
-\end{align}
-greatly improved the stability of the affine coupling layers. Here, $\sigma$ is the logistic function, which we shift to be centred on 1 so that zero-initialising $f$ results in the coupling layers initially performing an identity-mapping.
-
 \begin{table}[tp]
 \caption{Mean RGB values (in practice normalised to $[0, 1]$) parameterising the Multivariate Gaussian distributions from which each digit's colour is sampled in the biased (training) dataset. In the representative and test sets,  the colour of each digit is sampled from one of the specified Gaussian distributions at random.}
 \label{tab:cmnist_rgb_values}
@@ -348,13 +337,16 @@ Digit & Colour Name & Mean RGB      \\ \midrule
 \end{tabular}
 \end{table}
 
-\subsection{Qualitative Results for CelebA}\label{sec:qual-results-celeba}
-\noindent Learning a representation alongside its inverse mapping, be it approximate or exact, enables us to probe the behaviour of the model that produced it,
-and any biases it may have implicitly captured due to entanglement between the sensitive attribute and other attributes present in the data.
-We highlight a few examples of such biases manifesting in the cFlow model's CelebA null-samples in fig.~\ref{fig:celeba_cflow_suppmat}. In these cases, makeup and hair style have been inadvertently modified during the null-sampling due to the tight correlation between these two attributes and the sensitive attribute, gender, to which we had aimed to make our representations invariant. Additionally, in all highlighted images, the skin tone has changed: from male to gender-neutral, the skin becomes lighter and from female to gender-neutral, the skin becomes darker; in the change from male to gender-neutral, glasses are also often removed.
-As the model cannot know that the label is meant to only refer to gender, and not to these other (correlated) attributes,
-the links cannot be disentangled by the model.
-However, the advantage of our method is that we can at least identify such biases due to the interpretability that comes with the representations being in the data domain.
+\subsection{Synthesising Coloured MNIST}\label{sec:color-details}
+\noindent We use a colourised version of MNIST as a controlled setting investigate learning from biased data in the image domain. In the biased training set, each digit is assigned a unique mean RGB value parameterising the multivariate Gaussian from which its colour is drawn. These values were chosen to be maximally dispersed across the 8-bit colour spectrum and are listed in table \ref{tab:cmnist_rgb_values}. By adjusting the standard deviation, $\sigma$, of the Gaussians, we adjust the degree of bias in the dataset. When $\sigma=0$, there is a perfect and noiseless correspondence between colour and digit class which a classifier can exploit. The classifier can favour the learning of the low-level spurious feature over those higher level features constituent of the digit's class. As the standard deviation increases, the sampled RGB values are permitted to drift further from the mean, leading to overlap between the samples of the colour distributions and reducing their reliability as indicators of the digit class. In the test and representative sets alike, however, the colour of each sample is sampled from one of the 10 distributions randomly, such that colour can no longer be leveraged as a shortcut to predicting the digit's class.
+
+\subsection{Stabilising the Coupling layers}\label{sec:those-darn-coupling-layers}
+\noindent Heuristically, we found that  applying an additional nonlinear function to the scale coefficient of the form
+\begin{align}
+  s = \sigma (f(u)) + 0.5
+  \label{eq:heuristic-1}
+\end{align}
+greatly improved the stability of the affine coupling layers. Here, $\sigma$ is the logistic function, which we shift to be centred on 1 so that zero-initialising $f$ results in the coupling layers initially performing an identity-mapping.
 
 % \newpage
 \begin{figure*}[tb]
@@ -409,32 +401,13 @@ However, the advantage of our method is that we can at least identify such biase
   }\label{fig:celeba_cflow_suppmat}
 \end{figure*}
 
-
-
-\subsection{Transfer Learning}\label{sec:transfer-learning}
-For our method, we require a representative set which follows the same distribution as that observed during deployment.
-Such a representative set might not always be available.
-In such a scenario, we can resort to using a set that is merely \emph{similar} to that in the deployment setting and leverage transfer learning.
-
-%We argue that the inherent properties of INNs make them especially suitable for transfer learning.
-One of the advantages of using an invertible architecture over conventional, \emph{surjective} ones that we stressed in the main text is its \emph{losslessness}. Since the transformations are necessarily bijective, the information contained in the input can never be destroyed, only redistributed. This makes such models particularly well-suited, in our minds, for transferring learned invariances:
-even if the input is unfamiliar, no information should be lost when trying to transform it.
-This works as long as only the information about $s$ ends up in the $z_b$ partition.
-If $s$ takes a form similar to that which we pre-trained on, and can thus be correctly partitioned in the latent space, by complement we have the information about $\neg s$ stored in the $z_u$ partition, without presupposing similarity to the $\neg s$ observed during pre-training.
-
-\paragraph{Transferring from mixed-NIST to MNIST.}
-We test our hypothesis by comparing the performance of the cFlow and cVAE models pre-trained on a mixture of datasets belonging to the NIST family, colourised in the same way as cMNIST, while the downstream train and test sets remain the same as in the original cMNIST experiments. Specifically, we create this representative set by sampling 24,000 images (to match the cardinality of the original representative set) from EMNIST (letters only)~\citep{cohen2017emnist}, Fashion\-MNIST~\citep{xiao2017fashion} and KMNIST~\citep{clanuwat2018deep}, in equal proportion. We use the same architectures for the cVAE and cFlow models as we did in the non-transfer learning setting. In terms of hyperparameters, the only change made was to the KL-divergence's pre-factor, finding it necessary to increase it to $1$ to guarantee stability.
-
-The results for the range of $\sigma$ values are shown in fig.~\ref{fig:cmnist-transfer}. Unsurprisingly, the performance of both models suffers when the representative and test sets do not completely correspond. However, the cFlow model consistently outperforms the cVAE model, with the gap increasing as the bias decreases.
-Although some colour information is retained in the cFlow null-samples, symptomatic of an imperfect transfer, semantic information is almost entirely retained as well.
-Conversely, the cVAE is very much flawed in this respect; as can be seen in the bottom row of fig.~\ref{fig:cmnist-transfer}, for some samples, semantic information is degraded to the point of the digit's identity being altered. As a result of this semantic degradation, the performance of the downstream classifier is curtailed by the noisiness of the digit's identity and is relatively unchanging across $\sigma$-values, in contrast to the monotonic improvement of that achieved on the cFlow null-samples.
-% \begin{figure}
-%   \includegraphics[width=0.6\textwidth]{paper2/Figures/nosinn_cmnist_transfer.pdf}
-%   \caption{
-%      Results for transfer learning experiments on cMNIST.
-%   }%
-%   \label{fig:cmnist-transfer}
-% \end{figure}
+\subsection{Qualitative Results for CelebA}\label{sec:qual-results-celeba}
+\noindent Learning a representation alongside its inverse mapping, be it approximate or exact, enables us to probe the behaviour of the model that produced it,
+and any biases it may have implicitly captured due to entanglement between the sensitive attribute and other attributes present in the data.
+We highlight a few examples of such biases manifesting in the cFlow model's CelebA null-samples in fig.~\ref{fig:celeba_cflow_suppmat}. In these cases, makeup and hair style have been inadvertently modified during the null-sampling due to the tight correlation between these two attributes and the sensitive attribute, gender, to which we had aimed to make our representations invariant. Additionally, in all highlighted images, the skin tone has changed: from male to gender-neutral, the skin becomes lighter and from female to gender-neutral, the skin becomes darker; in the change from male to gender-neutral, glasses are also often removed.
+As the model cannot know that the label is meant to only refer to gender, and not to these other (correlated) attributes,
+the links cannot be disentangled by the model.
+However, the advantage of our method is that we can at least identify such biases due to the interpretability that comes with the representations being in the data domain.
 
 \begin{figure*}[htb]
   \centering
@@ -472,6 +445,31 @@ Conversely, the cVAE is very much flawed in this respect; as can be seen in the 
   \label{fig:cmnist-transfer-all}
   
 \end{figure*}
+
+\subsection{Transfer Learning}\label{sec:transfer-learning}
+\noindent For our method, we require a representative set which follows the same distribution as that observed during deployment.
+Such a representative set might not always be available.
+In such a scenario, we can resort to using a set that is merely \emph{similar} to that in the deployment setting and leverage transfer learning.
+
+%We argue that the inherent properties of INNs make them especially suitable for transfer learning.
+One of the advantages of using an invertible architecture over conventional, \emph{surjective} ones that we stressed in the main text is its \emph{losslessness}. Since the transformations are necessarily bijective, the information contained in the input can never be destroyed, only redistributed. This makes such models particularly well-suited, in our minds, for transferring learned invariances:
+even if the input is unfamiliar, no information should be lost when trying to transform it.
+This works as long as only the information about $s$ ends up in the $z_b$ partition.
+If $s$ takes a form similar to that which we pre-trained on, and can thus be correctly partitioned in the latent space, by complement we have the information about $\neg s$ stored in the $z_u$ partition, without presupposing similarity to the $\neg s$ observed during pre-training.
+
+\paragraph{Transferring from mixed-NIST to MNIST.}
+We test our hypothesis by comparing the performance of the cFlow and cVAE models pre-trained on a mixture of datasets belonging to the NIST family, colourised in the same way as cMNIST, while the downstream train and test sets remain the same as in the original cMNIST experiments. Specifically, we create this representative set by sampling 24,000 images (to match the cardinality of the original representative set) from EMNIST (letters only)~\citep{cohen2017emnist}, Fashion\-MNIST~\citep{xiao2017fashion} and KMNIST~\citep{clanuwat2018deep}, in equal proportion. We use the same architectures for the cVAE and cFlow models as we did in the non-transfer learning setting. In terms of hyperparameters, the only change made was to the KL-divergence's pre-factor, finding it necessary to increase it to $1$ to guarantee stability.
+
+The results for the range of $\sigma$ values are shown in fig.~\ref{fig:cmnist-transfer}. Unsurprisingly, the performance of both models suffers when the representative and test sets do not completely correspond. However, the cFlow model consistently outperforms the cVAE model, with the gap increasing as the bias decreases.
+Although some colour information is retained in the cFlow null-samples, symptomatic of an imperfect transfer, semantic information is almost entirely retained as well.
+Conversely, the cVAE is very much flawed in this respect; as can be seen in the bottom row of fig.~\ref{fig:cmnist-transfer}, for some samples, semantic information is degraded to the point of the digit's identity being altered. As a result of this semantic degradation, the performance of the downstream classifier is curtailed by the noisiness of the digit's identity and is relatively unchanging across $\sigma$-values, in contrast to the monotonic improvement of that achieved on the cFlow null-samples.
+% \begin{figure}
+%   \includegraphics[width=0.6\textwidth]{paper2/Figures/nosinn_cmnist_transfer.pdf}
+%   \caption{
+%      Results for transfer learning experiments on cMNIST.
+%   }%
+%   \label{fig:cmnist-transfer}
+% \end{figure}
 
 % \clearpage
 
