@@ -181,9 +181,9 @@ from which we can sample our null-samples.
 The choice between the two presented variants is determined
 by whether the user is willing to accept higher training costs
 for a lower probability of losing information needed for any prediction tasks.
-However, the key element is simply any kind encoder -- producing a split-encoding --
+However, the key element is simply any kind of encoder -- producing a split-encoding --
 whose output can be subjected to adversarial training,
-and other kinds of encoders will potentially work as well.
+so encoders other than \acp{VAE} or \acp{INN} will potentially work as well.
 
 We perform experiments on the Coloured MNIST dataset (as described in \secref{sec:groundtruth-centric-view-of-bias}),
 which has a one-to-one mapping between the class label (\ie, digit) and the spurious attribute (colour)
@@ -266,8 +266,8 @@ and some kind of reconstruction loss
 to ensure the splittable representation represents the input data well.
 The following elements are in theory optional,
 but are needed for the method to work with real-world data:
-clustering and sampling to ensure the training batches are balanced in specific ways;
-and subdivision of the batches into bags and the aggregation of the adversarial loss over the bags.
+clustering and sampling to ensure that the training batches are balanced in specific ways;
+subdivision of the batches into bags; and the aggregation of the adversarial loss over the bags.
 Roughly speaking, these elements strengthen the supervision signal for the invariance learning.
 
 Experiments are performed on the same datasets as in the previous papers:
